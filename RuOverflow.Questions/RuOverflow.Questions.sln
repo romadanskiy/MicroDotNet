@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuOverflow.Questions", "RuOverflow.Questions\RuOverflow.Questions.csproj", "{A35C2642-830E-4635-99FB-5687BF7CD76A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuOverflow.Questions.Infrastructure", "RuOverflow.Questions.Infrastructure\RuOverflow.Questions.Infrastructure.csproj", "{B702B575-2F3E-4CA3-A4F0-492BF5AE2679}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A35C2642-830E-4635-99FB-5687BF7CD76A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A35C2642-830E-4635-99FB-5687BF7CD76A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A35C2642-830E-4635-99FB-5687BF7CD76A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A35C2642-830E-4635-99FB-5687BF7CD76A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B702B575-2F3E-4CA3-A4F0-492BF5AE2679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B702B575-2F3E-4CA3-A4F0-492BF5AE2679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B702B575-2F3E-4CA3-A4F0-492BF5AE2679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B702B575-2F3E-4CA3-A4F0-492BF5AE2679}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
