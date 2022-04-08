@@ -1,15 +1,16 @@
 ﻿using RuOverflow.Questions.Features.Answers.Models;
 using RuOverflow.Questions.Features.Rating;
 using RuOverflow.Questions.Features.Tags.Models;
-using RuOverflow.Questions.Infrastructure.Entity;
 
 namespace RuOverflow.Questions.Features.Questions.Models;
 
-public class Question : ModifiableEntity, IHasRating
+public class Question : HasRatingEntity
 {
 #nullable disable
-    protected Question() { }
-    #nullable enable
+    protected Question()
+    {
+    }
+#nullable enable
 
     public Question(string title, string body, Guid userId, List<Tag>? tags = null)
     {
@@ -29,5 +30,4 @@ public class Question : ModifiableEntity, IHasRating
     public List<Tag>? Tags { get; protected set; }
 
     public List<Answer>? Answers { get; protected set; }
-    int IHasRating.Rating { get; set; }
 }

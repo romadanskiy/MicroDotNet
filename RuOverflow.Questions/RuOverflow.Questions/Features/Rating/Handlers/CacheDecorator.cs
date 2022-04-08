@@ -3,20 +3,21 @@ using RuOverflow.Questions.Infrastructure.Handlers;
 
 namespace RuOverflow.Questions.Features.Rating.Handlers;
 
-[Decorator]
-public class CacheDecorator : IHandler<RatingCommands.ChangeRatingCommand, IHasRating>
+public class CacheDecorator : IAsyncHandler<RatingCommands.ChangeRatingCommand, HasRatingEntity>
 {
     private readonly ICache _cache;
-    private readonly IHandler<RatingCommands.ChangeRatingCommand, IHasRating> _handler;
+    private readonly IHandler<RatingCommands.ChangeRatingCommand, HasRatingEntity> _handler;
 
-    public CacheDecorator(IHandler<RatingCommands.ChangeRatingCommand, IHasRating> handler, ICache cache)
+    public CacheDecorator(IHandler<RatingCommands.ChangeRatingCommand, HasRatingEntity> handler, ICache cache)
     {
         _handler = handler;
         _cache = cache;
     }
 
-    public IHasRating Handle(RatingCommands.ChangeRatingCommand input)
+    public async Task<HasRatingEntity> Handle(RatingCommands.ChangeRatingCommand input)
     {
-        _cache.AddAsync(input.Entity)
+        var entity = _handler.Handle(input);
+        await _cache.AddAsync(entity.Id, entity.Rating);
+        return entity;
     }
 }

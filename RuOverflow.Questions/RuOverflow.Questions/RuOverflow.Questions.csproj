@@ -23,4 +23,13 @@
       <ProjectReference Include="..\RuOverflow.Questions.Infrastructure\RuOverflow.Questions.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Features\Rating\Handlers\CacheDecorator.cs">
+        <DependentUpon>ChangeRatingHandler.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\Rating\Handlers\EventDecorator.cs">
+        <DependentUpon>ChangeRatingHandler.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

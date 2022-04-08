@@ -1,10 +1,9 @@
 ﻿using RuOverflow.Questions.Features.Questions.Models;
 using RuOverflow.Questions.Features.Rating;
-using RuOverflow.Questions.Infrastructure.Entity;
 
 namespace RuOverflow.Questions.Features.Answers.Models;
 
-public class Answer : ModifiableEntity, IHasRating
+public class Answer : HasRatingEntity
 {
 #nullable disable
     protected Answer()
@@ -31,6 +30,4 @@ public class Answer : ModifiableEntity, IHasRating
     public Guid QuestionId { get; protected set; }
 
     public Question? Question { get; protected set; }
-
-    int IHasRating.Rating { get; set; }
 }

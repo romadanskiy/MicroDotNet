@@ -1,6 +1,8 @@
-﻿namespace RuOverflow.Questions.Features.Rating;
+﻿using RuOverflow.Questions.Infrastructure.Entity;
 
-public interface IHasRating
+namespace RuOverflow.Questions.Features.Rating;
+
+public abstract class HasRatingEntity : ModifiableEntity
 {
     public int Rating { get; protected set; }
 

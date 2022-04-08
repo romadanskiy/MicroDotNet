@@ -2,5 +2,5 @@
 
 public class Query
 {
-    
+    public string CheckHealth => "It's good!";
 }

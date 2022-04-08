@@ -9,6 +9,7 @@ services:
       - "11001:80"
     environment:
       - RuOverFlow_Question_ConnectionString=Host=postgres;Database=ruflow;User Id=postgres;Password=postgres;Port=5432;
+      - RedisUrl=redis:6379
     depends_on:
       - redis
       - postgres
@@ -17,7 +18,7 @@ services:
     image: "redis"
     hostname: redis
     ports:
-      - "6379:6379"
+      - "6378:6379"
   mssql:
     image: "mcr.microsoft.com/mssql/server"
     user: root

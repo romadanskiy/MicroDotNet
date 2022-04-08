@@ -2,9 +2,9 @@
 
 public class RatingCommands
 {
-    public abstract record ChangeRatingCommand(IHasRating Entity);
+    public abstract record ChangeRatingCommand(HasRatingEntity Entity);
 
-    public record LikeCommand(IHasRating Entity) : ChangeRatingCommand(Entity);
+    public record LikeCommand(HasRatingEntity Entity) : ChangeRatingCommand(Entity);
 
-    public record DislikeCommand(IHasRating Entity) : ChangeRatingCommand(Entity);
+    public record DislikeCommand(HasRatingEntity Entity) : ChangeRatingCommand(Entity);
 }

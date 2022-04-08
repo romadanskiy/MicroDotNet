@@ -2,5 +2,5 @@
 
 public class Mutation
 {
-    
+    public string DropServer => "Nice try, but no!";
 }
