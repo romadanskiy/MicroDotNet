@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RuOverflow.Questions.Models;
+using RuOverflow.Questions.Features.Answers.Models;
+using RuOverflow.Questions.Features.Questions.Models;
+using RuOverflow.Questions.Features.Tags.Models;
 
 namespace RuOverflow.Questions.EF;
 

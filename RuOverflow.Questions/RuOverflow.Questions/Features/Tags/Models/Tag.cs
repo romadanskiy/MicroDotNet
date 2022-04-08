@@ -1,6 +1,7 @@
-﻿using RuOverflow.Questions.Infrastructure.Entity;
+﻿using RuOverflow.Questions.Features.Questions.Models;
+using RuOverflow.Questions.Infrastructure.Entity;
 
-namespace RuOverflow.Questions.Models;
+namespace RuOverflow.Questions.Features.Tags.Models;
 
 public class Tag : ModifiableEntity
 {

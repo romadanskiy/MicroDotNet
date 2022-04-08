@@ -1,4 +1,4 @@
-﻿using RuOverflow.Questions.Models;
+﻿using RuOverflow.Questions.Features.Tags.Models;
 
 namespace RuOverflow.Questions.EF;
 

@@ -8,7 +8,16 @@ services:
     ports:
       - "11001:80"
     environment:
-      - RuOverFlow_Question_ConnectionString=Server=mssql;Database=master;User Id=sa;Password=Password123;
+      - RuOverFlow_Question_ConnectionString=Host=postgres;Database=ruflow;User Id=postgres;Password=postgres;Port=5432;
+    depends_on:
+      - redis
+      - postgres
+  redis:
+    container_name: "redis"
+    image: "redis"
+    hostname: redis
+    ports:
+      - "6379:6379"
   mssql:
     image: "mcr.microsoft.com/mssql/server"
     user: root
@@ -19,6 +28,15 @@ services:
     environment:
       SA_PASSWORD: "Password123"
       ACCEPT_EULA: "Y"
+  postgres:
+    image: postgres:14
+    env_file:
+      - ./RuOverflow.Questions/RuOverflow.Questions/postgres.env
+    volumes:
+      - postgres:/var/opt/postgres/data
+    ports:
+      - "5433:5432"
 
 volumes:
   mssql-server-linux-data:
+  postgres:

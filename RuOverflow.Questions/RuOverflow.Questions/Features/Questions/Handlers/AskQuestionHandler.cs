@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RuOverflow.Questions.Commands;
 using RuOverflow.Questions.EF;
+using RuOverflow.Questions.Features.Questions.Models;
 using RuOverflow.Questions.Infrastructure.Handlers;
-using RuOverflow.Questions.Models;
 
-namespace RuOverflow.Questions.Handlers;
+namespace RuOverflow.Questions.Features.Questions.Handlers;
 
-public class AskQuestionHandler : IAsyncHandler<AskQuestionCommand, Question>
+public class AskQuestionHandler : IAsyncHandler<QuestionCommands.AskQuestionCommand, Question>
 {
     private readonly IDbContextFactory<RuFlowDbContext> _contextFactory;
 
@@ -15,7 +14,7 @@ public class AskQuestionHandler : IAsyncHandler<AskQuestionCommand, Question>
         _contextFactory = contextFactory;
     }
 
-    public async Task<Question> Handle(AskQuestionCommand input)
+    public async Task<Question> Handle(QuestionCommands.AskQuestionCommand input)
     {
         var context = await _contextFactory.CreateDbContextAsync();
         var tags = input.Tags?.Count > 0

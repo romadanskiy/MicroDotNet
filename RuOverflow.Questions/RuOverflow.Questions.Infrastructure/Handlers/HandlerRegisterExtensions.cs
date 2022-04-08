@@ -60,7 +60,7 @@ public static class HandlerRegisterExtensions
 
             return openHandlerInterface;
         }
-        
+
         private static Type GetMostSpecificClosedGenericHandlerInterface(Type[] handlerInterfaces,
             Type openHandlerInterface)
         {

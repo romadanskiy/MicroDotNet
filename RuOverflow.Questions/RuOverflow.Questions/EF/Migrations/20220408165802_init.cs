@@ -13,13 +13,13 @@ namespace RuOverflow.Questions.Migrations
                 name: "Questions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Body = table.Column<string>(type: "text", nullable: false),
+                    Rating = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,11 +30,11 @@ namespace RuOverflow.Questions.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -46,13 +46,13 @@ namespace RuOverflow.Questions.Migrations
                 name: "Answers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    QuestionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Body = table.Column<string>(type: "text", nullable: false),
+                    Rating = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    QuestionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,8 +69,8 @@ namespace RuOverflow.Questions.Migrations
                 name: "QuestionTag",
                 columns: table => new
                 {
-                    QuestionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TagsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    QuestionsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TagsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,10 +94,10 @@ namespace RuOverflow.Questions.Migrations
                 columns: new[] { "Id", "Created", "Description", "Modified", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("00619617-48b9-4198-bcae-9234d290bb82"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Лучший язык программироваия в мире!(после C#)", null, "Kotlin" },
-                    { new Guid("136df1bd-20d5-4ac9-9fb2-e4475b0b1b14"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "кiт", null, "Docker" },
-                    { new Guid("505369cb-a7ba-4ccf-97b8-a59ac7fee5ed"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Лучший язык программирования в мире!", null, "C#" },
-                    { new Guid("76627a85-51f2-436e-94f3-cf1a8384cdff"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Лучший брокер(после тинькоффа)", null, "Kafka" }
+                    { new Guid("a792b957-7ec5-4eed-ad03-cb91c702b098"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "кiт", null, "Docker" },
+                    { new Guid("af3d5a11-406f-43e9-9f6a-c6c565ac41c5"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Лучший брокер(после тинькоффа)", null, "Kafka" },
+                    { new Guid("bce9b687-7af8-4ed4-bf64-5bf89a4c8d2a"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Лучший язык программироваия в мире!(после C#)", null, "Kotlin" },
+                    { new Guid("f76c667d-baa7-4afa-9792-7eede009bcb0"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Лучший язык программирования в мире!", null, "C#" }
                 });
 
             migrationBuilder.CreateIndex(
