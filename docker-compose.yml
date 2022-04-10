@@ -17,6 +17,11 @@ services:
     container_name: "redis"
     image: "redis"
     hostname: redis
+    command: >
+      --maxmemory 1073741824
+      --maxmemory-policy allkeys-lru
+      --loglevel warning
+      --rdbchecksum no
     ports:
       - "6378:6379"
   mssql:
