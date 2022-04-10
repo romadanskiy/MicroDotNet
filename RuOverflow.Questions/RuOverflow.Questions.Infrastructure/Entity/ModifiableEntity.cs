@@ -2,5 +2,5 @@
 
 public abstract class ModifiableEntity : CreatableEntity
 {
-    public DateTime? Modified { get; protected set; }
+    public DateTime? Modified { get; set; }
 }

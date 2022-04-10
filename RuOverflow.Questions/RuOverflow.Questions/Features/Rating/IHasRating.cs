@@ -4,7 +4,7 @@ namespace RuOverflow.Questions.Features.Rating;
 
 public abstract class HasRatingEntity : ModifiableEntity
 {
-    public int Rating { get; protected set; }
+    public int Rating { get; set; }
 
     public void Like()
     {

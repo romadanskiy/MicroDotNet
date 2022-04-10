@@ -34,7 +34,7 @@ namespace RuOverflow.Questions.Migrations
 
                     b.HasIndex("TagsId");
 
-                    b.ToTable("QuestionTag");
+                    b.ToTable("QuestionTag", (string)null);
                 });
 
             modelBuilder.Entity("RuOverflow.Questions.Features.Answers.Models.Answer", b =>
@@ -66,7 +66,7 @@ namespace RuOverflow.Questions.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answers", (string)null);
                 });
 
             modelBuilder.Entity("RuOverflow.Questions.Features.Questions.Models.Question", b =>
@@ -97,7 +97,7 @@ namespace RuOverflow.Questions.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("RuOverflow.Questions.Features.Tags.Models.Tag", b =>
@@ -123,7 +123,7 @@ namespace RuOverflow.Questions.Migrations
 
                     b.HasAlternateKey("Name");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
 
                     b.HasData(
                         new

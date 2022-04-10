@@ -5,9 +5,11 @@ namespace RuOverflow.Questions.Features.Tags.Models;
 
 public class Tag : ModifiableEntity
 {
-    #nullable disable
-    protected Tag() { }
-    #nullable enable
+#nullable disable
+    protected Tag()
+    {
+    }
+#nullable enable
 
 
     public Tag(string name, string? description = null)
@@ -17,9 +19,9 @@ public class Tag : ModifiableEntity
         Description = description;
     }
 
-    public string Name { get; protected set; }
+    public string Name { get; set; }
 
-    public string? Description { get; protected set; }
+    public string? Description { get; set; }
 
-    public List<Question>? Questions { get; }
+    public List<Question>? Questions { get; set; }
 }

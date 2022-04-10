@@ -22,12 +22,12 @@ public class Question : HasRatingEntity
         Tags = tags;
     }
 
-    public string Title { get; protected set; }
-    public string Body { get; protected set; }
+    public string Title { get; set; }
+    public string Body { get; set; }
 
-    public Guid UserId { get; protected set; }
+    public Guid UserId { get; set; }
 
-    public List<Tag>? Tags { get; protected set; }
+    public List<Tag>? Tags { get; set; }
 
-    public List<Answer>? Answers { get; protected set; }
+    public List<Answer>? Answers { get; set; }
 }

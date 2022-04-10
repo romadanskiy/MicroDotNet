@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using RuOverflow.Questions.Base;
 using RuOverflow.Questions.EF;
 using RuOverflow.Questions.Features.Answers;
+using RuOverflow.Questions.Features.Answers.ObjectTypes;
 using RuOverflow.Questions.Features.Questions;
+using RuOverflow.Questions.Features.Questions.ObjectTypes;
 using RuOverflow.Questions.Infrastructure;
 using RuOverflow.Questions.Infrastructure.ApplicationBuilderExtensions;
 using RuOverflow.Questions.Infrastructure.Cache;
@@ -36,7 +38,11 @@ services.AddGraphQLServer()
     .AddTypeExtension<QuestionMutations>()
     .AddTypeExtension<QuestionQuery>()
     .AddTypeExtension<AnswerMutations>()
-    .AddProjections();
+    .AddType<QuestionObjectType>()
+    .AddType<AnswerObjectType>()
+    .AddProjections()
+    .AddSorting()
+    .AddFiltering();
 
 var app = builder.Build();
 

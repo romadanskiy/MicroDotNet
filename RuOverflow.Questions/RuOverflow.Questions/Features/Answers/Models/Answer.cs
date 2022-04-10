@@ -23,11 +23,11 @@ public class Answer : HasRatingEntity
     {
     }
 
-    public string Body { get; protected set; }
+    public string Body { get; set; }
 
-    public Guid UserId { get; protected set; }
+    public Guid UserId { get; set; }
 
-    public Guid QuestionId { get; protected set; }
+    public Guid QuestionId { get; set; }
 
-    public Question? Question { get; protected set; }
+    public Question? Question { get; set; }
 }

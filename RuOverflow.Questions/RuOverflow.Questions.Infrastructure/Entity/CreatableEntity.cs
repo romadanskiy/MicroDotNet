@@ -2,5 +2,5 @@
 
 public abstract class CreatableEntity : Entity
 {
-    public DateTime Created { get; protected set; }
+    public DateTime Created { get; set; }
 }
