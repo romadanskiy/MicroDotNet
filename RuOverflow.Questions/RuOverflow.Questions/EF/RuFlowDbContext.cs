@@ -32,6 +32,8 @@ public class RuFlowDbContext : DbContext
             entity.HasMany(x => x.Answers)
                 .WithOne(x => x.Question)
                 .HasForeignKey(x => x.QuestionId);
+            
+            entity.HasData(Seed.Questions);
         });
 
         modelBuilder.Entity<Answer>(entity =>

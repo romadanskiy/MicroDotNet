@@ -15,4 +15,12 @@ public class QuestionQuery
         var context = await contextFactory.CreateDbContextAsync();
         return context.Questions.Where(x => x.Id == id);
     }
+
+    public async Task<IQueryable<Question>> GetQuestions(
+        [Service] IDbContextFactory<RuFlowDbContext> contextFactory)
+    {
+        var context = await contextFactory.CreateDbContextAsync();
+        return context.Questions.Select(s => s);
+    }
+    
 }

@@ -12,12 +12,12 @@ public class Question : HasRatingEntity
     }
 #nullable enable
 
-    public Question(string title, string body, Guid userId, List<Tag>? tags = null)
+    public Question(string title, string body, List<Tag>? tags = null)
     {
         Id = Guid.NewGuid();
         Title = title;
         Body = body;
-        UserId = userId;
+        UserId = Guid.NewGuid(); // временное решение
         Created = DateTime.UtcNow;
         Tags = tags;
     }

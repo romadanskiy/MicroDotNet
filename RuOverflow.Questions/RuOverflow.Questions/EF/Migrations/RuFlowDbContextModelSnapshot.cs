@@ -34,7 +34,7 @@ namespace RuOverflow.Questions.Migrations
 
                     b.HasIndex("TagsId");
 
-                    b.ToTable("QuestionTag", (string)null);
+                    b.ToTable("QuestionTag");
                 });
 
             modelBuilder.Entity("RuOverflow.Questions.Features.Answers.Models.Answer", b =>
@@ -66,7 +66,7 @@ namespace RuOverflow.Questions.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers", (string)null);
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("RuOverflow.Questions.Features.Questions.Models.Question", b =>
@@ -97,7 +97,54 @@ namespace RuOverflow.Questions.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Questions", (string)null);
+                    b.ToTable("Questions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("226a2e4f-8a5f-4349-9eab-5445df367919"),
+                            Body = "Тело1?",
+                            Created = new DateTime(2022, 4, 10, 19, 57, 25, 113, DateTimeKind.Utc).AddTicks(142),
+                            Rating = 0,
+                            Title = "Контент1",
+                            UserId = new Guid("40939913-cab2-440b-b88b-42333d986df7")
+                        },
+                        new
+                        {
+                            Id = new Guid("caa4900f-8da5-40e3-8e1a-c39cdc17e5e9"),
+                            Body = "Тело2?",
+                            Created = new DateTime(2022, 4, 10, 19, 57, 25, 113, DateTimeKind.Utc).AddTicks(485),
+                            Rating = 0,
+                            Title = "Контент2",
+                            UserId = new Guid("e949dfd6-fc5e-43fe-b82b-154847778a43")
+                        },
+                        new
+                        {
+                            Id = new Guid("3e1b5868-eec4-4b2a-8ac7-a5a4c8ba0256"),
+                            Body = "Тело3?",
+                            Created = new DateTime(2022, 4, 10, 19, 57, 25, 113, DateTimeKind.Utc).AddTicks(487),
+                            Rating = 0,
+                            Title = "Контент3",
+                            UserId = new Guid("fa0f5103-f6ba-4f62-a38d-ae4ab3e9e4db")
+                        },
+                        new
+                        {
+                            Id = new Guid("7696b1c3-8ba1-445c-b1ae-e0a1da337117"),
+                            Body = "Тело4?",
+                            Created = new DateTime(2022, 4, 10, 19, 57, 25, 113, DateTimeKind.Utc).AddTicks(489),
+                            Rating = 0,
+                            Title = "Контент4",
+                            UserId = new Guid("1ba72385-867a-43af-8174-93275fd4b048")
+                        },
+                        new
+                        {
+                            Id = new Guid("28e6813d-b10c-4cd0-aa15-c9072d1cb90d"),
+                            Body = "Тело5?",
+                            Created = new DateTime(2022, 4, 10, 19, 57, 25, 113, DateTimeKind.Utc).AddTicks(491),
+                            Rating = 0,
+                            Title = "Контент5",
+                            UserId = new Guid("26bde74b-55f6-402f-8adc-7f0f3de81c1c")
+                        });
                 });
 
             modelBuilder.Entity("RuOverflow.Questions.Features.Tags.Models.Tag", b =>
@@ -123,33 +170,33 @@ namespace RuOverflow.Questions.Migrations
 
                     b.HasAlternateKey("Name");
 
-                    b.ToTable("Tags", (string)null);
+                    b.ToTable("Tags");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f76c667d-baa7-4afa-9792-7eede009bcb0"),
+                            Id = new Guid("fd246836-0278-475f-9fa7-fb2eba19c000"),
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Лучший язык программирования в мире!",
                             Name = "C#"
                         },
                         new
                         {
-                            Id = new Guid("bce9b687-7af8-4ed4-bf64-5bf89a4c8d2a"),
+                            Id = new Guid("7d885607-57f3-45c0-bf2c-93b9b870f08b"),
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Лучший язык программироваия в мире!(после C#)",
                             Name = "Kotlin"
                         },
                         new
                         {
-                            Id = new Guid("a792b957-7ec5-4eed-ad03-cb91c702b098"),
+                            Id = new Guid("28334830-0097-4be9-abcb-b5ccfa50b164"),
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "кiт",
                             Name = "Docker"
                         },
                         new
                         {
-                            Id = new Guid("af3d5a11-406f-43e9-9f6a-c6c565ac41c5"),
+                            Id = new Guid("c9fce06c-80be-432b-9580-b1a8ded5762e"),
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Лучший брокер(после тинькоффа)",
                             Name = "Kafka"
