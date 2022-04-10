@@ -8,11 +8,11 @@ public interface ICache
 
     public Task AddAsync<TKey, T>(TKey key, T value);
 
-    public Task<T> GetAsync<T>(string key);
+    public Task<T?> GetAsync<T>(string key);
 
-    public Task<T> GetAsync<T>(Guid key);
+    public Task<T?> GetAsync<T>(Guid key);
 
-    public Task<T> GetAsync<TKey, T>(TKey key);
+    public Task<T?> GetAsync<TKey, T>(TKey key);
 
     public Task RemoveAsync(Guid key);
 

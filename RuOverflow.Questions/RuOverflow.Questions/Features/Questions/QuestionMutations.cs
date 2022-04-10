@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RuOverflow.Questions.Base;
-using RuOverflow.Questions.EF;
+﻿using RuOverflow.Questions.Base;
 using RuOverflow.Questions.Features.Questions.Models;
 using RuOverflow.Questions.Features.Rating;
 using RuOverflow.Questions.Infrastructure.Handlers;
@@ -11,38 +9,29 @@ namespace RuOverflow.Questions.Features.Questions;
 public class QuestionMutations
 {
     private readonly IAsyncHandler<QuestionCommands.AskQuestionCommand, Question> _askQuestionHandler;
-    private readonly IAsyncHandler<RatingCommands.ChangeRatingCommand, HasRatingEntity> _changeRatingHandler;
-    private readonly IDbContextFactory<RuFlowDbContext> _dbContextFactory;
+    private readonly IAsyncHandler<ChangeRatingCommand> _changeRatingHandler;
 
     public QuestionMutations(IAsyncHandler<QuestionCommands.AskQuestionCommand, Question> askQuestionHandler,
-        IDbContextFactory<RuFlowDbContext> dbContextFactory,
-        IAsyncHandler<RatingCommands.ChangeRatingCommand, HasRatingEntity> changeRatingHandler)
+        IAsyncHandler<ChangeRatingCommand> changeRatingHandler)
     {
         _askQuestionHandler = askQuestionHandler;
-        _dbContextFactory = dbContextFactory;
         _changeRatingHandler = changeRatingHandler;
     }
 
-    public async Task<Question> AskQuestionAsync(QuestionCommands.AskQuestionCommand input) =>
-        await _askQuestionHandler.Handle(input);
-
-    public async Task<bool> LikeQuestion(Guid input)
+    public async Task<Question> AskQuestionAsync(QuestionCommands.AskQuestionCommand input)
     {
-        var context = await _dbContextFactory.CreateDbContextAsync();
-        var question = await context.Questions.FindAsync(input);
+        return await _askQuestionHandler.Handle(input);
+    }
 
-        await _changeRatingHandler.Handle(
-            new RatingCommands.LikeCommand(question ?? throw new ArgumentException()));
+    public async Task<bool> LikeQuestion(Guid questionId)
+    {
+        await _changeRatingHandler.Handle(new ChangeRatingCommand(questionId, EntityWithRatingType.Question, 1));
         return true;
     }
 
-    public async Task<bool> DislikeQuestion(Guid input)
+    public async Task<bool> DislikeQuestion(Guid questionId)
     {
-        var context = await _dbContextFactory.CreateDbContextAsync();
-        var question = await context.Questions.FindAsync(input);
-
-        await _changeRatingHandler.Handle(
-            new RatingCommands.DislikeCommand(question ?? throw new ArgumentException()));
+        await _changeRatingHandler.Handle(new ChangeRatingCommand(questionId, EntityWithRatingType.Question, -1));
         return true;
     }
 }

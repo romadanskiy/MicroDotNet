@@ -1,10 +1,9 @@
 ﻿namespace RuOverflow.Questions.Features.Rating;
 
-public class RatingCommands
+public record ChangeRatingCommand(Guid EntityId, EntityWithRatingType EntityType, int Amount);
+
+public enum EntityWithRatingType
 {
-    public abstract record ChangeRatingCommand(HasRatingEntity Entity);
-
-    public record LikeCommand(HasRatingEntity Entity) : ChangeRatingCommand(Entity);
-
-    public record DislikeCommand(HasRatingEntity Entity) : ChangeRatingCommand(Entity);
+    Question,
+    Answer
 }

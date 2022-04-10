@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿#nullable enable
+using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 
 namespace RuOverflow.Questions.Infrastructure.Cache;
@@ -28,17 +29,17 @@ public class Cache : ICache
         await AddAsync(keyString, value);
     }
 
-    public async Task<T> GetAsync<T>(string key)
+    public async Task<T?> GetAsync<T>(string key)
     {
         var jsonString = await _cache.GetStringAsync(key);
-        return JsonConvert.DeserializeObject<T>(jsonString);
+        return jsonString is null ? default : JsonConvert.DeserializeObject<T>(jsonString);
     }
 
-    public Task<T> GetAsync<T>(Guid key) =>
+    public Task<T?> GetAsync<T>(Guid key) =>
         GetAsync<T>(key.ToString());
 
 
-    public async Task<T> GetAsync<TKey, T>(TKey key)
+    public async Task<T?> GetAsync<TKey, T>(TKey key)
     {
         var keyString = JsonConvert.SerializeObject(key);
         return await GetAsync<T>(keyString);
