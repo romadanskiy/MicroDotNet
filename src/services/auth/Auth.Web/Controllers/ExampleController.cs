@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AuthorizationServer.Web.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Validation.AspNetCore;
 
@@ -6,7 +7,7 @@ namespace AuthorizationServer.Web.Controllers
 {
     public class ExampleController : Controller
     {
-        [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
+        [AuthorizeViaBearer]
         public IActionResult Index()
         {
             return Ok("Hello, World!");
