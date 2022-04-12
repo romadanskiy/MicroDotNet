@@ -121,6 +121,10 @@ public static class StartupExtensions
                 options
                     .AddDevelopmentEncryptionCertificate()
                     .AddDevelopmentSigningCertificate();
+            }).AddValidation(options =>
+            {
+                options.UseAspNetCore();
+                options.UseLocalServer();
             });
     }
 }
