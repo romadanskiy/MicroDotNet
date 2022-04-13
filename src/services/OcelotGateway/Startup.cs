@@ -1,13 +1,8 @@
-using AuthorizationServer.Web.Data;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 
-namespace AuthorizationServer.Web
+namespace OcelotGateway
 {
     public class Startup
     {
@@ -19,32 +14,22 @@ namespace AuthorizationServer.Web
             _configuration = configuration;
             _env = env;
         }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
             services.AddCors(opt =>
-                {
-                    opt.AddDefaultPolicy(builder =>
-                    {
-                        builder
-                            .AllowAnyOrigin()
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                    });
-                })
-                .AddAuthenticationAndJwt()
-                .AddAuthorization()
-                .AddDbContext(_configuration)
-                .AddIdentity()
-                .AddOpenIddictServer(_env);
-
-            services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "auth", Version = "v1" });
+                opt.AddDefaultPolicy(builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
-
-            services.AddHealthChecks().AddCheck<HealthCheck>("Default");
+            
+            services.AddOcelot();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -57,24 +42,25 @@ namespace AuthorizationServer.Web
             app
                 .UseStaticFiles()
                 .UseRouting()
-                .UseAuthentication()
-                .UseAuthorization()
                 .UseCors()
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapDefaultControllerRoute();
-                    endpoints.MapHealthChecks("/health");
                 });
 
-            app.UseSwagger();
+            app.Map("/swagger/v1/swagger.json", b =>
+            {
+                b.Run(async x => {
+                    var json = File.ReadAllText("swagger.json");
+                    await x.Response.WriteAsync(json);
+                });
+            });
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "auth v1");
-                c.RoutePrefix = "api";
-            }
-            );
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ocelot");
+            });
 
-            app.InitDbContext<IdentityDbContext>(dbContext => dbContext.Database.Migrate());
+            app.UseOcelot().Wait();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
@@ -84,6 +70,7 @@ namespace AuthorizationServer.Web
                 .ConfigureAppConfiguration((context, builder) => builder
                     .AddJsonFile("appsettings.json", false, true)
                     .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true)
+                    .AddJsonFile("ocelot.json")
                     .AddEnvironmentVariables())
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
         }

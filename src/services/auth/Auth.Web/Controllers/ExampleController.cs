@@ -1,7 +1,5 @@
 ﻿using AuthorizationServer.Web.Domain;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OpenIddict.Validation.AspNetCore;
 
 namespace AuthorizationServer.Web.Controllers
 {
@@ -11,6 +9,12 @@ namespace AuthorizationServer.Web.Controllers
         public IActionResult Index()
         {
             return Ok("Hello, World!");
+        }
+
+        [HttpGet("/ocelot")]
+        public IActionResult GetOcelot()
+        {
+            return Ok("Hello, Ocelot!");
         }
     }
 }

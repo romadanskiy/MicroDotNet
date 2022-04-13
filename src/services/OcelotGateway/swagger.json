@@ -1,0 +1,34 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ocelot example",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/example": {
+      "get": {
+        "tags": [
+          "Ocelot"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+	"/api/nest": {
+      "get": {
+        "tags": [
+          "Nest"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": { }
+}
