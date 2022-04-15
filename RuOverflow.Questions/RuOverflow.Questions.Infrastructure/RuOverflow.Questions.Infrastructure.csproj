@@ -8,10 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Confluent.Kafka" Version="1.8.2" />
         <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
         <PackageReference Include="Scrutor" Version="4.0.0" />
         <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Kafka" />
     </ItemGroup>
 
 </Project>
