@@ -10,6 +10,7 @@ using RuOverflow.Questions.Infrastructure;
 using RuOverflow.Questions.Infrastructure.ApplicationBuilderExtensions;
 using RuOverflow.Questions.Infrastructure.Cache;
 using RuOverflow.Questions.Infrastructure.Handlers;
+using RuOverflow.Questions.Infrastructure.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
@@ -17,6 +18,8 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 
 services.RegisterHandlers(Assembly.GetExecutingAssembly());
+
+services.AddHostedService<KafkaInitializer>();
 
 services.AddPooledDbContextFactory<RuFlowDbContext>(
     optionsBuilder => optionsBuilder.UseNpgsql(env.IsDevelopment()

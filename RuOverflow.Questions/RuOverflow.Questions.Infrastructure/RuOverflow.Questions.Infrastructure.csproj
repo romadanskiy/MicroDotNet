@@ -15,8 +15,4 @@
         <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Kafka" />
-    </ItemGroup>
-
 </Project>
