@@ -1,4 +1,4 @@
-﻿namespace RuOverflow.Questions.Infrastructure.Kafka.Data;
+﻿namespace RuOverflow.Questions.Infrastructure.Kafka;
 
 public static class TopicNames
 {

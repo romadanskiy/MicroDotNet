@@ -1,4 +1,4 @@
-﻿namespace RuOverflow.Questions.Settings;
+﻿namespace RuOverflow.Questions.Infrastructure.Settings;
 
 public class KafkaSettings
 {

@@ -3,22 +3,23 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using RuOverflow.Questions.Infrastructure.Kafka.Data;
 using RuOverflow.Questions.Infrastructure.Kafka.Helpers;
+using RuOverflow.Questions.Infrastructure.Settings;
 
 namespace RuOverflow.Questions.Infrastructure.Kafka;
 
 public class KafkaInitializer : IHostedService
 {
-    private readonly string _servers;
+    private readonly KafkaSettings _settings;
 
-    public KafkaInitializer(IConfiguration configuration)
+    public KafkaInitializer(KafkaSettings settings)
     {
-        _servers = configuration.GetSection("kafka:servers").Value;
+        _settings = settings;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         using var adminClient =
-            new AdminClientBuilder(new AdminClientConfig { BootstrapServers = _servers }).Build();
+            new AdminClientBuilder(new AdminClientConfig { BootstrapServers = _settings.Servers }).Build();
 
         var topics = typeof(KafkaTopics)
             .GetFields()
@@ -33,7 +34,7 @@ public class KafkaInitializer : IHostedService
             {
                 await adminClient.CreateTopicsAsync(topicGroup.Select(x => x.Specification), topicGroup.Key);
             }
-            catch(Confluent.Kafka.Admin.CreateTopicsException)
+            catch (Confluent.Kafka.Admin.CreateTopicsException)
             {
                 //ignore
             }
