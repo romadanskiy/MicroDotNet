@@ -10,5 +10,9 @@ public static class KafkaTopics
         Name = TopicNames.Rating,
         NumPartitions = 1,
         ReplicationFactor = 1,
+        Configs = new Dictionary<string, string>()
+        {
+            { "delete.retention.ms", "7200000" },
+        }
     });
 }
