@@ -1,4 +1,5 @@
-﻿using RuOverflow.Questions.Infrastructure.Handlers;
+﻿using RuOverflow.Questions.Features.Rating.Producer;
+using RuOverflow.Questions.Infrastructure.Handlers;
 
 namespace RuOverflow.Questions.Features.Rating.Handlers;
 
@@ -6,15 +7,17 @@ namespace RuOverflow.Questions.Features.Rating.Handlers;
 public class PublishRatingToKafkaDecorator : IAsyncHandler<ChangeRatingCommand>
 {
     private readonly IAsyncHandler<ChangeRatingCommand> _handler;
+    private readonly RatingProducer _ratingProducer;
 
-    public PublishRatingToKafkaDecorator(IAsyncHandler<ChangeRatingCommand> handler)
+    public PublishRatingToKafkaDecorator(IAsyncHandler<ChangeRatingCommand> handler, RatingProducer ratingProducer)
     {
         _handler = handler;
+        _ratingProducer = ratingProducer;
     }
 
     public async Task Handle(ChangeRatingCommand input)
     {
-        //todo publish to kafka here
+        _ratingProducer.Publish(input);
         await _handler.Handle(input);
     }
 }

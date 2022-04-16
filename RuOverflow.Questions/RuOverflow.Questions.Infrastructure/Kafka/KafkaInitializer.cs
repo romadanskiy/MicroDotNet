@@ -28,7 +28,16 @@ public class KafkaInitializer : IHostedService
             .GroupBy(x => x.Options, new CreateTopicOptionsComparer()!);
 
         foreach (var topicGroup in topics)
-            await adminClient.CreateTopicsAsync(topicGroup.Select(x => x.Specification), topicGroup.Key);
+        {
+            try
+            {
+                await adminClient.CreateTopicsAsync(topicGroup.Select(x => x.Specification), topicGroup.Key);
+            }
+            catch(Confluent.Kafka.Admin.CreateTopicsException)
+            {
+                //ignore
+            }
+        }
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
