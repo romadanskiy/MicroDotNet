@@ -2,11 +2,11 @@
 
 public interface ICache
 {
-    public Task AddAsync<T>(string key, T value);
+    public Task AddAsync<T>(string key, T value, TimeSpan? lifeTile = null);
 
-    public Task AddAsync<T>(Guid key, T value);
+    public Task AddAsync<T>(Guid key, T value, TimeSpan? lifeTile = null);
 
-    public Task AddAsync<TKey, T>(TKey key, T value);
+    public Task AddAsync<TKey, T>(TKey key, T value, TimeSpan? lifeTile = null);
 
     public Task<T?> GetAsync<T>(string key);
 

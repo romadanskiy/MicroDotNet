@@ -13,6 +13,22 @@ services:
     depends_on:
       - redis
       - postgres
+      - zoo1
+      - kafka1
+      - kafka2
+      - kafka3
+  background:
+    build:
+      context: Background/
+      dockerfile: ./Background/Dockerfile
+    environment:
+      - RuOverFlow_Question_ConnectionString=Host=postgres;Database=ruflow;User Id=postgres;Password=postgres;Port=5432;
+    depends_on:
+        - postgres
+        - zoo1
+        - kafka1
+        - kafka2
+        - kafka3
   redis:
     container_name: "redis"
     image: "redis"

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace RuOverflow.Questions.Infrastructure.ApplicationBuilderExtensions;
+﻿namespace Background.Extensions;
 
 public static class ConfigurationExtensions
 {

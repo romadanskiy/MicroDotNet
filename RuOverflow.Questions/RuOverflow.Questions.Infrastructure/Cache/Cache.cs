@@ -13,20 +13,21 @@ public class Cache : ICache
         _cache = cache;
     }
 
-    public async Task AddAsync<T>(string key, T value)
+    public async Task AddAsync<T>(string key, T value, TimeSpan? lifeTime)
     {
         var valueString = JsonConvert.SerializeObject(value);
-        await _cache.SetStringAsync(key, valueString);
+        await _cache.SetStringAsync(key, valueString,
+            new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = lifeTime });
     }
 
-    public Task AddAsync<T>(Guid key, T value) =>
-        AddAsync(key.ToString(), value);
+    public Task AddAsync<T>(Guid key, T value, TimeSpan? lifeTime) =>
+        AddAsync(key.ToString(), value, lifeTime);
 
 
-    public async Task AddAsync<TKey, T>(TKey key, T value)
+    public async Task AddAsync<TKey, T>(TKey key, T value, TimeSpan? lifeTime)
     {
         var keyString = JsonConvert.SerializeObject(key);
-        await AddAsync(keyString, value);
+        await AddAsync(keyString, value, lifeTime);
     }
 
     public async Task<T?> GetAsync<T>(string key)
