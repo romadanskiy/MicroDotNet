@@ -27,19 +27,16 @@ public abstract class BaseConsumerJson<TKey, TMessage> : BackgroundService
         ClientId = Dns.GetHostName(),
     };
 
-    protected IConsumer<TKey, string> Consumer =>
-        new ConsumerBuilder<TKey, string>(ConsumerConfig)
-            .Build();
-
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Logger.LogInformation($"Consumer starts listening {Topic} topic");
-        Consumer.Subscribe(Topic);
         Task.Run(async () =>
         {
+            using var consumer = new ConsumerBuilder<TKey, string>(ConsumerConfig).Build();
+            consumer.Subscribe(Topic);
             while (!stoppingToken.IsCancellationRequested)
             {
-                var message = Consumer.Consume(stoppingToken);
+                var message = consumer.Consume(stoppingToken);
                 if (message is not null)
                 {
                     Logger.LogInformation($"Message recieved from topic: {Topic}");
@@ -49,19 +46,14 @@ public abstract class BaseConsumerJson<TKey, TMessage> : BackgroundService
                         messageObj ?? throw new ArgumentException("Could not parse JSON content"),
                         stoppingToken
                     );
-                    Consumer.Commit(message);
+                    consumer.Commit(message);
                 }
             }
-            Consumer.Close();
+
+            consumer.Close();
         }, stoppingToken);
         return Task.CompletedTask;
     }
 
     protected abstract Task ConsumeAsync(TKey key, TMessage message, CancellationToken stoppingToken);
-
-    public override void Dispose()
-    {
-        Consumer.Dispose();
-        base.Dispose();
-    }
 }
