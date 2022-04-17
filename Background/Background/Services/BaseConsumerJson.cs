@@ -35,16 +35,19 @@ public abstract class BaseConsumerJson<TKey, TMessage> : BackgroundService
         Consumer.Subscribe(Topic);
         Task.Run(async () =>
         {
-            var message = Consumer.Consume();
-            if (message is not null)
+            while (!stoppingToken.IsCancellationRequested)
             {
-                var messageObj = JsonConvert.DeserializeObject<TMessage>(message.Message.Value);
-                await ConsumeAsync(
-                    message.Message.Key,
-                    messageObj ?? throw new ArgumentException("Could not parse JSON content"),
-                    stoppingToken
-                );
-                Consumer.Commit(message);
+                var message = Consumer.Consume();
+                if (message is not null)
+                {
+                    var messageObj = JsonConvert.DeserializeObject<TMessage>(message.Message.Value);
+                    await ConsumeAsync(
+                        message.Message.Key,
+                        messageObj ?? throw new ArgumentException("Could not parse JSON content"),
+                        stoppingToken
+                    );
+                    Consumer.Commit(message);
+                }
             }
         }, stoppingToken);
         return Task.CompletedTask;

@@ -19,8 +19,11 @@ public abstract class BaseWorker : BackgroundService
     {
         Task.Run(async () =>
         {
-            await RunAsync(stoppingToken);
-            await Task.Delay(GetTimeBeforeNextRun(), stoppingToken);
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                await RunAsync(stoppingToken);
+                await Task.Delay(GetTimeBeforeNextRun(), stoppingToken);
+            }
         }, stoppingToken);
 
         return Task.CompletedTask;
