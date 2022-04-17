@@ -22,6 +22,7 @@ public abstract class BaseWorker : BackgroundService
             while (!stoppingToken.IsCancellationRequested)
             {
                 await RunAsync(stoppingToken);
+                Logger.LogInformation($"Next run in {GetTimeBeforeNextRun().Minutes} min");
                 await Task.Delay(GetTimeBeforeNextRun(), stoppingToken);
             }
         }, stoppingToken);

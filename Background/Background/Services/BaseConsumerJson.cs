@@ -8,10 +8,12 @@ namespace Background.Services;
 public abstract class BaseConsumerJson<TKey, TMessage> : BackgroundService
 {
     private readonly KafkaSettings _kafkaSettings;
+    protected readonly ILogger<BaseConsumerJson<TKey, TMessage>> Logger;
 
-    public BaseConsumerJson(KafkaSettings kafkaSettings)
+    public BaseConsumerJson(KafkaSettings kafkaSettings, ILogger<BaseConsumerJson<TKey, TMessage>> logger)
     {
         _kafkaSettings = kafkaSettings;
+        Logger = logger;
     }
 
     protected abstract string Topic { get; }

@@ -1,9 +1,6 @@
-﻿using System.Net;
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 using Newtonsoft.Json;
 using RuOverflow.Questions.Infrastructure.Kafka;
-using RuOverflow.Questions.Infrastructure.Kafka.Data;
-using RuOverflow.Questions.Infrastructure.Settings;
 
 namespace RuOverflow.Questions.Features.Rating.Producer;
 
