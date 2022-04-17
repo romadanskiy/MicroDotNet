@@ -1,5 +1,5 @@
 using Background.Extensions;
-using Background.Services.RatingWorker;
+using Background.Services.RatingService;
 using Background.Settings;
 
 var host = Host.CreateDefaultBuilder(args)

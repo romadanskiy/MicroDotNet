@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Background.Services.RatingWorker;
+namespace Background.Services.RatingService;
 
 public static class RatingStore
 {

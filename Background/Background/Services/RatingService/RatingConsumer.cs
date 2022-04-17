@@ -1,7 +1,7 @@
 ﻿using Background.Settings;
 using Confluent.Kafka;
 
-namespace Background.Services.RatingWorker;
+namespace Background.Services.RatingService;
 
 public class RatingConsumer : BaseConsumerJson<Ignore, ChangeRatingMessage>
 {

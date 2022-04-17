@@ -2,7 +2,7 @@
 using Background.Settings;
 using Npgsql;
 
-namespace Background.Services.RatingWorker;
+namespace Background.Services.RatingService;
 
 public class RatingUpdateWorker : BaseWorker
 {
