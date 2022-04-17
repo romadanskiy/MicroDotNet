@@ -17,6 +17,7 @@ public abstract class BaseWorker : BackgroundService
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        Logger.LogInformation($"Worker starts!");
         Task.Run(async () =>
         {
             while (!stoppingToken.IsCancellationRequested)

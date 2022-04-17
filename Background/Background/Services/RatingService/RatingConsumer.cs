@@ -5,7 +5,7 @@ namespace Background.Services.RatingService;
 
 public class RatingConsumer : BaseConsumerJson<Ignore, ChangeRatingMessage>
 {
-    public RatingConsumer(KafkaSettings kafkaSettings, Logger<RatingConsumer> logger) : base(kafkaSettings, logger)
+    public RatingConsumer(KafkaSettings kafkaSettings, ILogger<RatingConsumer> logger) : base(kafkaSettings, logger)
     {
     }
 

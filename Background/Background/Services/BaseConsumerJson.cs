@@ -25,7 +25,6 @@ public abstract class BaseConsumerJson<TKey, TMessage> : BackgroundService
         GroupId = GroupId,
         EnableAutoCommit = false,
         ClientId = Dns.GetHostName(),
-        AutoOffsetReset = AutoOffsetReset.Earliest,
     };
 
     protected IConsumer<TKey, string> Consumer =>
@@ -34,14 +33,16 @@ public abstract class BaseConsumerJson<TKey, TMessage> : BackgroundService
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        Logger.LogInformation($"Consumer starts listening {Topic} topic");
         Consumer.Subscribe(Topic);
         Task.Run(async () =>
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                var message = Consumer.Consume();
+                var message = Consumer.Consume(stoppingToken);
                 if (message is not null)
                 {
+                    Logger.LogInformation($"Message recieved from topic: {Topic}");
                     var messageObj = JsonConvert.DeserializeObject<TMessage>(message.Message.Value);
                     await ConsumeAsync(
                         message.Message.Key,
@@ -51,6 +52,7 @@ public abstract class BaseConsumerJson<TKey, TMessage> : BackgroundService
                     Consumer.Commit(message);
                 }
             }
+            Consumer.Close();
         }, stoppingToken);
         return Task.CompletedTask;
     }
