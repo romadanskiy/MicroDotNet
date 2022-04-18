@@ -1,0 +1,32 @@
+﻿using Microsoft.EntityFrameworkCore;
+using RuOverflow.Questions.EF;
+using RuOverflow.Questions.Features.Questions.Models;
+using RuOverflow.Questions.Infrastructure.Handlers;
+
+namespace RuOverflow.Questions.Features.Questions.Handlers;
+
+public class AskQuestionHandler : IAsyncHandler<QuestionCommands.AskQuestionCommand, Question>
+{
+    private readonly IDbContextFactory<RuFlowDbContext> _contextFactory;
+
+    public AskQuestionHandler(IDbContextFactory<RuFlowDbContext> contextFactory)
+    {
+        _contextFactory = contextFactory;
+    }
+
+    public async Task<Question> Handle(QuestionCommands.AskQuestionCommand input)
+    {
+        var context = await _contextFactory.CreateDbContextAsync();
+        var tags = input.Tags?.Count > 0
+            ? await context.Tags.Where(x => input.Tags.Contains(x.Id)).ToListAsync()
+            : null;
+
+        //ToDo take this from jwt when auth is ready
+        var userId = Guid.NewGuid();
+
+        var question = new Question(input.Title, input.Body, userId, tags);
+        context.Questions.Add(question);
+        await context.SaveChangesAsync();
+        return question;
+    }
+}

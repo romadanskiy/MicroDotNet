@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RuOverflow.Questions.EF;
 
 #nullable disable
@@ -18,138 +18,138 @@ namespace RuOverflow.Questions.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("QuestionTag", b =>
                 {
                     b.Property<Guid>("QuestionsId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("TagsId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("QuestionsId", "TagsId");
 
                     b.HasIndex("TagsId");
 
-                    b.ToTable("QuestionTag");
+                    b.ToTable("QuestionTag", (string)null);
                 });
 
-            modelBuilder.Entity("RuOverflow.Questions.Models.Answer", b =>
+            modelBuilder.Entity("RuOverflow.Questions.Features.Answers.Models.Answer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("QuestionId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Rating")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answers", (string)null);
                 });
 
-            modelBuilder.Entity("RuOverflow.Questions.Models.Question", b =>
+            modelBuilder.Entity("RuOverflow.Questions.Features.Questions.Models.Question", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Rating")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
-            modelBuilder.Entity("RuOverflow.Questions.Models.Tag", b =>
+            modelBuilder.Entity("RuOverflow.Questions.Features.Tags.Models.Tag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasAlternateKey("Name");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("505369cb-a7ba-4ccf-97b8-a59ac7fee5ed"),
+                            Id = new Guid("f76c667d-baa7-4afa-9792-7eede009bcb0"),
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Лучший язык программирования в мире!",
                             Name = "C#"
                         },
                         new
                         {
-                            Id = new Guid("00619617-48b9-4198-bcae-9234d290bb82"),
+                            Id = new Guid("bce9b687-7af8-4ed4-bf64-5bf89a4c8d2a"),
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Лучший язык программироваия в мире!(после C#)",
                             Name = "Kotlin"
                         },
                         new
                         {
-                            Id = new Guid("136df1bd-20d5-4ac9-9fb2-e4475b0b1b14"),
+                            Id = new Guid("a792b957-7ec5-4eed-ad03-cb91c702b098"),
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "кiт",
                             Name = "Docker"
                         },
                         new
                         {
-                            Id = new Guid("76627a85-51f2-436e-94f3-cf1a8384cdff"),
+                            Id = new Guid("af3d5a11-406f-43e9-9f6a-c6c565ac41c5"),
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Лучший брокер(после тинькоффа)",
                             Name = "Kafka"
@@ -158,22 +158,22 @@ namespace RuOverflow.Questions.Migrations
 
             modelBuilder.Entity("QuestionTag", b =>
                 {
-                    b.HasOne("RuOverflow.Questions.Models.Question", null)
+                    b.HasOne("RuOverflow.Questions.Features.Questions.Models.Question", null)
                         .WithMany()
                         .HasForeignKey("QuestionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RuOverflow.Questions.Models.Tag", null)
+                    b.HasOne("RuOverflow.Questions.Features.Tags.Models.Tag", null)
                         .WithMany()
                         .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RuOverflow.Questions.Models.Answer", b =>
+            modelBuilder.Entity("RuOverflow.Questions.Features.Answers.Models.Answer", b =>
                 {
-                    b.HasOne("RuOverflow.Questions.Models.Question", "Question")
+                    b.HasOne("RuOverflow.Questions.Features.Questions.Models.Question", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -182,7 +182,7 @@ namespace RuOverflow.Questions.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("RuOverflow.Questions.Models.Question", b =>
+            modelBuilder.Entity("RuOverflow.Questions.Features.Questions.Models.Question", b =>
                 {
                     b.Navigation("Answers");
                 });
