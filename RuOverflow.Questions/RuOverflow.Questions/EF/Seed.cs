@@ -11,16 +11,15 @@ public static class Seed
         new("Kotlin", "Лучший язык программироваия в мире!(после C#)"),
         new("Docker", "кiт"),
         new("Kafka", "Лучший брокер(после тинькоффа)"),
-      
     };
 
 
     public static List<Question> Questions = new()
     {
-        new("Контент1", "Тело1?"),
-        new("Контент2", "Тело2?"),
-        new("Контент3", "Тело3?"),
-        new("Контент4", "Тело4?"),
-        new("Контент5", "Тело5?"),
+        new("Контент1", "Тело1?", Guid.NewGuid()),
+        new("Контент2", "Тело2?", Guid.NewGuid()),
+        new("Контент3", "Тело3?", Guid.NewGuid()),
+        new("Контент4", "Тело4?", Guid.NewGuid()),
+        new("Контент5", "Тело5?", Guid.NewGuid()),
     };
 }

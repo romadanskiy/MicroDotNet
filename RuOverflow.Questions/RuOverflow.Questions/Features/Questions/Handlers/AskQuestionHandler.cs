@@ -5,7 +5,7 @@ using RuOverflow.Questions.Infrastructure.Handlers;
 
 namespace RuOverflow.Questions.Features.Questions.Handlers;
 
-public class AskQuestionHandler : IAsyncHandler<QuestionCommands.AskQuestionCommand, Question>
+public class AskQuestionHandler : IAsyncHandler<AskQuestionCommand, Question>
 {
     private readonly IDbContextFactory<RuFlowDbContext> _contextFactory;
 
@@ -14,7 +14,7 @@ public class AskQuestionHandler : IAsyncHandler<QuestionCommands.AskQuestionComm
         _contextFactory = contextFactory;
     }
 
-    public async Task<Question> Handle(QuestionCommands.AskQuestionCommand input)
+    public async Task<Question> Handle(AskQuestionCommand input)
     {
         var context = await _contextFactory.CreateDbContextAsync();
         var tags = input.Tags?.Count > 0

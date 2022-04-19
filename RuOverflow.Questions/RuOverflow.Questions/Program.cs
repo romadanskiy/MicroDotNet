@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using RuOverflow.Questions;
 using RuOverflow.Questions.Base;
 using RuOverflow.Questions.EF;
 using RuOverflow.Questions.Features.Answers;
@@ -19,6 +20,7 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 
 services.AddSingleton(configuration.GetSettings<KafkaSettings>("Kafka"));
+Config.Initialize(configuration);
 
 services.AddHostedService<KafkaInitializer>();
 
