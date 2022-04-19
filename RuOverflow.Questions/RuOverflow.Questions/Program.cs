@@ -10,13 +10,17 @@ using RuOverflow.Questions.Infrastructure;
 using RuOverflow.Questions.Infrastructure.ApplicationBuilderExtensions;
 using RuOverflow.Questions.Infrastructure.Cache;
 using RuOverflow.Questions.Infrastructure.Handlers;
+using RuOverflow.Questions.Infrastructure.Kafka;
+using RuOverflow.Questions.Infrastructure.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-services.RegisterHandlers(Assembly.GetExecutingAssembly());
+services.AddSingleton(configuration.GetSettings<KafkaSettings>("Kafka"));
+
+services.AddHostedService<KafkaInitializer>();
 
 services.AddPooledDbContextFactory<RuFlowDbContext>(
     optionsBuilder => optionsBuilder.UseNpgsql(env.IsDevelopment()
@@ -31,6 +35,9 @@ services.AddStackExchangeRedisCache(option =>
 });
 
 services.AddScoped<ICache, Cache>();
+services.RegisterKafkaClients(configuration.GetSettings<KafkaSettings>("Kafka"));
+services.RegisterProducers(Assembly.GetExecutingAssembly());
+services.RegisterHandlers(Assembly.GetExecutingAssembly());
 
 services.AddGraphQLServer()
     .AddQueryType<Query>()
