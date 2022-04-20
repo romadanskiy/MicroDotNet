@@ -5,7 +5,7 @@ using RuOverflow.Questions.Infrastructure.Handlers;
 
 namespace RuOverflow.Questions.Features.Questions.Handlers;
 
-public class UpdateQuestionHandler : IAsyncHandler<UpdateQuestionCommand, IQueryable<Question>>
+public class UpdateQuestionHandler : IAsyncHandler<UpdateQuestionCommand, Question>
 {
     private readonly IDbContextFactory<RuFlowDbContext> _contextFactory;
 
@@ -14,11 +14,13 @@ public class UpdateQuestionHandler : IAsyncHandler<UpdateQuestionCommand, IQuery
         _contextFactory = contextFactory;
     }
 
-    public async Task<IQueryable<Question>> Handle(UpdateQuestionCommand input)
+    public async Task<Question> Handle(UpdateQuestionCommand input)
     {
         var context = await _contextFactory.CreateDbContextAsync();
-        var questionQuery = context.Questions.Where(x => x.Id == input.Id);
-        var question = questionQuery.FirstOrDefault();
+        var question = await context.Questions
+            .Include(x=>x.Tags)
+            .FirstOrDefaultAsync(x => x.Id == input.Id);
+
         if (question is null)
         {
             throw new ArgumentException($"Could not find question with id = {input.Id}");
@@ -29,8 +31,7 @@ public class UpdateQuestionHandler : IAsyncHandler<UpdateQuestionCommand, IQuery
         question.Tags = input.Tags is not null && input.Tags.Count > 0
             ? await context.Tags.Where(x => input.Tags.Contains(x.Id)).ToListAsync()
             : null;
-        question.Modified = DateTime.UtcNow;
         await context.SaveChangesAsync();
-        return questionQuery;
+        return question;
     }
 }

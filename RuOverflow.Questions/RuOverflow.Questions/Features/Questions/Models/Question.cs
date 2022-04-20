@@ -35,6 +35,7 @@ public class Question : HasRatingEntity
             }
 
             title = value;
+            Modified = DateTime.UtcNow;
         }
     }
 
@@ -51,6 +52,7 @@ public class Question : HasRatingEntity
             }
 
             body = value;
+            Modified = DateTime.UtcNow;
         }
     }
 
@@ -69,6 +71,7 @@ public class Question : HasRatingEntity
             }
 
             tags = value;
+            Modified = DateTime.UtcNow;
         }
     }
 
