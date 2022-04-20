@@ -8,19 +8,27 @@ namespace RuOverflow.Questions.Features.Questions;
 [ExtendObjectType(typeof(Mutation))]
 public class QuestionMutations
 {
-    private readonly IAsyncHandler<QuestionCommands.AskQuestionCommand, Question> _askQuestionHandler;
+    private readonly IAsyncHandler<AskQuestionCommand, Question> _askQuestionHandler;
+    private readonly IAsyncHandler<UpdateQuestionCommand, Question> _updateQuestionHandler;
     private readonly IAsyncHandler<ChangeRatingCommand> _changeRatingHandler;
 
-    public QuestionMutations(IAsyncHandler<QuestionCommands.AskQuestionCommand, Question> askQuestionHandler,
-        IAsyncHandler<ChangeRatingCommand> changeRatingHandler)
+    public QuestionMutations(IAsyncHandler<AskQuestionCommand, Question> askQuestionHandler,
+        IAsyncHandler<ChangeRatingCommand> changeRatingHandler, IAsyncHandler<UpdateQuestionCommand, Question> updateQuestionHandler)
     {
         _askQuestionHandler = askQuestionHandler;
         _changeRatingHandler = changeRatingHandler;
+        _updateQuestionHandler = updateQuestionHandler;
     }
 
-    public async Task<Question> AskQuestionAsync(QuestionCommands.AskQuestionCommand input)
+    public async Task<Question> AskQuestionAsync(AskQuestionCommand input)
     {
         return await _askQuestionHandler.Handle(input);
+    }
+
+
+    public async Task<Question> UpdateQuestionAsync(UpdateQuestionCommand input)
+    {
+        return await _updateQuestionHandler.Handle(input);
     }
 
     public async Task<bool> LikeQuestion(Guid questionId)

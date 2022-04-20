@@ -12,22 +12,68 @@ public class Question : HasRatingEntity
     }
 #nullable enable
 
-    public Question(string title, string body, Guid userId, List<Tag>? tags = null)
+    public Question(string title, string body, Guid authorId, List<Tag>? tags = null)
     {
         Id = Guid.NewGuid();
         Title = title;
         Body = body;
-        UserId = userId;
+        UserId = authorId;
         Created = DateTime.UtcNow;
         Tags = tags;
     }
 
-    public string Title { get; set; }
-    public string Body { get; set; }
+    private string title;
+
+    public string Title
+    {
+        get => title;
+        set
+        {
+            if (value.Length > Config.Question.MaxTitleLength)
+            {
+                throw new ArgumentException($"Title length must be below {Config.Question.MaxTitleLength} characters");
+            }
+
+            title = value;
+            Modified = DateTime.UtcNow;
+        }
+    }
+
+    private string body;
+
+    public string Body
+    {
+        get => body;
+        set
+        {
+            if (value.Length > Config.Question.MaxTitleLength)
+            {
+                throw new ArgumentException($"Title length must be below {Config.Question.MaxTitleLength} characters");
+            }
+
+            body = value;
+            Modified = DateTime.UtcNow;
+        }
+    }
 
     public Guid UserId { get; set; }
 
-    public List<Tag>? Tags { get; set; }
+    private List<Tag>? tags;
+
+    public List<Tag>? Tags
+    {
+        get => tags;
+        set
+        {
+            if (value?.Count > Config.Question.MaxTags)
+            {
+                throw new ArgumentException($"Max title count is {Config.Question.MaxTags}");
+            }
+
+            tags = value;
+            Modified = DateTime.UtcNow;
+        }
+    }
 
     public List<Answer>? Answers { get; set; }
 }
