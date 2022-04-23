@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using RuOverflow.Questions.Infrastructure.Kafka.Data;
@@ -34,9 +35,8 @@ public class KafkaInitializer : IHostedService
             {
                 await adminClient.CreateTopicsAsync(topicGroup.Select(x => x.Specification), topicGroup.Key);
             }
-            catch (Confluent.Kafka.Admin.CreateTopicsException)
+            catch (CreateTopicsException)
             {
-                //ignore
             }
         }
     }

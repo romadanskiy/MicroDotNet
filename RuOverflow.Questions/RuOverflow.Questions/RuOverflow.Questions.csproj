@@ -26,8 +26,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Features\Rating\Handlers\PublishRatingToKafkaDecorator.cs">
+      <Compile Update="Features\Rating\Handlers\PublishRatingDecorator.cs">
         <DependentUpon>ChangeRatingInCacheHandler.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\Questions\Handlers\Delete\DeleteEventPublishDecorator.cs">
+        <DependentUpon>DeleteHandler.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 
