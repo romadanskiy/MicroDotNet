@@ -1,23 +1,15 @@
 ﻿using Confluent.Kafka;
-using Newtonsoft.Json;
 using RuOverflow.Questions.Infrastructure.Kafka;
+using RuOverflow.Questions.Infrastructure.Kafka.Base;
+using RuOverflow.Questions.Infrastructure.Kafka.Data;
 
 namespace RuOverflow.Questions.Features.Rating.Producer;
 
-public class RatingProducer : KafkaBaseProducer
+public class RatingProducerJson : BaseProducerJson<ChangeRatingCommand>
 {
-    private readonly IProducer<Null, string> _producer;
-
-    public RatingProducer(IProducer<Null, string> producer)
+    public RatingProducerJson(IProducer<Null, string> producer) : base(producer)
     {
-        _producer = producer;
     }
 
-    public void Publish(ChangeRatingCommand message)
-    {
-        _producer.Produce(TopicNames.Rating, new Message<Null, string>()
-        {
-            Value = JsonConvert.SerializeObject(message),
-        });
-    }
+    protected override string Topic => TopicNames.Rating;
 }

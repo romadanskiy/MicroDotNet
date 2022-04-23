@@ -3,7 +3,9 @@ using RuOverflow.Questions.EF;
 using RuOverflow.Questions.Features.Questions.Models;
 using RuOverflow.Questions.Infrastructure.Handlers;
 
-namespace RuOverflow.Questions.Features.Questions.Handlers;
+namespace RuOverflow.Questions.Features.Questions.Handlers.Update;
+
+public record UpdateQuestionCommand(Guid Id, string Title, string Body, List<Guid>? Tags);
 
 public class UpdateQuestionHandler : IAsyncHandler<UpdateQuestionCommand, Question>
 {
@@ -18,7 +20,7 @@ public class UpdateQuestionHandler : IAsyncHandler<UpdateQuestionCommand, Questi
     {
         var context = await _contextFactory.CreateDbContextAsync();
         var question = await context.Questions
-            .Include(x=>x.Tags)
+            .Include(x => x.Tags)
             .FirstOrDefaultAsync(x => x.Id == input.Id);
 
         if (question is null)

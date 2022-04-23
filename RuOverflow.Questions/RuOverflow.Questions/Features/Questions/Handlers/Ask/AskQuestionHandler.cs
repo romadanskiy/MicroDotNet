@@ -3,7 +3,9 @@ using RuOverflow.Questions.EF;
 using RuOverflow.Questions.Features.Questions.Models;
 using RuOverflow.Questions.Infrastructure.Handlers;
 
-namespace RuOverflow.Questions.Features.Questions.Handlers;
+namespace RuOverflow.Questions.Features.Questions.Handlers.Ask;
+
+public record AskQuestionCommand(string Title, string Body, List<Guid>? Tags);
 
 public class AskQuestionHandler : IAsyncHandler<AskQuestionCommand, Question>
 {
