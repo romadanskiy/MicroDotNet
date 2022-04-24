@@ -17,6 +17,7 @@ services:
       - kafka1
       - kafka2
       - kafka3
+      - debezium
   background:
     build:
       context: Background/
@@ -51,13 +52,47 @@ services:
       SA_PASSWORD: "Password123"
       ACCEPT_EULA: "Y"
   postgres:
-    image: postgres:14
+    image: debezium/postgres
     env_file:
       - ./RuOverflow.Questions/RuOverflow.Questions/postgres.env
     volumes:
       - postgres:/var/opt/postgres/data
     ports:
       - "5433:5432"
+  debezium:
+    image: debezium/connect
+    environment:
+      BOOTSTRAP_SERVERS: kafka1:19092,kafka1:19093,kafka1:19094
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: debezium_config
+      OFFSET_STORAGE_TOPIC: debezium_offset
+      STATUS_STORAGE_TOPIC: docker-connect-debezium-status
+      KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      LOG_LEVEL: ERROR
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    ports:
+      - "8083:8083"
+#    command: >
+#      curl -i -X POST -H "Content-Type:application/json" debezium:8083/connectors -d '
+#      {
+#
+#        "name": "data-connector",
+#        "config": {
+#          "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+#          "plugin.name": "pgoutput",
+#          "database.hostname": "postgres",
+#          "database.port": "5432",
+#          "database.user": "postgres",
+#          "database.password": "postgres",
+#          "database.dbname" : "ruflow",
+#          "database.server.name": "postgres",
+#          "table.include.list": "public.Questions"
+#        }
+#      }'
   zoo1:
     image: confluentinc/cp-zookeeper:7.0.1
     hostname: zoo1
