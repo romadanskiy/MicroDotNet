@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Scanner</string>
+    <string name="scanner">Сканер</string>
+    <string name="utilization_points">Утилизация</string>
+    <string name="profile">Профиль</string>
+    <string name="login">Войти</string>
+</resources>
