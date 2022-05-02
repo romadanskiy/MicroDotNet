@@ -211,6 +211,7 @@ services:
     depends_on:
       - elasticsearch1
       - elasticsearch2
+      - elasticsearch3
 
 networks:
   esnet:
