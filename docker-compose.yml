@@ -149,9 +149,8 @@ services:
     environment:
       - network.host=0.0.0.0
       - node.name=elasticsearch1
+      - discovery.type=single-node
       - cluster.name=RuOverflow-cluster
-      - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
-      - discovery.seed_hosts=elasticsearch2,elasticsearch3
       - xpack.license.self_generated.type=basic
       - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -163,41 +162,8 @@ services:
       - "9200:9200"
     networks:
       - esnet
-  elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.3
-    environment:
-      - network.host=0.0.0.0
-      - node.name=elasticsearch2
-      - cluster.name=RuOverflow-cluster
-      - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
-      - discovery.seed_hosts=elasticsearch1,elasticsearch3
-      - xpack.license.self_generated.type=basic
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    networks:
-      - esnet
-  elasticsearch3:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.3
-    environment:
-      - network.host=0.0.0.0
-      - node.name=elasticsearch3
-      - cluster.name=RuOverflow-cluster
-      - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
-      - discovery.seed_hosts=elasticsearch1,elasticsearch2
-      - xpack.license.self_generated.type=basic
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    networks:
-      - esnet
-
+    volumes:
+      - es01:/usr/share/elasticsearch/data
   kibana:
     image: docker.elastic.co/kibana/kibana:8.1.3
     container_name: kibana
@@ -210,8 +176,6 @@ services:
       - esnet
     depends_on:
       - elasticsearch1
-      - elasticsearch2
-      - elasticsearch3
 
 networks:
   esnet:
@@ -219,3 +183,4 @@ networks:
 volumes:
   mssql-server-linux-data:
   postgres:
+  es01:
