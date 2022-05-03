@@ -41,8 +41,7 @@ services:
     ports:
       - "6378:6379"
   mssql:
-    image: "mcr.microsoft.com/mssql/server"
-    user: root
+    image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
       - "1400:1433"
     volumes:

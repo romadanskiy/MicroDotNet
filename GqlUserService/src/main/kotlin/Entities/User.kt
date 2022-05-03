@@ -4,9 +4,11 @@ import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
+import java.util.*
 import kotlin.math.absoluteValue
 
 //object Users : IntIdTable() {
@@ -21,20 +23,19 @@ import kotlin.math.absoluteValue
 //    var description by Users.description
 //}
 
-object Users : Table() {
-    val id: Column<Int> = integer("id").autoIncrement()
+object Users : UUIDTable() {
     val username: Column<String> = varchar("username", 50)
     val description: Column<String> = varchar("description", 50)
 }
 
 data class User(
-    val id: Int,
+    val id: String,
     val username: String,
     val description: String
 ) {
     companion object {
         fun fromRow(resultRow: ResultRow) = User(
-            id = resultRow[Users.id].absoluteValue,
+            id = resultRow[Users.id].value.toString(),
             username = resultRow[Users.username],
             description = resultRow[Users.description]
         )
