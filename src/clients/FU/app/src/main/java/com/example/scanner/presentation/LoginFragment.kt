@@ -1,10 +1,11 @@
-package com.example.scanner
+package com.example.scanner.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.scanner.R
 
 class LoginFragment: Fragment() {
     override fun onCreateView(

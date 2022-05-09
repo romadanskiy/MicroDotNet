@@ -1,13 +1,15 @@
-package com.example.scanner
+package com.example.scanner.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProviders
-import com.example.scanner.databinding.FragmentScannerBinding
-import com.example.scanner.models.ScanningResultViewModel
+import com.example.scanner.R
+import com.example.scanner.presentation.viewmodels.ScannerViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val scannerViewModel by viewModel<ScannerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
