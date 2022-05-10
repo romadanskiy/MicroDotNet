@@ -1,5 +1,7 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RuOverflow.Questions;
 using RuOverflow.Questions.Base;
 using RuOverflow.Questions.EF;
@@ -19,29 +21,29 @@ var env = builder.Environment;
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-services.AddSingleton(configuration.GetSettings<KafkaSettings>("Kafka"));
+//services.AddSingleton(configuration.GetSettings<KafkaSettings>("Kafka"));
 Config.Initialize(configuration);
 
-services.AddHostedService<KafkaInitializer>();
+//services.AddHostedService<KafkaInitializer>();
 
-services.AddPooledDbContextFactory<RuFlowDbContext>(
+/*services.AddPooledDbContextFactory<RuFlowDbContext>(
     optionsBuilder => optionsBuilder.UseNpgsql(env.IsDevelopment()
         ? builder.Configuration.GetConnectionString("local")
-        : EnvironmentVariables.ConnectionString));
+        : EnvironmentVariables.ConnectionString));*/
 
-services.AddStackExchangeRedisCache(option =>
+/*services.AddStackExchangeRedisCache(option =>
 {
     option.Configuration = env.IsDevelopment()
         ? configuration.GetSection("Redis:Host").Value
         : EnvironmentVariables.RedisUrl;
-});
+});*/
 
-services.AddScoped<ICache, Cache>();
-services.RegisterKafkaClients(configuration.GetSettings<KafkaSettings>("Kafka"));
-services.RegisterProducers(Assembly.GetExecutingAssembly());
-services.RegisterHandlers(Assembly.GetExecutingAssembly());
+//services.AddScoped<ICache, Cache>();
+//services.RegisterKafkaClients(configuration.GetSettings<KafkaSettings>("Kafka"));
+//services.RegisterProducers(Assembly.GetExecutingAssembly());
+//services.RegisterHandlers(Assembly.GetExecutingAssembly());
 
-services.AddGraphQLServer()
+var rb = services.AddGraphQLServer()
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddTypeExtension<QuestionMutations>()
@@ -53,9 +55,34 @@ services.AddGraphQLServer()
     .AddSorting()
     .AddFiltering();
 
+services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.ClaimsIssuer = JwtBearerDefaults.AuthenticationScheme;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = false,
+    };
+});
+
+services.AddAuthorization();
+
+StartupExtensions.ConfigureAuthWithGraphQl(rb);
+
 var app = builder.Build();
 
-app.UpdateDb<RuFlowDbContext>();
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+//app.UpdateDb<RuFlowDbContext>();
 
 app.MapGraphQL();
 

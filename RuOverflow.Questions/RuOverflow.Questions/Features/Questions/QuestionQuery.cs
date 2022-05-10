@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using HotChocolate.AspNetCore.Authorization;
 using RuOverflow.Questions.Base;
 using RuOverflow.Questions.EF;
 using RuOverflow.Questions.Features.Questions.Models;
@@ -16,11 +17,14 @@ public class QuestionQuery
         return context.Questions.Where(x => x.Id == id);
     }
 
+    [Authorize]
     public async Task<IQueryable<Question>> GetQuestions(
-        [Service] IDbContextFactory<RuFlowDbContext> contextFactory)
+        /*[Service] IDbContextFactory<RuFlowDbContext> contextFactory*/)
+
     {
-        var context = await contextFactory.CreateDbContextAsync();
-        return context.Questions.Select(s => s);
+        return (new List<Question>() { new Question("хуй2", "jopa", new Guid()) }).AsQueryable();
+        /*var context = await contextFactory.CreateDbContextAsync();
+        return context.Questions.Select(s => s);*/
     }
     
 }
