@@ -1,0 +1,3 @@
+<resources>
+    <string name="server_address">https://localhost:44386</string>
+</resources>
