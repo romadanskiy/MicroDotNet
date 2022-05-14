@@ -12,6 +12,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.UUID
 
 fun initDatabase(config: ApplicationConfig) {
     val driverClassName = config.property("storage.driverClassName").getString()
@@ -70,11 +71,11 @@ private fun createHikariDataSource(
 })
 
 interface DAOFacade {
-    suspend fun getUserById(id: Int): User
+    suspend fun getUserById(id: UUID): User
 }
 
 class DAOFacadeImpl : DAOFacade {
-    override suspend fun getUserById(id: Int): User =
+    override suspend fun getUserById(id: UUID): User =
         dbQuery { Users.select { Users.id.eq(id) }.map { User.fromRow(it) }.single() }
 }
 
