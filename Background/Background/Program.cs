@@ -12,6 +12,8 @@ var host = Host.CreateDefaultBuilder(args)
         services.AddSingleton(context.Configuration.GetSettings<KafkaSettings>("Kafka"));
         services.AddSingleton(
             context.Configuration.GetSettings<RatingUpdateWorkerSettings>("Workers:RatingUpdateWorker"));
+        services.AddSingleton(
+            context.Configuration.GetSettings<ElasticUpdateWorkerSettings>("Worker:ElasticUpdateWorker"));
         services.AddHostedService<RatingConsumer>();
         services.AddHostedService<QuestionConsumer>();
         services.AddHostedService<RatingUpdateWorker>();

@@ -1,26 +1,24 @@
-﻿using System.Text.Json.Nodes;
+﻿using Background.Services.QuestionService.Models;
 using Background.Settings;
 using Confluent.Kafka;
-using Elastic.Clients.Elasticsearch;
 
 namespace Background.Services.QuestionService
 {
-    public class QuestionConsumer : BaseConsumerJson<Ignore, dynamic>
+    public class QuestionConsumer : BaseConsumerJson<Ignore, DebeziumPayload>
     {
-        private readonly ElasticsearchClient _elasticsearchClient;
-
-        public QuestionConsumer(KafkaSettings kafkaSettings, ILogger<QuestionConsumer> logger,
-            ElasticsearchClient elasticsearchClient) :
+        public QuestionConsumer(KafkaSettings kafkaSettings, ILogger<QuestionConsumer> logger) :
             base(kafkaSettings, logger)
         {
-            _elasticsearchClient = elasticsearchClient;
         }
 
         protected override string Topic => KafkaTopics.Questions;
         protected override string GroupId => ConsumerGroups.Questions;
 
-        protected override Task ConsumeAsync(Ignore key, dynamic message, CancellationToken stoppingToken)
+        protected override Task ConsumeAsync(Ignore key, DebeziumPayload message, CancellationToken stoppingToken)
         {
+            QuestionStore.Questions
+                .AddOrUpdate(message.Payload.After.Id, message.Payload.After, (_, _) => message.Payload.After);
+            
             return Task.CompletedTask;
         }
     }
