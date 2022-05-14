@@ -16,6 +16,7 @@ var host = Host.CreateDefaultBuilder(args)
             context.Configuration.GetSettings<ElasticUpdateWorkerSettings>("Worker:ElasticUpdateWorker"));
         services.AddHostedService<RatingConsumer>();
         services.AddHostedService<QuestionConsumer>();
+        services.AddHostedService<ElasticUpdateWorker>();
         services.AddHostedService<RatingUpdateWorker>();
     })
     .Build();

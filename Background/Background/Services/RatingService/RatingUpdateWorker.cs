@@ -32,6 +32,7 @@ public class RatingUpdateWorker : BaseWorker
             {
                 try
                 {
+                    //todo убрать обнвление бд в цикле
                     await ExecuteDatabaseUpdateQueryAsync(connection, tableName, entityId, value, stoppingToken);
                 }
                 catch (Exception exception)
