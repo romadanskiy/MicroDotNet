@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -69,12 +70,22 @@ services.AddAuthentication(options =>
         ValidateAudience = false,
         ValidateLifetime = false,
         ValidateIssuerSigningKey = false,
+        ValidateActor = false,
+        ValidateTokenReplay = false,
+        SignatureValidator = delegate (string token, TokenValidationParameters parameters)
+        {
+            var jwt = new JwtSecurityToken(token);
+
+            return jwt;
+        },
     };
 });
 
+StartupExtensions.ConfigureAuthWithGraphQl(rb);
+
 services.AddAuthorization();
 
-StartupExtensions.ConfigureAuthWithGraphQl(rb);
+services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 
