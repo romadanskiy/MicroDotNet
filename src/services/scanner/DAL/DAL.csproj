@@ -12,5 +12,9 @@
         </PackageReference>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0-preview.3" />
     </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Migrations\20220421075625_Initial create entities for utilization.cs" />
+      <Compile Remove="Migrations\20220421075625_Initial create entities for utilization.Designer.cs" />
+    </ItemGroup>
 
 </Project>

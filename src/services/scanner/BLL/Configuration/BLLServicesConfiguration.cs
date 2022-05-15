@@ -1,3 +1,5 @@
+using BLL.Models.Helpers;
+using BLL.Services;
 using DAL;
 using DAL.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,9 @@ public static class BLLServicesConfiguration
         }
 
         services.ConfigureDALServices();
-        
+        services.AddScoped<AccountService>();
+        services.AddScoped<GarbageService>();
+        services.AddSingleton<PasswordHelper>();
+        services.AddSingleton<ImageHelper>();
     }
 }
