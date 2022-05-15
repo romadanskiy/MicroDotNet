@@ -2,18 +2,18 @@ using Background.Extensions;
 using Background.Services.QuestionService;
 using Background.Services.RatingService;
 using Background.Settings;
-using Elastic.Clients.Elasticsearch;
+using Nest;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        var elasticSettings = new ElasticsearchClientSettings(new Uri(context.Configuration["ElasticSearch:Host"]));
-        services.AddSingleton(new ElasticsearchClient(elasticSettings));
+        var elasticSettings = new ConnectionSettings(new Uri(context.Configuration["ElasticSearch:Host"]));
+        services.AddSingleton(new ElasticClient(elasticSettings));
         services.AddSingleton(context.Configuration.GetSettings<KafkaSettings>("Kafka"));
         services.AddSingleton(
             context.Configuration.GetSettings<RatingUpdateWorkerSettings>("Workers:RatingUpdateWorker"));
         services.AddSingleton(
-            context.Configuration.GetSettings<ElasticUpdateWorkerSettings>("Worker:ElasticUpdateWorker"));
+            context.Configuration.GetSettings<ElasticUpdateWorkerSettings>("Workers:ElasticUpdateWorker"));
         services.AddHostedService<RatingConsumer>();
         services.AddHostedService<QuestionConsumer>();
         services.AddHostedService<ElasticUpdateWorker>();

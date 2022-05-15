@@ -1,26 +1,32 @@
 ﻿using Background.Settings;
-using Elastic.Clients.Elasticsearch;
+using Nest;
 
 namespace Background.Services.QuestionService
 {
     public class ElasticUpdateWorker : BaseWorker
     {
-        private readonly ElasticsearchClient _elasticsearchClient;
+        private readonly ElasticClient _elasticClient;
 
         public ElasticUpdateWorker(ILogger<ElasticUpdateWorker> logger, ElasticUpdateWorkerSettings settings,
-            ElasticsearchClient elasticsearchClient) :
+            ElasticClient elasticClient) :
             base(logger)
         {
-            _elasticsearchClient = elasticsearchClient;
+            _elasticClient = elasticClient;
             Cron = settings.Cron;
         }
 
         protected override string Cron { get; }
 
-        protected override Task RunAsync(CancellationToken stoppingToken)
+        protected override async Task RunAsync(CancellationToken stoppingToken)
         {
-            QuestionStore.Questions.Clear();
-            return Task.CompletedTask;
+            foreach (var key in QuestionStore.Questions.Keys)
+            {
+                if (QuestionStore.Questions.TryRemove(key, out var question))
+                {
+                    await _elasticClient.CreateAsync(question, descriptor => descriptor.Index(question.UserId),
+                        stoppingToken);
+                }
+            }
         }
     }
 }
