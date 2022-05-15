@@ -1,24 +1,29 @@
 ﻿using Background.Services.QuestionService.Models;
 using Background.Settings;
-using Confluent.Kafka;
 
 namespace Background.Services.QuestionService
 {
-    public class QuestionConsumer : BaseConsumerJson<Ignore, DebeziumPayload>
+    public class QuestionConsumer : BaseConsumerJson<DebeziumPayload>
     {
-        public QuestionConsumer(KafkaSettings kafkaSettings, ILogger<QuestionConsumer> logger) :
+        private readonly QuestionConsumerSettings _settings;
+
+        public QuestionConsumer(KafkaSettings kafkaSettings, ILogger<QuestionConsumer> logger,
+            QuestionConsumerSettings settings) :
             base(kafkaSettings, logger)
         {
+            _settings = settings;
         }
 
         protected override string Topic => KafkaTopics.Questions;
         protected override string GroupId => ConsumerGroups.Questions;
+        protected override int MessagesPerCycle => _settings.MessagesPerCycle;
+        protected override string Cron => _settings.Cron;
 
-        protected override Task ConsumeAsync(Ignore key, DebeziumPayload message, CancellationToken stoppingToken)
+        protected override TimeSpan MaxTimeWithoutProcessing =>
+            TimeSpan.FromMinutes(_settings.MaxTimeWithoutProcessing);
+
+        protected override Task ConsumeAsync(List<DebeziumPayload> messages, CancellationToken stoppingToken)
         {
-            QuestionStore.Questions
-                .AddOrUpdate(message.Payload.After.Id, message.Payload.After, (_, _) => message.Payload.After);
-            
             return Task.CompletedTask;
         }
     }

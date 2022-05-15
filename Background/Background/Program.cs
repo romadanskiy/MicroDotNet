@@ -10,6 +10,8 @@ var host = Host.CreateDefaultBuilder(args)
         var elasticSettings = new ConnectionSettings(new Uri(context.Configuration["ElasticSearch:Host"]));
         services.AddSingleton(new ElasticClient(elasticSettings));
         services.AddSingleton(context.Configuration.GetSettings<KafkaSettings>("Kafka"));
+        services.AddSingleton(context.Configuration.GetSettings<RatingConsumerSettings>("Consumers:Rating"));
+        services.AddSingleton(context.Configuration.GetSettings<QuestionConsumerSettings>("Consumers:Question"));
         services.AddSingleton(
             context.Configuration.GetSettings<RatingUpdateWorkerSettings>("Workers:RatingUpdateWorker"));
         services.AddSingleton(
@@ -17,7 +19,6 @@ var host = Host.CreateDefaultBuilder(args)
         services.AddHostedService<RatingConsumer>();
         services.AddHostedService<QuestionConsumer>();
         services.AddHostedService<ElasticUpdateWorker>();
-        services.AddHostedService<RatingUpdateWorker>();
     })
     .Build();
 
