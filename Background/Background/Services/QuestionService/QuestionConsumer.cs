@@ -1,17 +1,20 @@
 ﻿using Background.Services.QuestionService.Models;
 using Background.Settings;
+using Nest;
 
 namespace Background.Services.QuestionService
 {
     public class QuestionConsumer : BaseConsumerJson<DebeziumPayload>
     {
         private readonly QuestionConsumerSettings _settings;
+        private readonly ElasticClient _elasticClient;
 
         public QuestionConsumer(KafkaSettings kafkaSettings, ILogger<QuestionConsumer> logger,
-            QuestionConsumerSettings settings) :
+            QuestionConsumerSettings settings, ElasticClient elasticClient) :
             base(kafkaSettings, logger)
         {
             _settings = settings;
+            _elasticClient = elasticClient;
         }
 
         protected override string Topic => KafkaTopics.Questions;
