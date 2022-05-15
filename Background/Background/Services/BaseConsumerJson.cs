@@ -42,23 +42,31 @@ public abstract class BaseConsumerJson<TMessage> : BackgroundService
             using var consumer = new ConsumerBuilder<Ignore, string>(ConsumerConfig).Build();
             consumer.Subscribe(Topic);
             var messages = new List<TMessage>();
-            var lastConsumedDate = DateTime.Now;
+            var lastConsumedDate = DateTime.UtcNow;
             while (!stoppingToken.IsCancellationRequested)
             {
-                var message = consumer.Consume(stoppingToken);
+                var message = consumer.Consume(MaxTimeWithoutProcessing - (DateTime.UtcNow - lastConsumedDate));
                 if (message is not null)
                 {
                     Logger.LogInformation($"Message recieved from topic: {Topic}");
                     var messageObj = JsonConvert.DeserializeObject<TMessage>(message.Message.Value);
                     messages.Add(messageObj ?? throw new ArgumentException("Could not parse JSON content"));
-                    lastConsumedDate = DateTime.Now;
+                    lastConsumedDate = messages.Any() ? lastConsumedDate : DateTime.UtcNow;
                 }
 
                 if (messages.Any() && (messages.Count >= MessagesPerCycle ||
-                                       DateTime.Now - lastConsumedDate >= MaxTimeWithoutProcessing))
+                                       DateTime.UtcNow - lastConsumedDate >= MaxTimeWithoutProcessing))
                 {
                     await ConsumeAsync(messages, stoppingToken);
-                    consumer.Commit(message);
+                    if (message is null)
+                    {
+                        consumer.Commit();
+                    }
+                    else
+                    {
+                        consumer.Commit(message);
+                    }
+
                     messages.Clear();
                     await Task.Delay(GetTimeBeforeNextRun(), stoppingToken);
                 }
