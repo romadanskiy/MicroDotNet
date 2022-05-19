@@ -65,6 +65,13 @@ namespace DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Longitude")
                         .IsRequired()
                         .HasColumnType("text");
 

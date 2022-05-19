@@ -1,9 +1,7 @@
-namespace DAL.Entity;
+namespace Scanner.Models;
 
-public class GarbageReceptionPoint
+public class ReceptionPointDto
 {
-    public long Id { get; set; }
-    
     public string Name { get; set; }
     
     public string? Description { get; set; }
@@ -14,5 +12,5 @@ public class GarbageReceptionPoint
     
     public string Latitude { get; set; }
     
-    public List<GarbageType> GarbageTypes { get; set; }
+    public List<long> GarbageTypeIds { get; set; }
 }

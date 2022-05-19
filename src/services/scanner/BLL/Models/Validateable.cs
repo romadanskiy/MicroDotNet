@@ -1,9 +1,12 @@
+using System.Text.Json.Serialization;
+
 namespace BLL.Models;
 
 public class Validateable
 {
     private List<string> validationErrorMessages;
 
+    [JsonIgnore]
     public List<string> ValidationErrorMessages
     {
         get

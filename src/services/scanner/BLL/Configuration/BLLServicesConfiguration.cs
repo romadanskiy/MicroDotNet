@@ -1,3 +1,4 @@
+using BLL.Models;
 using BLL.Models.Helpers;
 using BLL.Services;
 using DAL;
@@ -18,6 +19,7 @@ public static class BLLServicesConfiguration
         services.ConfigureDALServices();
         services.AddScoped<AccountService>();
         services.AddScoped<GarbageService>();
+        services.AddScoped<ReceptionPointService>();
         services.AddSingleton<PasswordHelper>();
         services.AddSingleton<ImageHelper>();
     }
