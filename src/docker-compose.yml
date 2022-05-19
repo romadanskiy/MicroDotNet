@@ -23,6 +23,30 @@ services:
       - auth-db:/var/lib/postgresql/data:rw
     ports:
       - "5432:5432"
+        
+  scanner:
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
+      - ASPNETCORE_ENVIRONMENT=Development
+    env_file:
+      - ./services/scanner/Scanner/postgres.env
+    depends_on:
+      - scanner-db
+    build:
+      context: ./services/scanner/Scanner
+      dockerfile: ./Dockerfile
+    ports:
+      - "5074:5000"
+        
+  scanner-db:
+    image: postgres:14
+    env_file:
+      - ./services/scanner/Scanner/postgres.env
+    volumes:
+      - scanner-db:/var/lib/postgresql/data:rw
+    ports:
+      - "5433:5432"
       
 volumes:
   auth-db:
+  scanner-db:
