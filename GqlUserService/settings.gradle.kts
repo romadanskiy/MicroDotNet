@@ -1,0 +1,1 @@
+rootProject.name = "GqlUserService_Ktor-1.6.8"
