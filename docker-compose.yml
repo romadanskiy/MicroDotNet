@@ -59,13 +59,58 @@ services:
       SA_PASSWORD: "Password123"
       ACCEPT_EULA: "Y"
   postgres:
-    image: postgres:14
+    image: debezium/postgres:14
     env_file:
       - ./RuOverflow.Questions/RuOverflow.Questions/postgres.env
     volumes:
       - postgres:/var/opt/postgres/data
     ports:
       - "5433:5432"
+  debezium-setup:
+    build:
+      context: ./DebeziumSetup
+      dockerfile: ./Dockerfile
+    restart: on-failure
+    depends_on:
+      - background
+      - debezium
+  debezium:
+    image: debezium/connect:1.9
+    environment:
+      BOOTSTRAP_SERVERS: kafka1:19092,kafka1:19093,kafka1:19094
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: debezium_config
+      OFFSET_STORAGE_TOPIC: debezium_offset
+      STATUS_STORAGE_TOPIC: docker-connect-debezium-status
+      KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      LOG_LEVEL: ERROR
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+      - postgres
+    ports:
+      - "8083:8083"
+  akhq:
+    image: tchiotludo/akhq
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka-server:
+              properties:
+                bootstrap.servers: "kafka1:19092,kafka2:19093,kafka3:19094"
+              connect:
+                - name: "debezium"
+                  url: "http://debezium:8083"
+
+    ports:
+      - "8080:8080"
+    links:
+      - kafka1
+      - kafka2
+      - kafka3
   zoo1:
     image: confluentinc/cp-zookeeper:7.0.1
     hostname: zoo1
@@ -79,6 +124,7 @@ services:
   kafka1:
     image: confluentinc/cp-kafka:7.0.1
     hostname: kafka1
+    restart: always
     container_name: kafka1
     ports:
       - "9092:9092"
@@ -96,6 +142,7 @@ services:
   kafka2:
     image: confluentinc/cp-kafka:7.0.1
     hostname: kafka2
+    restart: always
     container_name: kafka2
     ports:
       - "9093:9093"
@@ -113,6 +160,7 @@ services:
   kafka3:
     image: confluentinc/cp-kafka:7.0.1
     hostname: kafka3
+    restart: always
     container_name: kafka3
     ports:
       - "9094:9094"
@@ -127,6 +175,43 @@ services:
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
     depends_on:
       - zoo1
+  elasticsearch1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.3
+    environment:
+      - network.host=0.0.0.0
+      - node.name=elasticsearch1
+      - discovery.type=single-node
+      - cluster.name=RuOverflow-cluster
+      - xpack.license.self_generated.type=basic
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    networks:
+      - esnet
+    volumes:
+      - es01:/usr/share/elasticsearch/data
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.1.3
+    container_name: kibana
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch1:9200
+      SERVER_HOSTS: 0.0.0.0
+    ports:
+      - "5601:5601"
+    networks:
+      - esnet
+    depends_on:
+      - elasticsearch1
+
+networks:
+  esnet:
+
 volumes:
   mssql-server-linux-data:
   postgres:
+  es01:
