@@ -34,11 +34,17 @@ public abstract class BaseConsumerJson<TMessage> : BackgroundService
         ClientId = Dns.GetHostName(),
     };
 
+    protected virtual Task BeforeStart()
+    {
+        return Task.CompletedTask;
+    }
+
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Logger.LogInformation($"Consumer starts listening {Topic} topic");
         Task.Run(async () =>
         {
+            await BeforeStart();
             using var consumer = new ConsumerBuilder<Ignore, string>(ConsumerConfig).Build();
             consumer.Subscribe(Topic);
             var messages = new List<TMessage>();
