@@ -10,11 +10,13 @@ namespace Background.Services.QuestionService
     {
         private readonly QuestionConsumerSettings _settings;
         private readonly ElasticClient _elasticClient;
+        private readonly ILogger<QuestionConsumer> _logger;
 
         public QuestionConsumer(KafkaSettings kafkaSettings, ILogger<QuestionConsumer> logger,
             QuestionConsumerSettings settings, ElasticClient elasticClient) :
             base(kafkaSettings, logger)
         {
+            _logger = logger;
             _settings = settings;
             _elasticClient = elasticClient;
         }
@@ -29,8 +31,14 @@ namespace Background.Services.QuestionService
 
         protected override async Task BeforeStart()
         {
-            await _elasticClient.Indices.CreateAsync("questions",
-                descriptor => { return descriptor.Map<Question>(x => x.AutoMap()); });
+            await _elasticClient.Indices
+                .CreateAsync("questions",
+                descriptor => descriptor
+                    .Settings(s => s
+                        .NumberOfShards(1)
+                        .NumberOfReplicas(0)
+                    )
+                    .Map<Question>(x => x.AutoMap()));
         }
 
         protected override async Task ConsumeAsync(List<DebeziumPayload> messages, CancellationToken stoppingToken)
@@ -40,9 +48,16 @@ namespace Background.Services.QuestionService
             await FillTags(messages, stoppingToken, questions);
             var questionList = questions.Select(x => x.Value);
 
-            await _elasticClient.BulkAsync(b => b
-                .Index("questions")
-                .IndexMany(questionList), stoppingToken);
+            var observable = _elasticClient.BulkAll(questionList,
+                b => b
+                    .BackOffRetries(2)
+                    .BackOffTime("30s")
+                    .RefreshOnCompleted()
+                    .MaxDegreeOfParallelism(4)
+                    .Size(1000)
+            );
+
+            observable.Subscribe(new BulkAllObserver(onError: e => _logger.LogError(e.Message)));
         }
 
         private static async Task FillTags(List<DebeziumPayload> messages, CancellationToken stoppingToken,
