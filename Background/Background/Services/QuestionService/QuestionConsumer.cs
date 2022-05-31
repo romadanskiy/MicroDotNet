@@ -31,14 +31,18 @@ namespace Background.Services.QuestionService
 
         protected override async Task BeforeStart()
         {
-            await _elasticClient.Indices
-                .CreateAsync("questions",
-                descriptor => descriptor
-                    .Settings(s => s
-                        .NumberOfShards(1)
-                        .NumberOfReplicas(0)
-                    )
-                    .Map<Question>(x => x.AutoMap()));
+            var response = await _elasticClient.Indices.ExistsAsync(new IndexExistsRequest("questions"));
+            if (!response.Exists || true)
+            {
+                await _elasticClient.Indices
+                    .CreateAsync("questions",
+                        descriptor => descriptor
+                            .Settings(s => s
+                                .NumberOfShards(1)
+                                .NumberOfReplicas(0)
+                            )
+                            .Map<Question>(x => x.AutoMap()));
+            }
         }
 
         protected override async Task ConsumeAsync(List<DebeziumPayload> messages, CancellationToken stoppingToken)
@@ -46,10 +50,11 @@ namespace Background.Services.QuestionService
             var questions = GetQuestions(messages);
             //todo переделать через подтягивание топика(может с KSql)
             await FillTags(messages, stoppingToken, questions);
-            var questionList = questions.Select(x => x.Value);
+            var questionList = questions.Select(x => x.Value!);
 
             var observable = _elasticClient.BulkAll(questionList,
                 b => b
+                    .Index("questions")
                     .BackOffRetries(2)
                     .BackOffTime("30s")
                     .RefreshOnCompleted()
@@ -57,7 +62,10 @@ namespace Background.Services.QuestionService
                     .Size(1000)
             );
 
-            observable.Subscribe(new BulkAllObserver(onError: e => _logger.LogError(e.Message)));
+            observable.Subscribe(new BulkAllObserver(
+                onNext: response => _logger.LogInformation("Completed indexing"),
+                onError: e => _logger.LogError(e.Message)
+            ));
         }
 
         private static async Task FillTags(List<DebeziumPayload> messages, CancellationToken stoppingToken,
