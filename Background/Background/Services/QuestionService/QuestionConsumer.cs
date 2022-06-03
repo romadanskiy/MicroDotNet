@@ -32,7 +32,7 @@ namespace Background.Services.QuestionService
         protected override async Task BeforeStart()
         {
             var response = await _elasticClient.Indices.ExistsAsync(new IndexExistsRequest("questions"));
-            if (!response.Exists || true)
+            if (!response.Exists)
             {
                 await _elasticClient.Indices
                     .CreateAsync("questions",

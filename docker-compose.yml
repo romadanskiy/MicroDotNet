@@ -32,6 +32,7 @@ services:
         - kafka2
         - kafka3
         - debezium
+        - dotnet.questions
   redis:
     container_name: "redis"
     image: "redis"
