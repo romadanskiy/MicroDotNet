@@ -31,50 +31,87 @@ public abstract class BaseConsumerJson<TMessage> : BackgroundService
         BootstrapServers = _kafkaSettings.Servers,
         GroupId = GroupId,
         EnableAutoCommit = false,
+        AutoOffsetReset = AutoOffsetReset.Earliest,
         ClientId = Dns.GetHostName(),
     };
+
+    protected virtual Task BeforeStart()
+    {
+        return Task.CompletedTask;
+    }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Logger.LogInformation($"Consumer starts listening {Topic} topic");
         Task.Run(async () =>
         {
-            using var consumer = new ConsumerBuilder<Ignore, string>(ConsumerConfig).Build();
-            consumer.Subscribe(Topic);
-            var messages = new List<TMessage>();
-            var lastConsumedDate = DateTime.UtcNow;
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                var message = consumer.Consume(MaxTimeWithoutProcessing - (DateTime.UtcNow - lastConsumedDate));
-                if (message is not null)
+                await BeforeStart();
+                using var adminClient = new AdminClientBuilder(new AdminClientConfig()
                 {
-                    Logger.LogInformation($"Message recieved from topic: {Topic}");
-                    var messageObj = JsonConvert.DeserializeObject<TMessage>(message.Message.Value);
-                    messages.Add(messageObj ?? throw new ArgumentException("Could not parse JSON content"));
-                    lastConsumedDate = messages.Any() ? lastConsumedDate : DateTime.UtcNow;
+                    BootstrapServers = _kafkaSettings.Servers,
+                }).Build();
+                await WaitUntilTopicCreatedAsync(stoppingToken, adminClient);
+                using var consumer = new ConsumerBuilder<Ignore, string>(ConsumerConfig).Build();
+                consumer.Subscribe(Topic);
+                var messages = new List<TMessage>();
+                var lastConsumedDate = DateTime.UtcNow;
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    var message = consumer.Consume(MaxTimeWithoutProcessing - (DateTime.UtcNow - lastConsumedDate));
+                    if (message is not null)
+                    {
+                        Logger.LogInformation($"Message recieved from topic: {Topic}");
+                        var messageObj = JsonConvert.DeserializeObject<TMessage>(message.Message.Value);
+                        messages.Add(messageObj ?? throw new ArgumentException("Could not parse JSON content"));
+                        lastConsumedDate = messages.Any() ? lastConsumedDate : DateTime.UtcNow;
+                    }
+
+                    if (messages.Any() && (messages.Count >= MessagesPerCycle ||
+                                           DateTime.UtcNow - lastConsumedDate >= MaxTimeWithoutProcessing))
+                    {
+                        try
+                        {
+                            await ConsumeAsync(messages, stoppingToken);
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.LogError(
+                                $"Message with offset = {message.Offset} fails. Exception message: {e.Message}");
+                        }
+
+                        if (message is null)
+                        {
+                            consumer.Commit();
+                        }
+                        else
+                        {
+                            consumer.Commit(message);
+                        }
+
+                        messages.Clear();
+                        await Task.Delay(GetTimeBeforeNextRun(), stoppingToken);
+                    }
                 }
 
-                if (messages.Any() && (messages.Count >= MessagesPerCycle ||
-                                       DateTime.UtcNow - lastConsumedDate >= MaxTimeWithoutProcessing))
-                {
-                    await ConsumeAsync(messages, stoppingToken);
-                    if (message is null)
-                    {
-                        consumer.Commit();
-                    }
-                    else
-                    {
-                        consumer.Commit(message);
-                    }
-
-                    messages.Clear();
-                    await Task.Delay(GetTimeBeforeNextRun(), stoppingToken);
-                }
+                consumer.Close();
             }
-
-            consumer.Close();
+            catch (Exception e)
+            {
+                Logger.LogError(e.Message);
+            }
         }, stoppingToken);
         return Task.CompletedTask;
+    }
+
+    private async Task WaitUntilTopicCreatedAsync(CancellationToken stoppingToken, IAdminClient adminClient)
+    {
+        while (!adminClient.GetMetadata(TimeSpan.FromMinutes(5)).Topics.Select(x => x.Topic).Contains(Topic))
+        {
+            Logger.LogWarning($"Can't find {Topic} topic");
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+        }
     }
 
     private TimeSpan GetTimeBeforeNextRun() =>
