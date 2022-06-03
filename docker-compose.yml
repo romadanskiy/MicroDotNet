@@ -2,7 +2,6 @@ version: "3.8"
 
 services:
   dotnet.questions:
-    restart: always
     build:
       context: RuOverflow.Questions/
       dockerfile: ./RuOverflow.Questions/Dockerfile
@@ -18,7 +17,6 @@ services:
       - kafka1
       - kafka2
       - kafka3
-      - debezium
   background:
     build:
       context: Background/
@@ -33,6 +31,14 @@ services:
         - kafka3
         - debezium
         - dotnet.questions
+  gqluserservice:
+    build:
+      context: GqlUserService/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mssql
   redis:
     container_name: "redis"
     image: "redis"
@@ -45,7 +51,7 @@ services:
     ports:
       - "6378:6379"
   mssql:
-    image: "mcr.microsoft.com/mssql/server"
+    image: mcr.microsoft.com/mssql/server:2019-latest
     user: root
     ports:
       - "1400:1433"
@@ -100,7 +106,7 @@ services:
               connect:
                 - name: "debezium"
                   url: "http://debezium:8083"
-    
+
     ports:
       - "8080:8080"
     links:
