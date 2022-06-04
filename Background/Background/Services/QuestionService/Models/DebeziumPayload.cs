@@ -7,7 +7,7 @@
 
     public class Payload
     {
-        public Question Before { get; set; }
-        public Question After { get; set; }
+        public Question? Before { get; set; }
+        public Question? After { get; set; }
     }
 }

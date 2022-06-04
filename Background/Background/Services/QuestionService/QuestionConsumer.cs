@@ -47,6 +47,22 @@ namespace Background.Services.QuestionService
 
         protected override async Task ConsumeAsync(List<DebeziumPayload> messages, CancellationToken stoppingToken)
         {
+            await AddOrUpdateQuestionAsync(messages.Where(x => x.Payload.After is not null).ToList(), stoppingToken);
+            await DeleteQuestionAsync(messages.Where(x => x.Payload.After is null).ToList(), stoppingToken);
+        }
+
+        private async Task DeleteQuestionAsync(List<DebeziumPayload> messages, CancellationToken stoppingToken)
+        {
+            if (messages.Any())
+            {
+                await _elasticClient
+                    .DeleteManyAsync(messages.Select(x => x.Payload.Before), "questions",
+                        cancellationToken: stoppingToken);
+            }
+        }
+
+        private async Task AddOrUpdateQuestionAsync(List<DebeziumPayload> messages, CancellationToken stoppingToken)
+        {
             var questions = GetQuestions(messages);
             //todo переделать через подтягивание топика(может с KSql)
             await FillTags(messages, stoppingToken, questions);

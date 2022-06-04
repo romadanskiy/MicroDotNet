@@ -7,6 +7,7 @@ services:
       dockerfile: ./RuOverflow.Questions/Dockerfile
     ports:
       - "11001:80"
+    restart: on-failure
     environment:
       - RuOverFlow_Question_ConnectionString=Host=postgres;Database=ruflow;User Id=postgres;Password=postgres;Port=5432;
       - RedisUrl=redis:6379
