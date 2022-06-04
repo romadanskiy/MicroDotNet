@@ -63,9 +63,16 @@ public abstract class BaseConsumerJson<TMessage> : BackgroundService
                     if (message is not null)
                     {
                         Logger.LogInformation($"Message recieved from topic: {Topic}");
-                        var messageObj = JsonConvert.DeserializeObject<TMessage>(message.Message.Value);
-                        messages.Add(messageObj ?? throw new ArgumentException("Could not parse JSON content"));
-                        lastConsumedDate = messages.Any() ? lastConsumedDate : DateTime.UtcNow;
+                        if (message.Message.Value is null)
+                        {
+                            consumer.Commit(message);
+                        }
+                        else
+                        {
+                            var messageObj = JsonConvert.DeserializeObject<TMessage>(message.Message.Value);
+                            messages.Add(messageObj ?? throw new ArgumentException("Could not parse JSON content"));
+                            lastConsumedDate = messages.Any() ? lastConsumedDate : DateTime.UtcNow;
+                        }
                     }
 
                     if (messages.Any() && (messages.Count >= MessagesPerCycle ||
