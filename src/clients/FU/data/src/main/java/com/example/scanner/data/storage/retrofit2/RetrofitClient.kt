@@ -2,6 +2,7 @@ package com.example.scanner.data.storage.retrofit2
 
 import com.example.scanner.data.R
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
@@ -14,6 +15,7 @@ object RetrofitClient {
             retrofit = Retrofit.Builder()
                 .baseUrl(base_url)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
         }
         return retrofit!!

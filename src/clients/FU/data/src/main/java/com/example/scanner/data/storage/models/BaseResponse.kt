@@ -1,7 +1,7 @@
 package com.example.scanner.data.storage.models
 
-abstract class BaseResponse<T> {
+open class BaseResponse<T> {
     var success: Boolean = false
-    val messages: String? = null
+    val messages: List<String>? = null
     val data: T? = null
 }
