@@ -22,26 +22,36 @@
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@+id/login" />
 
+
+    <EditText
+        android:id="@+id/password2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Повторите пароль"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
+
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/reg_button"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginTop="16dp"
-        android:text="Войти"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        android:text="Зарегистрироваться"
+        app:layout_constraintTop_toBottomOf="@+id/password2"
         tools:layout_editor_absoluteX="32dp" />
 
     <TextView
-        android:id="@+id/register"
+        android:id="@+id/to_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Регистрация"
+        android:text="Войти"
         android:textColor="#1058A6"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_button" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

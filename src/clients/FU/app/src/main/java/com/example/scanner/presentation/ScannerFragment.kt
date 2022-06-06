@@ -150,6 +150,8 @@ class ScannerFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        cameraSource.stop()
+        try {
+            cameraSource.stop()
+        } catch (_: Exception) { }
     }
 }
