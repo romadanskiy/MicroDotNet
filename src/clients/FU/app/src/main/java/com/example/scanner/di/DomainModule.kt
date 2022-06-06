@@ -5,7 +5,7 @@ import org.koin.dsl.module
 
 val domainModule = module {
 
-    factory<GetGarbageInfoUseCase> {
+    factory {
         GetGarbageInfoUseCase(garbageRepository = get())
     }
 }
