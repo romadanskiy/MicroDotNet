@@ -33,10 +33,15 @@
         <Compile Update="Features\Questions\Handlers\Delete\DeleteEventPublishDecorator.cs">
             <DependentUpon>DeleteHandler.cs</DependentUpon>
         </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Features\Questions\Requests" />
+        <Compile Update="Features\Questions\Requests\QuestionFilters.cs">
+          <DependentUpon>QuestionSearchRequest.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Features\Questions\Models\ElasticQuestionSearchDto.cs">
+          <DependentUpon>BaseQuestionSearchDto.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Features\Questions\Models\QuestionSearchDto.cs">
+          <DependentUpon>BaseQuestionSearchDto.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>
