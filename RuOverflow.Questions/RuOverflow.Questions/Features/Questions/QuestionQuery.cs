@@ -2,6 +2,8 @@
 using RuOverflow.Questions.Base;
 using RuOverflow.Questions.EF;
 using RuOverflow.Questions.Features.Questions.Models;
+using RuOverflow.Questions.Features.Questions.Requests;
+using RuOverflow.Questions.Infrastructure.Handlers;
 
 namespace RuOverflow.Questions.Features.Questions;
 
@@ -16,11 +18,9 @@ public class QuestionQuery
         return context.Questions.Where(x => x.Id == id);
     }
 
-    public async Task<IQueryable<Question>> GetQuestions(
-        [Service] IDbContextFactory<RuFlowDbContext> contextFactory)
+    public Task<List<QuestionSearchDto>> SearchQuestionsAsync(QuestionSearchRequest searchRequest,
+        [Service] IAsyncHandler<QuestionSearchRequest, List<QuestionSearchDto>> handler)
     {
-        var context = await contextFactory.CreateDbContextAsync();
-        return context.Questions.Select(s => s);
+        return handler.Handle(searchRequest);
     }
-    
 }

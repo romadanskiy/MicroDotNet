@@ -1,4 +1,4 @@
-﻿namespace Background;
+﻿namespace Background.Constants;
 
 public static class KafkaTopics
 {

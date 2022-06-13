@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Background.Constants;
 using Background.Services.QuestionService.Models;
 using Background.Settings;
 using Nest;
@@ -31,11 +32,11 @@ namespace Background.Services.QuestionService
 
         protected override async Task BeforeStart()
         {
-            var response = await _elasticClient.Indices.ExistsAsync(new IndexExistsRequest("questions"));
+            var response = await _elasticClient.Indices.ExistsAsync(new IndexExistsRequest(IndexNames.Question));
             if (!response.Exists)
             {
                 await _elasticClient.Indices
-                    .CreateAsync("questions",
+                    .CreateAsync(IndexNames.Question,
                         descriptor => descriptor
                             .Settings(s => s
                                 .NumberOfShards(1)
@@ -56,7 +57,7 @@ namespace Background.Services.QuestionService
             if (messages.Any())
             {
                 await _elasticClient
-                    .DeleteManyAsync(messages.Select(x => x.Payload.Before), "questions",
+                    .DeleteManyAsync(messages.Select(x => x.Payload.Before), IndexNames.Question,
                         cancellationToken: stoppingToken);
             }
         }
@@ -64,13 +65,13 @@ namespace Background.Services.QuestionService
         private async Task AddOrUpdateQuestionAsync(List<DebeziumPayload> messages, CancellationToken stoppingToken)
         {
             var questions = GetQuestions(messages);
-            //todo переделать через подтягивание топика(может с KSql)
+            //todo переделать с помощью KStreams и KTables
             await FillTags(messages, stoppingToken, questions);
             var questionList = questions.Select(x => x.Value!);
 
             var observable = _elasticClient.BulkAll(questionList,
                 b => b
-                    .Index("questions")
+                    .Index(IndexNames.Question)
                     .BackOffRetries(2)
                     .BackOffTime("30s")
                     .RefreshOnCompleted()

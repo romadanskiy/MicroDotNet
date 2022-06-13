@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Nest;
 using RuOverflow.Questions;
 using RuOverflow.Questions.Base;
 using RuOverflow.Questions.EF;
@@ -19,6 +20,9 @@ var env = builder.Environment;
 var services = builder.Services;
 var configuration = builder.Configuration;
 
+
+var elasticSettings = new ConnectionSettings(new Uri(configuration["ElasticSearch:Host"]));
+services.AddSingleton(new ElasticClient(elasticSettings));
 services.AddSingleton(configuration.GetSettings<KafkaSettings>("Kafka"));
 Config.Initialize(configuration);
 
