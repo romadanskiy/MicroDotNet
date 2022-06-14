@@ -1,11 +1,13 @@
 package com.example.scanner.presentation.add_point
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.scanner.Const
 import com.example.scanner.R
 import com.example.scanner.data.storage.retrofit2.RetrofitClient
 import com.example.scanner.presentation.login.AuthService
@@ -22,6 +24,9 @@ class AddPointInfoFragment : Fragment(R.layout.fragment_add_point_info) {
         view.add.setOnClickListener {
             RetrofitClient.getClient().create(PointService::class.java)
                 .addPoint(
+                    requireContext()
+                        .getSharedPreferences(Const.PREFS_NAME, Context.MODE_PRIVATE)
+                        .getString(Const.ACCESS_TOKEN, "")!!,
                     PointBody(
                         name = view.name.fetchText(),
                         description = view.description.fetchText(),
