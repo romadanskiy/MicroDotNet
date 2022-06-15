@@ -1,5 +1,5 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -22,27 +22,27 @@ var env = builder.Environment;
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-//services.AddSingleton(configuration.GetSettings<KafkaSettings>("Kafka"));
+services.AddSingleton(configuration.GetSettings<KafkaSettings>("Kafka"));
 Config.Initialize(configuration);
 
-//services.AddHostedService<KafkaInitializer>();
+services.AddHostedService<KafkaInitializer>();
 
-/*services.AddPooledDbContextFactory<RuFlowDbContext>(
+services.AddPooledDbContextFactory<RuFlowDbContext>(
     optionsBuilder => optionsBuilder.UseNpgsql(env.IsDevelopment()
         ? builder.Configuration.GetConnectionString("local")
-        : EnvironmentVariables.ConnectionString));*/
+        : EnvironmentVariables.ConnectionString));
 
-/*services.AddStackExchangeRedisCache(option =>
+services.AddStackExchangeRedisCache(option =>
 {
     option.Configuration = env.IsDevelopment()
         ? configuration.GetSection("Redis:Host").Value
         : EnvironmentVariables.RedisUrl;
-});*/
+});
 
-//services.AddScoped<ICache, Cache>();
-//services.RegisterKafkaClients(configuration.GetSettings<KafkaSettings>("Kafka"));
-//services.RegisterProducers(Assembly.GetExecutingAssembly());
-//services.RegisterHandlers(Assembly.GetExecutingAssembly());
+services.AddScoped<ICache, Cache>();
+services.RegisterKafkaClients(configuration.GetSettings<KafkaSettings>("Kafka"));
+services.RegisterProducers(Assembly.GetExecutingAssembly());
+services.RegisterHandlers(Assembly.GetExecutingAssembly());
 
 var rb = services.AddGraphQLServer()
     .AddQueryType<Query>()
@@ -63,21 +63,20 @@ services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
+    var SecretKey = Encoding.ASCII.GetBytes
+        ("YourKey-2374-OFFKDI940NG7:56753253-tyuw-5769-0921-kfirox29zoxv");
     options.ClaimsIssuer = JwtBearerDefaults.AuthenticationScheme;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = false,
-        ValidateIssuerSigningKey = false,
+        ValidateIssuer = true,
+        ValidIssuer = "http://localhost:5000/",
+        ValidateAudience = true,
+        ValidAudience = "http://localhost:5000/",
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(SecretKey),
+        ValidateLifetime = true,
         ValidateActor = false,
         ValidateTokenReplay = false,
-        SignatureValidator = delegate (string token, TokenValidationParameters parameters)
-        {
-            var jwt = new JwtSecurityToken(token);
-
-            return jwt;
-        },
     };
 });
 
@@ -93,7 +92,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-//app.UpdateDb<RuFlowDbContext>();
+app.UpdateDb<RuFlowDbContext>();
 
 app.MapGraphQL();
 

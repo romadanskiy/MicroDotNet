@@ -1,4 +1,5 @@
-﻿using RuOverflow.Questions.Base;
+﻿using HotChocolate.AspNetCore.Authorization;
+using RuOverflow.Questions.Base;
 using RuOverflow.Questions.Features.Questions.Handlers.Ask;
 using RuOverflow.Questions.Features.Questions.Handlers.Delete;
 using RuOverflow.Questions.Features.Questions.Handlers.Update;
@@ -9,6 +10,7 @@ using RuOverflow.Questions.Infrastructure.Handlers;
 
 namespace RuOverflow.Questions.Features.Questions;
 
+[Authorize]
 [ExtendObjectType(typeof(Mutation))]
 public class QuestionMutations
 {

@@ -1,10 +1,12 @@
-﻿using RuOverflow.Questions.Base;
+﻿using HotChocolate.AspNetCore.Authorization;
+using RuOverflow.Questions.Base;
 using RuOverflow.Questions.Features.Answers.Models;
 using RuOverflow.Questions.Features.Rating;
 using RuOverflow.Questions.Infrastructure.Handlers;
 
 namespace RuOverflow.Questions.Features.Answers;
 
+[Authorize]
 [ExtendObjectType(typeof(Mutation))]
 public class AnswerMutations
 {

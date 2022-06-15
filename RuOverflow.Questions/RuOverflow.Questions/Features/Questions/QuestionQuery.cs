@@ -6,6 +6,7 @@ using RuOverflow.Questions.Features.Questions.Models;
 
 namespace RuOverflow.Questions.Features.Questions;
 
+[Authorize]
 [ExtendObjectType(typeof(Query))]
 public class QuestionQuery
 {
@@ -17,15 +18,11 @@ public class QuestionQuery
         return context.Questions.Where(x => x.Id == id);
     }
     
-    [Authorize]
     public async Task<IQueryable<Question>> GetQuestions(
-        /*[Service] IDbContextFactory<RuFlowDbContext> contextFactory*/
+        [Service] IDbContextFactory<RuFlowDbContext> contextFactory,
         [Service] IHttpContextAccessor accessor)
     {
-        var userClaims = accessor?.HttpContext?.User;
-        return (new List<Question>() { new Question("хуй2", "jopa", new Guid()) }).AsQueryable();
-        /*var context = await contextFactory.CreateDbContextAsync();
-        return context.Questions.Select(s => s);*/
+        var context = await contextFactory.CreateDbContextAsync();
+        return context.Questions.Select(s => s);
     }
-    
 }

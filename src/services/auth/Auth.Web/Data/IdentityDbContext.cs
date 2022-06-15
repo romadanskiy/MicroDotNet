@@ -18,7 +18,7 @@ public class IdentityDbContext : IdentityDbContext<User, Role, Guid>
 
         var user = new User("Admin", "John1", "Doe2")
         {
-            Id = new Guid("5f34130c-2ed9-4c83-a600-e474e8f48bac"), 
+            Id = new Guid("5f34130c-2ed9-4c83-a600-e474e8f48bac"),
             CreatedAt = Dates.Now(),
             ConcurrencyStamp = "37285e0f-b3c2-4a75-85f6-73a3c4c6da29",
             PasswordHash = "AQAAAAEAACcQAAAAEED86xKz3bHadNf8B1Hg8t5qNefw4Bq1Kr2q6Jx9Ss/DcRIcUpLiFkDgQZTqUgJThA==",
