@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RuOverflow.Questions.EF;
+using RuOverflow.Questions.Extensions;
 using RuOverflow.Questions.Features.Questions.Models;
 using RuOverflow.Questions.Infrastructure.Handlers;
 
@@ -10,9 +11,11 @@ public record AskQuestionCommand(string Title, string Body, List<Guid>? Tags);
 public class AskQuestionHandler : IAsyncHandler<AskQuestionCommand, Question>
 {
     private readonly IDbContextFactory<RuFlowDbContext> _contextFactory;
+    private readonly IHttpContextAccessor _accessor;
 
-    public AskQuestionHandler(IDbContextFactory<RuFlowDbContext> contextFactory)
+    public AskQuestionHandler([Service] IHttpContextAccessor accessor ,IDbContextFactory<RuFlowDbContext> contextFactory)
     {
+        _accessor = accessor;
         _contextFactory = contextFactory;
     }
 
@@ -22,9 +25,8 @@ public class AskQuestionHandler : IAsyncHandler<AskQuestionCommand, Question>
         var tags = input.Tags?.Count > 0
             ? await context.Tags.Where(x => input.Tags.Contains(x.Id)).ToListAsync()
             : null;
-
-        //ToDo take this from jwt when auth is ready
-        var userId = Guid.NewGuid();
+        
+        var userId = _accessor.GetUserId();
 
         var question = new Question(input.Title, input.Body, userId, tags);
         context.Questions.Add(question);

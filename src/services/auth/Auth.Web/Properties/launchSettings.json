@@ -1,0 +1,18 @@
+﻿{
+  "profiles": {
+    "AuthorizationServer": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "POSTGRES_DB": "auth",
+        "POSTGRES_PASSWORD": "postgres",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_HOST": "localhost",
+        "POSTGRES_PORT": "5432"
+      }
+    }
+  }
+}

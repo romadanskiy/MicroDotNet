@@ -1,5 +1,8 @@
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Nest;
 using RuOverflow.Questions;
 using RuOverflow.Questions.Base;
@@ -45,7 +48,7 @@ services.RegisterKafkaClients(configuration.GetSettings<KafkaSettings>("Kafka"))
 services.RegisterProducers(Assembly.GetExecutingAssembly());
 services.RegisterHandlers(Assembly.GetExecutingAssembly());
 
-services.AddGraphQLServer()
+var rb = services.AddGraphQLServer()
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddTypeExtension<QuestionMutations>()
@@ -57,7 +60,41 @@ services.AddGraphQLServer()
     .AddSorting()
     .AddFiltering();
 
+services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    var SecretKey = Encoding.ASCII.GetBytes
+        ("YourKey-2374-OFFKDI940NG7:56753253-tyuw-5769-0921-kfirox29zoxv");
+    options.ClaimsIssuer = JwtBearerDefaults.AuthenticationScheme;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = "http://localhost:5000/",
+        ValidateAudience = true,
+        ValidAudience = "http://localhost:5000/",
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(SecretKey),
+        ValidateLifetime = true,
+        ValidateActor = false,
+        ValidateTokenReplay = false,
+    };
+});
+
+StartupExtensions.ConfigureAuthWithGraphQl(rb);
+
+services.AddAuthorization();
+
+services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 var app = builder.Build();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UpdateDb<RuFlowDbContext>();
 

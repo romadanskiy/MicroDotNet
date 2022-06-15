@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using HotChocolate.AspNetCore.Authorization;
 using RuOverflow.Questions.Base;
 using RuOverflow.Questions.EF;
 using RuOverflow.Questions.Features.Questions.Models;
@@ -7,6 +8,7 @@ using RuOverflow.Questions.Infrastructure.Handlers;
 
 namespace RuOverflow.Questions.Features.Questions;
 
+[Authorize]
 [ExtendObjectType(typeof(Query))]
 public class QuestionQuery
 {
@@ -17,10 +19,10 @@ public class QuestionQuery
         var context = await contextFactory.CreateDbContextAsync();
         return context.Questions.Where(x => x.Id == id);
     }
-
     public Task<List<QuestionSearchDto>> SearchQuestionsAsync(QuestionSearchRequest searchRequest,
         [Service] IAsyncHandler<QuestionSearchRequest, List<QuestionSearchDto>> handler)
     {
         return handler.Handle(searchRequest);
     }
 }
+
