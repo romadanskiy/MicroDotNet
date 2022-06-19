@@ -67,17 +67,17 @@ services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
-    var SecretKey = Encoding.ASCII.GetBytes
-        ("YourKey-2374-OFFKDI940NG7:56753253-tyuw-5769-0921-kfirox29zoxv");
+    var settings = configuration.GetSettings<AuthSettings>("Auth");
+    var secretKey = Encoding.ASCII.GetBytes(settings.Secret);
     options.ClaimsIssuer = JwtBearerDefaults.AuthenticationScheme;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidIssuer = "http://localhost:5000/",
+        ValidIssuer = settings.Host,
         ValidateAudience = true,
-        ValidAudience = "http://localhost:5000/",
+        ValidAudience = settings.Host,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(SecretKey),
+        IssuerSigningKey = new SymmetricSecurityKey(secretKey),
         ValidateLifetime = true,
         ValidateActor = false,
         ValidateTokenReplay = false,

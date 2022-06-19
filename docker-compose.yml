@@ -95,25 +95,26 @@ services:
       - postgres
     ports:
       - "8083:8083"
-#  akhq:
-#    image: tchiotludo/akhq
-#    environment:
-#      AKHQ_CONFIGURATION: |
-#        akhq:
-#          connections:
-#            docker-kafka-server:
-#              properties:
-#                bootstrap.servers: "kafka1:19092,kafka2:19093,kafka3:19094"
-#              connect:
-#                - name: "debezium"
-#                  url: "http://debezium:8083"
-#
-#    ports:
-#      - "8080:8080"
-#    links:
-#      - kafka1
-#      - kafka2
-#      - kafka3
+  akhq:
+    image: tchiotludo/akhq
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka-server:
+              properties:
+                bootstrap.servers: "kafka1:19092,kafka2:19093,kafka3:19094"
+              connect:
+                - name: "debezium"
+                  url: "http://debezium:8083"
+
+    ports:
+      - "8081:8080"
+    links:
+      - kafka1
+      - kafka2
+      - kafka3
+      - debezium
   zoo1:
     image: confluentinc/cp-zookeeper:7.0.1
     hostname: zoo1
@@ -206,8 +207,30 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch1
+  auth:
+    environment:
+      - ASPNETCORE_URLS=http://+:5200
+      - ASPNETCORE_ENVIRONMENT=Development
+    env_file:
+      - ./Auth/auth/Auth.Web/postgres.env
+    depends_on:
+      - auth-db
+    build:
+      context: ./Auth/auth/Auth.Web
+      dockerfile: ./Dockerfile
+    ports:
+      - "5200:5200"
+  auth-db:
+    image: postgres:14
+    env_file:
+      - ./Auth/auth/Auth.Web/postgres.env
+    volumes:
+      - auth-db:/var/lib/postgresql/data:rw
+    ports:
+      - "5435:5432"
 
 volumes:
   mssql-server-linux-data:
   postgres:
   es01:
+  auth-db:

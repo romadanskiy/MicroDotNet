@@ -81,8 +81,8 @@ namespace AuthorizationServer.Web.Controllers
                         new Claim(ClaimTypes.Email, user.UserName)
                     }),
                     Expires = DateTime.UtcNow.AddDays(1),
-                    Issuer = "http://localhost:5000/",
-                    Audience = "http://localhost:5000/",
+                    Issuer = "http://auth:5200/",
+                    Audience = "http://auth:5200/",
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
