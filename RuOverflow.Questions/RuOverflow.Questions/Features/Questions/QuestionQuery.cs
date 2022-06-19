@@ -8,7 +8,6 @@ using RuOverflow.Questions.Infrastructure.Handlers;
 
 namespace RuOverflow.Questions.Features.Questions;
 
-[Authorize]
 [ExtendObjectType(typeof(Query))]
 public class QuestionQuery
 {
