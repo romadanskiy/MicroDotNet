@@ -8,4 +8,4 @@
   
 <br>  
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=58A6FF&lines=We+Love+.NET)](https://git.io/typing-svg)
+![Typing SVG](https://readme-typing-svg.herokuapp.com?color=58A6FF&lines=We+Love+.NET)
