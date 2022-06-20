@@ -1,0 +1,31 @@
+<div class="container posts-container">
+  <div class="search-container">
+    <div class="search-col">
+      <input [(ngModel)]='search' type="text" name="searchString" placeholder="What are you searching for?"
+             class="input-search form-control" autocomplete="off" (change)='onSearchChange()'>
+    </div>
+    <div class="button-col">
+      <app-devpoint-button devpoint-border-style='round'
+                           noBorderLeft
+                           (click)='onSearchChange()'
+                           autoWidth>
+        Search
+      </app-devpoint-button>
+    </div>
+  </div>
+  <div class='posts-info'>
+    <div>Posts</div> <div class='posts-count'>{{ totalCount }}</div>
+  </div>
+  <div class="posts"
+       infinite-scroll
+       (scrolled)='onScrollDown()'
+  >
+    <ng-container *ngFor="let post of posts">
+      <app-post-preview [post]="post"></app-post-preview>
+    </ng-container>
+  </div>
+  <div class='end'>
+    <mat-spinner *ngIf='posts.length < totalCount'></mat-spinner>
+    <h1 *ngIf='posts.length >= totalCount' class='end-message'>No{{ totalCount > 0 ? ' more' : '' }} posts {{ totalCount <= 0 ? ' yet' : '' }}</h1>
+  </div>
+</div>

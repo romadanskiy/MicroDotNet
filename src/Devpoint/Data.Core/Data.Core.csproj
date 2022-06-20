@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+      <UserSecretsId>d739b377-cbd0-4a2a-891f-a67b457c41cf</UserSecretsId>
+  </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain.Content\Domain.Content.csproj" />
+      <ProjectReference Include="..\Domain.Developers\Domain.Developers.csproj" />
+      <ProjectReference Include="..\Domain.Payments\Domain.Payments.csproj" />
+      <ProjectReference Include="..\Domain.Subscriptions\Domain.Subscriptions.csproj" />
+      <ProjectReference Include="..\Domain.Users\Domain.Users.csproj" />
+    </ItemGroup>
+
+</Project>
