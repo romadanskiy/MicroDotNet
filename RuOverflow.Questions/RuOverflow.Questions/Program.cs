@@ -24,27 +24,27 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 
 
-var elasticSettings = new ConnectionSettings(new Uri(configuration["ElasticSearch:Host"]));
-services.AddSingleton(new ElasticClient(elasticSettings));
-services.AddSingleton(configuration.GetSettings<KafkaSettings>("Kafka"));
+//var elasticSettings = new ConnectionSettings(new Uri(configuration["ElasticSearch:Host"]));
+//services.AddSingleton(new ElasticClient(elasticSettings));
+//services.AddSingleton(configuration.GetSettings<KafkaSettings>("Kafka"));
 Config.Initialize(configuration);
 
-services.AddHostedService<KafkaInitializer>();
+//services.AddHostedService<KafkaInitializer>();
 
-services.AddPooledDbContextFactory<RuFlowDbContext>(
+/*services.AddPooledDbContextFactory<RuFlowDbContext>(
     optionsBuilder => optionsBuilder.UseNpgsql(env.IsDevelopment()
         ? builder.Configuration.GetConnectionString("local")
-        : EnvironmentVariables.ConnectionString));
+        : EnvironmentVariables.ConnectionString));*/
 
-services.AddStackExchangeRedisCache(option =>
+/*services.AddStackExchangeRedisCache(option =>
 {
     option.Configuration = env.IsDevelopment()
         ? configuration.GetSection("Redis:Host").Value
         : EnvironmentVariables.RedisUrl;
-});
+});*/
 
 services.AddScoped<ICache, Cache>();
-services.RegisterKafkaClients(configuration.GetSettings<KafkaSettings>("Kafka"));
+//services.RegisterKafkaClients(configuration.GetSettings<KafkaSettings>("Kafka"));
 services.RegisterProducers(Assembly.GetExecutingAssembly());
 services.RegisterHandlers(Assembly.GetExecutingAssembly());
 
@@ -96,7 +96,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UpdateDb<RuFlowDbContext>();
+//app.UpdateDb<RuFlowDbContext>();
 
 app.MapGraphQL();
 

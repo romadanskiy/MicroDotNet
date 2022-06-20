@@ -37,7 +37,13 @@ dependencies {
     implementation("org.flywaydb:flyway-core:$flywayVersion")                                    //FlyWay
     implementation("com.zaxxer:HikariCP:$hikariCPVersion")                                     //HikariCP
     implementation("com.microsoft.sqlserver:mssql-jdbc:$mssqlDriverVersion")                     //MSSQL-Driver
-    implementation("org.postgresql:postgresql:42.3.4")                                  //PostgreSQL
+    implementation("org.postgresql:postgresql:42.3.4")                  //PostgreSQL
+    implementation("io.grpc:grpc-netty:1.46.0")
+    implementation("io.grpc:grpc-protobuf:1.39.0")
+    implementation("io.grpc:grpc-stub:1.46.0")
+    implementation("io.grpc:grpc-kotlin-stub:1.2.0")
+    implementation("com.google.protobuf:protobuf-kotlin:3.18.1")
+    implementation("com.google.protobuf:protobuf-java:3.18.1")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }

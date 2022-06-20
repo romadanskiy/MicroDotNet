@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service RatingGRPC {
+  rpc GetRatingByUserId (Request) returns (RatingReply) {}
+}
+
+message Request {
+  string UserId  = 1;
+}
+
+message RatingReply {
+  string Rating = 1;
+}
