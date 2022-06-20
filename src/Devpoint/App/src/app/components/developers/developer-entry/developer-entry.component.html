@@ -1,0 +1,42 @@
+<div class='wrapper' *ngIf='developer && !isRemoved'>
+  <div>
+    <div *ngIf="loading" routerLink="/developer/{{developer.id}}" class='loading-preview'>
+      <mat-spinner [diameter]='32'></mat-spinner>
+    </div>
+    <img [hidden]="loading" (load)="onLoad()"
+         routerLink="/developer/{{developer.id}}"
+         [src]="imagePath ?? '/assets/img/avatar.png'"
+         class="img-preview" alt='avatar'/>
+  </div>
+  <div class='name-wrapper'>
+    <a routerLink="/developer/{{developer.id}}" class='name'>{{ developer.name }}</a>
+    <span class='email'>{{ developer.subscriberCount ?? 0 }} followers</span>
+  </div>
+  <div class='remove-button'>
+    <app-devpoint-button devpoint-style='transparent-outline-red'
+                         devpoint-border-style='more'
+                         autoWidth
+                         size='small'
+                         (buttonClick)='remove.emit(developer)'
+                         [disabled]='isOwner'
+    >
+      {{ isOwner ? 'Owner' : 'Remove' }}
+    </app-devpoint-button>
+  </div>
+</div>
+
+<div class='wrapper' *ngIf='isRemoved'>
+  <div class='removed-container'>
+    <div class='removed-message'> Developer <b>{{ developer?.name }}</b> will be removed from company </div>
+    <div class='undo'>
+      <app-devpoint-button devpoint-style='transparent-outline'
+                           devpoint-border-style='more'
+                           autoWidth
+                           size='small'
+                           (buttonClick)='undoRemove.emit(developer)'
+      >
+        Undo
+      </app-devpoint-button>
+    </div>
+  </div>
+</div>

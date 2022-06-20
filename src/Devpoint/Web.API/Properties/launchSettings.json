@@ -1,0 +1,15 @@
+﻿{
+  "profiles": {
+    "Web.API": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:8001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_CONNECTION_STRING": "Host=localhost;Database=devpoint_db;Username=postgres;Password=qweasd123"
+      }
+    }
+  }
+}

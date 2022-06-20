@@ -1,0 +1,87 @@
+<div class='container'>
+  <form [formGroup]='form' (ngSubmit)='onSubmit()'>
+    <div class='cover' *ngIf='page === "editor"'>
+      <div class='post-wrapper'>
+        <div class='post-header'>
+          <span class='username'>{{ entity ? entity.name : 'Create post' }}</span>
+          <span class='date'>{{ date?.format('DD.MM.YYYY') }}</span>
+        </div>
+        <app-devpoint-errors [errors]='errors'></app-devpoint-errors>
+        <div class='post-editor'>
+          <input class='post-title empty-input' formControlName='title'
+                 maxlength='32'
+                 type='text' placeholder='Title'
+                 [class.error]='hasErrors("title")'
+                 (input)='cacheTitle()'>
+          <span class='text-danger'
+                *ngIf="hasError('title', 'required')">
+            Title is required
+          </span>
+          <nu-markdown id='post'
+                       [formControl]='contentTypeControl'
+                       maxlength=3000
+                       ngpreservewhitespaces
+                       [options]='options'
+                       [class.error]="!contentTypeControl.valid && contentTouched"
+                       (focusout)='contentTouched = true'
+                       (input)='cacheContent()'
+          ></nu-markdown>
+          <span class='text-danger mt0'
+                *ngIf="!contentTypeControl.valid && contentTouched">
+            Content is required
+          </span>
+        </div>
+        <mat-divider></mat-divider>
+        <div class='post-footer'>
+          <app-devpoint-button devpoint-style='transparent-outline'
+                               (buttonClick)='page = "settings"'
+                               [disabled]='!contentTypeControl.valid || !formControl["title"].valid'
+          >Continue
+          </app-devpoint-button>
+          <div class='saved' *ngIf='saved'>Saved at {{ saved.format('HH:mm') }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class='cover' *ngIf='page === "settings"'>
+      <div class='post-wrapper post-wrapper-settings'>
+        <div class='post-header'>
+          <h1>Post settings</h1>
+        </div>
+        <mat-divider></mat-divider>
+        <div class='post-editor'>
+          <div class='sub-type-container'>
+            <div class='label'>
+              Subscription type
+            </div>
+            <div class='sub-type'>
+              <section>
+                <mat-button-toggle-group [formControl]='subTypeControl' [class.error]='hasErrors("subType")'>
+                  <mat-button-toggle value=1>Free</mat-button-toggle>
+                  <mat-button-toggle value=2>Basic</mat-button-toggle>
+                  <mat-button-toggle value=3>Improved</mat-button-toggle>
+                  <mat-button-toggle value=4>Pro</mat-button-toggle>
+                </mat-button-toggle-group>
+              </section>
+            </div>
+            <app-devpoint-upload-image label='Add cover here'
+                                       description='Drop a file with 820×350 size here (jpg, gif, png) or click'
+                                       buttonLabel='Upload cover'
+                                       (fileChange)='onFileChanged($event)'
+            ></app-devpoint-upload-image>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class='post-footer'>
+          <app-devpoint-button devpoint-style='transparent-outline'
+                               (click)='page = "editor"'
+          >Back to editor
+          </app-devpoint-button>
+          <app-devpoint-button type='submit' [disabled]='!form.valid || !cover' class='create-post'>
+            Create post
+          </app-devpoint-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

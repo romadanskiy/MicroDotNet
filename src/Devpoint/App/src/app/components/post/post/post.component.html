@@ -1,0 +1,15 @@
+<div class="cover" *ngIf='post && post?.hasUserAccess'>
+  <div class="post-wrapper">
+    <div routerLink="/post/{{post.id}}" class="post-cover-container">
+      <a routerLink="/post/{{post.id}}" class="post-title">{{ post.title }}</a>
+      <div class='post-date'>{{ post.date }}</div>
+      <div *ngIf="loading" class='loading-preview'>
+        <mat-spinner ></mat-spinner>
+      </div>
+      <img [hidden]="loading" #image (load)="onLoad()" [src]="imagePath ?? 'assets/img/empty.png'" class="post-cover-img" alt='cover'/>
+      <div [style.background-image]="bgImagePath" class="post-cover-bg"></div>
+      <div class='backdrop'></div>
+    </div>
+    <div markdown class="post-content" ngpreservewhitespaces>{{ post.content }}</div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div *ngIf="subscription && subscription.entity && subscription.tariff" class="info-card">
+  <div class="row info-card-wrapper">
+    <div class='img-container'>
+      <div *ngIf="loading" [routerLink]="link" class='loading-preview'>
+        <mat-spinner ></mat-spinner>
+      </div>
+      <img [hidden]="loading" (load)="onLoad()" [routerLink]="link" [src]="imagePath ?? '/assets/img/avatar.png'" class="img-preview col" alt='avatar'/>      <div class='icon'>
+        <svg *ngIf='subscription.entity.type === entityTypes.Project' xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-file-earmark-code-fill" viewBox="0 0 16 16">
+          <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM6.646 7.646a.5.5 0 1 1 .708.708L5.707 10l1.647 1.646a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2zm2.708 0 2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L10.293 10 8.646 8.354a.5.5 0 1 1 .708-.708z"/>
+        </svg>
+        <svg *ngIf='subscription.entity.type === entityTypes.Company' xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-file-earmark-code-fill" viewBox="0 0 16 16">
+          <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+          <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+        </svg>
+        <svg *ngIf='subscription.entity.type === entityTypes.Developer' xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-file-earmark-code-fill" viewBox="0 0 16 16">
+          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+          <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>            </svg>
+      </div>
+    </div>
+    <div class="tags col">
+      <div class="row">
+        <a class="entity-name" [routerLink]="link">{{ subscription.entity.name }}</a>
+      </div>
+      <div class="row" *ngIf='subscription.isAutoRenewal && subscription.tariff.subscriptionLevelId <= 4'>
+        <div class="auto-renewal">Auto-renewable</div>
+      </div>
+      <div class="row" *ngIf='subscription.tariff.subscriptionLevelId > 4'>
+        <div class="auto-renewal">{{ subscriptionLevelName }}</div>
+      </div>
+      <div class='info' *ngIf='subscription.tariff.subscriptionLevelId <= 4'>
+        <div class="row">
+          <div class="type"><b>{{ subscriptionLevelName }}</b> ${{ subscription.tariff.pricePerMonth }}/mo</div>
+        </div>
+        <div class="row">
+          <div class="ends">Ends {{ endTime }}</div>
+        </div>
+      </div>
+    </div>
+    <mat-divider class='divider' *ngIf='subscription.tariff.subscriptionLevelId <= 4' [vertical]="true"></mat-divider>
+    <div class="actions col" *ngIf='subscription.tariff.subscriptionLevelId <= 4'>
+      <div class="row">
+        <a class="manage" routerLink='/pricing'
+                          [queryParams]="{ type: subscription.entity.type, id: subscription.entity.id }">Manage</a>
+      </div>
+      <div class="row">
+        <a class="cancel" (click)="openDialog()">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>

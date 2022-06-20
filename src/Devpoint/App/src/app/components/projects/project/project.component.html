@@ -1,0 +1,36 @@
+<div class="container" *ngIf='project'>
+  <app-project-preview [project]="project" [isOwned]='isOwned' [owner]='owner' large></app-project-preview>
+</div>
+
+<div class="developers-container container" *ngIf='developers && project'>
+  <mat-accordion>
+    <mat-expansion-panel hideToggle (expandedChange)='hideDevelopers = !$event'>
+      <mat-expansion-panel-header>
+        <div class='swiper-info'>
+          <div>Developers</div> <div class='swiper-count'>{{ developers.length }}</div>
+        </div>
+      </mat-expansion-panel-header>
+      <app-devpoint-swiper createLink="/project/{{project.id}}/edit"
+                           [routerParams]="{ page: 1 }"
+                           [addLink]='isOwned'
+                           [items]='developers'
+                           label='Developers'
+                           [hide]='hideDevelopers'
+      >
+      </app-devpoint-swiper>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+
+<div class='container' *ngIf='project && isOwned'>
+  <app-devpoint-button fullWidth
+                       routerLink='/add-post'
+                       [queryParams]="{type: 'project', id: project.id }"
+  >
+    Add post
+  </app-devpoint-button>
+</div>
+
+<app-posts-container [getRequest]='getPostsRequest'>
+</app-posts-container>

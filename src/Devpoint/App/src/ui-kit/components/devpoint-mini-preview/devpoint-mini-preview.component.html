@@ -1,0 +1,13 @@
+<a class="mini-preview" routerLink="{{item.link}}" *ngIf="item">
+    <div *ngIf="loading" class='loading-preview'>
+      <mat-spinner ></mat-spinner>
+    </div>
+    <img [hidden]="loading" (load)="onLoad()" [src]="item.imgSrc ?? '/assets/img/empty.png'" class="preview-img" alt='avatar'/>
+    <div class="preview-img-after"></div>
+    <h5 class="preview-label">{{item.name}}</h5>
+    <h5 class="preview-label cover">{{item.name}}</h5>
+</a>
+
+<div class="default-mini-preview" *ngIf="!item">
+    <ng-content></ng-content>
+</div>

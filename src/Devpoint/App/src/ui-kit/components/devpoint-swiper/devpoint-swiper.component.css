@@ -1,0 +1,50 @@
+.devpoint-swiper {
+  margin-top: 6px;
+}
+
+a {
+  color: black
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.nav-button {
+  position: absolute;
+  background-color: transparent;
+  outline: none;
+  border-style: none;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.on-hover {
+  fill: transparent;
+  position: absolute;
+  transition: fill 0.16s ease-in-out;
+}
+
+.on-hide {
+  fill: transparent!important;
+}
+
+.nav-button:hover .on-hover {
+  fill: black;
+}
+
+.button-prev {
+  top: calc(50% + 12px);
+  left: 0;
+  right: auto;
+}
+
+.button-next {
+  top: calc(50% + 12px);
+  right: 0;
+  left: auto;
+}
