@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Rabbit;
 using Services.Content.Comments;
 using Services.Content.Posts;
 using Services.Developers.Companies;
@@ -68,6 +69,8 @@ builder.Services.AddScoped<IReplenishmentService, ReplenishmentService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IWithdrawalService, WithdrawalService>();
 builder.Services.AddScoped<IEarningService, EarningService>();
+
+builder.Services.AddScoped<IRabbitPublisher, RabbitPublisher>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

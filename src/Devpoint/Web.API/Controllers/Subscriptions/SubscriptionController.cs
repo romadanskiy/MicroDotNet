@@ -1,9 +1,11 @@
+using System.Text.Json;
 using Data.Core;
 using Domain.Developers.Entities;
 using Domain.Payments.Entities;
 using Domain.Subscriptions.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Rabbit;
 using Services.Developers.Companies;
 using Services.Developers.Developers;
 using Services.Developers.Projects;
@@ -28,13 +30,15 @@ public class SubscriptionController : Controller
     private readonly IProjectService _projectService;
     private readonly IDeveloperService _developerService;
     private readonly ApplicationContext _context;
+    private readonly IRabbitPublisher _publisher;
 
     public SubscriptionController(
         ISubscriptionService subscriptionService, 
         IBillService billService, IWalletService walletService, 
         ITariffService tariffService, ICompanyService companyService, 
         IProjectService projectService, IDeveloperService developerService, 
-        ApplicationContext context)
+        ApplicationContext context, 
+        IRabbitPublisher publisher)
     {
         _subscriptionService = subscriptionService;
         _billService = billService;
@@ -44,6 +48,22 @@ public class SubscriptionController : Controller
         _projectService = projectService;
         _developerService = developerService;
         _context = context;
+        _publisher = publisher;
+    }
+
+    [HttpGet]
+    [Route("publish")]
+    public IActionResult Publish()
+    {
+        var dto = new PaySubscriptionDto
+        {
+            Amount = 100,
+            SubscriberWalletId = Guid.NewGuid(),
+            TargetId = Guid.NewGuid()
+        };
+        _publisher.SendMessage(dto);
+
+        return Ok();
     }
 
     [HttpGet]

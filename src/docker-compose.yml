@@ -5,33 +5,34 @@ networks:
     driver: bridge
 
 services:
-  devpoint.frontend:
-    container_name: devpoint.frontend
-    image: devpoint.frontend:latest
-    depends_on:
-      - "devpoint.api"
-    build:
-      context: ./Devpoint/App
-      dockerfile: Dockerfile
+  devpoint.rabbit:
+    container_name: devpoint.rabbit
+    hostname: devpoint.rabbit
+    image: rabbitmq:latest  
     ports:
-      - "4200:4200"
+        - 5672:5672
+    volumes:
+        - rabbit_data:/var/lib/rabbitmq/
+        - rabbit_log:/var/log/rabbitmq
+    networks:
+        - devpoint.network
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 5s
+      timeout: 15s
+      retries: 20
 
-  devpoint.api:
-    container_name: devpoint.api
-    image: devpoint.api:latest
-    depends_on:
-      - "devpoint.db"
-      - "gateway"
+  gateway:
+    container_name: gateway
+    image: gateway:latest
     build:
-      context: ./Devpoint
-      dockerfile: Web.API/Dockerfile
+      context: .
+      dockerfile: Gateway/Dockerfile
     ports:
-      - "8001:80"
-    environment:
-      DB_CONNECTION_STRING: "host=devpoint.db;port=5432;database=devpoint_db;username=postgres;password=postgres"
+      - "8000:80"
     networks:
       - devpoint.network
-  
+
   devpoint.db:
     container_name: devpoint.db
     image: postgres:latest
@@ -47,16 +48,49 @@ services:
     networks:
       - devpoint.network
 
-  gateway:
-    container_name: gateway
-    image: gateway:latest
+  devpoint.frontend:
+    container_name: devpoint.frontend
+    image: devpoint.frontend:latest
+    depends_on:
+      - devpoint.api
     build:
-      context: .
-      dockerfile: Gateway/Dockerfile
+      context: ./Devpoint/App
+      dockerfile: Dockerfile
     ports:
-      - "8000:80"
+      - "4200:4200"
+
+  devpoint.api:
+    container_name: devpoint.api
+    image: devpoint.api:latest
+    depends_on:
+      - devpoint.db
+      - gateway
+      - devpoint.background
+    build:
+      context: ./Devpoint
+      dockerfile: Web.API/Dockerfile
+    ports:
+      - "8001:80"
+    environment:
+      DB_CONNECTION_STRING: "host=devpoint.db;port=5432;database=devpoint_db;username=postgres;password=postgres"
+    networks:
+      - devpoint.network
+  
+  devpoint.background:
+    container_name: devpoint.background
+    image: devpoint.background:latest
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    build:
+      context: ./Devpoint
+      dockerfile: Background/Dockerfile
+    ports:
+      - "8002:80"
     networks:
       - devpoint.network
     
 volumes:
   db_volume:
+  rabbit_data:
+  rabbit_log:

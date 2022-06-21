@@ -36,6 +36,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Users", "Services.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "..\Gateway\Gateway.csproj", "{7E10054D-6245-4433-AB50-C5D63ED7720C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rabbit", "Rabbit\Rabbit.csproj", "{470165EA-C66F-492B-8971-F45FACC9E177}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Background", "Background\Background.csproj", "{59F03ACD-6749-4BC5-84E7-495410CC6222}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,5 +110,13 @@ Global
 		{7E10054D-6245-4433-AB50-C5D63ED7720C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E10054D-6245-4433-AB50-C5D63ED7720C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E10054D-6245-4433-AB50-C5D63ED7720C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{470165EA-C66F-492B-8971-F45FACC9E177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{470165EA-C66F-492B-8971-F45FACC9E177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{470165EA-C66F-492B-8971-F45FACC9E177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{470165EA-C66F-492B-8971-F45FACC9E177}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59F03ACD-6749-4BC5-84E7-495410CC6222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59F03ACD-6749-4BC5-84E7-495410CC6222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59F03ACD-6749-4BC5-84E7-495410CC6222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59F03ACD-6749-4BC5-84E7-495410CC6222}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
