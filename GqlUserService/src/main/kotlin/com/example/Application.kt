@@ -16,7 +16,7 @@ private class RatingGRPCService : RatingGRPCGrpcKt.RatingGRPCCoroutineImplBase()
 fun main(args: Array<String>): Unit{
     io.ktor.server.netty.EngineMain.main(args)
     val server = ServerBuilder
-        .forPort(8081)
+        .forPort(8089)
         .addService(RatingGRPCService())
         .build()
     server.start()
