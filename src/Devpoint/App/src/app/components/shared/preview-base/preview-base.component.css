@@ -1,0 +1,160 @@
+.tags span{
+    background-color: #E6E6E6;
+    padding: 1px 5px 1px 5px;
+    border-radius: 10px;
+    margin-right: 5px;
+    margin-bottom: 12px;
+}
+
+.entity-container {
+  display: flex;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.tags {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.large .tags {
+    margin-left: 12px;
+}
+
+.large .tags-container {
+    margin-top: 5px;
+}
+
+.about {
+    background-color: #F3F3F3;
+    word-break: break-all;
+    min-width: 300px;
+    min-height: 150px;
+    border-radius: 15px;
+    padding: 15px;
+    color: #656565;
+    margin-left: 6px;
+}
+
+.img-preview{
+    object-fit: cover;
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 40px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.settings-button {
+  margin: 0 0 0 6px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.entity-name{
+  color: black !important;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 18px;
+  text-decoration: none;
+}
+
+.name-container {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.loading-preview {
+  width: 150px;
+  height: 100px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.subscribe-button {
+  margin-left: 8px;
+}
+
+.img-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 150px;
+  max-height: 150px;
+  margin-left: 10px;
+  min-width: 150px;
+}
+
+.icon {
+  position: absolute;
+  bottom: -8px;
+  background-color: var(--btn-main-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: #fafafa solid 2px;
+  width: 32px;
+  height: 32px;
+  border-radius: 32px;
+}
+
+.large .img-wrapper {
+    padding: 0;
+    margin-left: 0;
+    min-width: 150px;
+}
+
+.info-card{
+    margin: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-radius: 20px;
+    background-color: #fafafa;
+    box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    transition: background-color 0.16s ease-in-out, box-shadow 0.16s ease-in-out;
+    min-height: 120px;
+}
+
+.info-card:hover {
+  background-color: #f6f6f6;
+  box-shadow: 0px 4px 8px 4px rgba(34, 60, 80, 0.2);
+}
+
+.info-card.large {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.sub-count {
+    margin-bottom: 8px;
+    color: #727272;
+}
+
+.owner {
+  color: #727272;
+}
+
+.buttons {
+  margin-top: auto;
+  display: flex;
+  padding-top: 8px;
+}
+
+.dropdown {
+    margin-left: 0.5rem;
+}

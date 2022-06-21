@@ -1,0 +1,153 @@
+<div class='container'>
+  <app-devpoint-side-nav [pages]='["Profile", "Security"]'
+                         [(page)]='page'
+  ></app-devpoint-side-nav>
+  <div class='body'>
+    <div class="alert alert-success" role="alert" *ngIf='successMessage'>
+      {{ successMessage }}
+    </div>
+    <app-devpoint-errors [errors]='errors'></app-devpoint-errors>
+    <div class='page-wrapper' *ngIf='page === 0'>
+      <h1>
+        Profile
+      </h1>
+      <mat-divider></mat-divider>
+      <div class='wrapper'>
+        <form id='form' [formGroup]='form' (ngSubmit)='submitForm()'>
+          <h2>General information</h2>
+          <div class='input-wrapper'>
+            <div class='input-label-wrapper'>
+              <label class='input-label' [class.error]='hasErrors("name")'>Name</label>
+              <label class='sym-count' [class.error]='hasErrors("name")'>{{ 32 - form.value.name.length }}</label>
+            </div>
+            <input maxlength='32' formControlName='name' class='input-field' type='text'
+                   [class.error]='hasErrors("name")'>
+            <span class='text-danger'
+                  *ngIf="hasError('name', 'required')">
+            Name is required
+          </span>
+          </div>
+          <div class='input-wrapper'>
+            <div class='input-label-wrapper'>
+              <label class='input-label' [class.error]='hasErrors("description")'>Description</label>
+              <label class='sym-count' [class.error]='hasErrors("description")'>{{ 256 - form.value.description.length }}</label>
+            </div>
+            <div class='input-field input-textarea' [class.error]='hasErrors("description")'>
+              <textarea class='empty-input'
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="3"
+                        maxlength='256' formControlName='description' type='text'
+                        [class.error]='hasErrors("description")'
+              ></textarea>
+            </div>
+            <div class='input-wrapper'>
+              <div class='input-label-wrapper'>
+                <label class='input-label'>Tags</label>
+                <label class='sym-count'>{{ 32 - tags.length }}</label>
+              </div>
+              <div class='input-field input-tags'>
+                <app-tags-input [(tags)]='tags'></app-tags-input>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class='wrapper mt32'>
+        <h2>Avatar</h2>
+        <app-devpoint-upload-image label='Add avatar here'
+                                   description='Drop a file with 150×150 size here (jpg, gif, png) or click'
+                                   buttonLabel='Upload avatar'
+                                   (fileChange)='onFileChanged($event)'
+                                   [background]='false'
+                                   noMargin
+                                   fullWidth
+                                   [currentImagePath]='currentImagePath'
+        ></app-devpoint-upload-image>
+      </div>
+    </div>
+
+    <div class='page-wrapper' *ngIf='page === 1'>
+      <h1>
+        Security
+      </h1>
+      <mat-divider></mat-divider>
+      <div class='wrapper'>
+        <form [formGroup]='passwordForm' (ngSubmit)='submitPasswordForm()'>
+          <h2>Change password</h2>
+          <div class='input-wrapper'>
+            <div class='input-label-wrapper'>
+              <label class='input-label' [class.error]='passwordHasErrors("oldPassword")'>Current password</label>
+              <label class='sym-count' [class.error]='passwordHasErrors("oldPassword")'>{{ 32 - passwordForm.value.oldPassword.length }}</label>
+            </div>
+            <input maxlength='32' formControlName='oldPassword' class='input-field' type='password'
+                   [class.error]='passwordHasErrors("oldPassword")' />
+            <span class='text-danger'
+                *ngIf="passwordHasError('newPassword', 'required')">
+              Current password is required
+            </span>
+          </div>
+          <div class='input-wrapper'>
+            <div class='input-label-wrapper'>
+              <label class='input-label' [class.error]='passwordHasErrors("newPassword")'>New password</label>
+              <label class='sym-count' [class.error]='passwordHasErrors("newPassword")'>{{ 32 - passwordForm.value.newPassword.length }}</label>
+            </div>
+            <input maxlength='32' formControlName='newPassword' class='input-field' type='password'
+                   [class.error]='passwordHasErrors("newPassword")' />
+              <span class='text-danger'
+                    *ngIf="passwordHasError('newPassword', 'required')">
+                New password is required
+              </span>
+              <span class='text-danger'
+                  *ngIf="passwordHasError('newPassword', 'invalidPassword')">
+                Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase
+                letter and 1 number
+              </span>
+          </div>
+          <div class='input-wrapper'>
+            <div class='input-label-wrapper'>
+              <label class='input-label' [class.error]='passwordHasErrors("confirmNewPassword") || passwordFormHasError("passwordMismatch")'>Reenter new password</label>
+              <label class='sym-count' [class.error]='passwordHasErrors("confirmNewPassword") || passwordFormHasError("passwordMismatch")'>{{ 32 - passwordForm.value.confirmNewPassword.length }}</label>
+            </div>
+            <input maxlength='32' formControlName='confirmNewPassword' class='input-field' type='password'
+                   [class.error]='passwordHasErrors("confirmNewPassword") || passwordFormHasError("passwordMismatch")' />
+            <span class='text-danger'
+                  *ngIf="passwordHasError('confirmNewPassword', 'required')">
+              Confirm password is required
+            </span>
+            <span class='text-danger'
+                  *ngIf="passwordFormHasError('passwordMismatch')">
+              Passwords does not match
+            </span>
+          </div>
+
+          <div class='input-wrapper'>
+            <div>{{formControl?.['confirmNewPassword']?.errors ?? ''}}</div>
+            <app-devpoint-button type='submit' fullWidth>
+              Change
+            </app-devpoint-button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class='buttons'>
+      <div class='button'>
+        <app-devpoint-button devpoint-style='transparent-outline'
+                             routerLink='/profile'
+                             buttonFontColor='gray'
+                             [bold]='false'
+        >
+          Back to profile
+        </app-devpoint-button>
+      </div>
+      <div class='button'>
+        <app-devpoint-button [disabled]='!form.valid' (buttonClick)='submitForm()' type='submit'>
+          Save
+        </app-devpoint-button>
+      </div>
+    </div>
+  </div>
+</div>

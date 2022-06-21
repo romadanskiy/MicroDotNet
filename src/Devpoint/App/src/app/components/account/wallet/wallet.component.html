@@ -1,0 +1,90 @@
+<div class="container-xl" style="margin-top: 70px">
+    <div class="row justify-content-center">
+        <div class="col-4 align-self-center">
+          <div class="alert alert-success" role="alert" *ngIf='successMessage'>
+            {{ successMessage }}
+          </div>
+          <app-devpoint-errors [errors]='errors'></app-devpoint-errors>
+            <div class="funds-label">Your funds:</div>
+            <div class="funds">{{formattedAmount}}$</div>
+            <div style="margin-bottom: 15px;">
+                <div class='form'>
+                    <input maxlength='6' [(ngModel)]='deposit' placeholder="Money"
+                           type='number'
+                           class="form-control input-search"/>
+                    <app-devpoint-button autoWidth [bold]="false" (buttonClick)='onDeposit()'>Deposit</app-devpoint-button>
+                </div>
+            </div>
+            <div>
+                <div class='form' [class.error]='withdraw > amount'>
+                    <span class='text-danger'
+                          *ngIf="withdraw > amount">
+                      Cannot withdraw more then {{amount}}
+                    </span>
+                    <input maxlength='6' [(ngModel)]='withdraw' class='form-control input-search'
+                           placeholder="Money" type='number'
+                           [class.error]='withdraw > amount'>
+                    <app-devpoint-button autoWidth [bold]="false" (buttonClick)='onWithdrawal()'>Withdrawal</app-devpoint-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-auto align-self-center" style="margin-top: 30px; margin-left: 20px;">
+            <img src="assets/img/undraw_Receipt_re_fre3.svg" alt="" style="max-width: 300px; width: 300px;">
+        </div>
+    </div>
+
+  <ng-container *ngIf='withdrawals?.length || deposits?.length'>
+    <div class='history-container'>
+      <div class='history-label'>
+        <h2 class='no-margin'>History</h2>
+        <app-devpoint-side-nav vertical
+                               borderStyle='round'
+                               no-stick
+                               [(page)]='page'
+                               [pages]="['Withdrawals', 'Deposits', 'Bills']"></app-devpoint-side-nav>
+      </div>
+    </div>
+
+    <div class='input-wrapper mt16'>
+      <div class='input-field developers-container'>
+        <ng-container *ngIf='page === 0 && withdrawals'>
+          <ng-container *ngFor='let entry of withdrawals'>
+            <div class='entry'>
+              <div>{{ entry.amount }}$</div>
+              <div>{{ entry.id }}</div>
+              <div>{{ entry.dateTime | date: 'dd.MM.YYYY HH:mm' }}</div>
+            </div>
+            <mat-divider></mat-divider>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf='page === 1 && deposits'>
+          <ng-container *ngFor='let entry of deposits'>
+            <div class='entry'>
+              <div>{{ entry.amount }}$</div>
+              <div>{{ entry.id }}</div>
+              <div>{{ entry.dateTime | date: 'dd.MM.YYYY HH:mm' }}</div>
+            </div>
+            <mat-divider></mat-divider>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf='page === 2 && bills'>
+          <ng-container *ngFor='let entry of bills'>
+            <div class='entry bill'>
+              <div>{{ entry.amount }}$</div>
+              <div>{{ entry.id }}</div>
+              <div>{{ entry.dateTime | date: 'dd.MM.YYYY HH:mm' }}</div>
+              <div class='sub-info'>
+                <div><b>{{ entry.subscriptionType }}</b></div>
+              </div>
+              <div [class.failed]='entry.status === 1'
+                   [class.success]='entry.status === 0'
+              >{{ entry.status === 0 ? 'Success' : 'Failed' }}</div>
+            </div>
+            <mat-divider></mat-divider>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</div>

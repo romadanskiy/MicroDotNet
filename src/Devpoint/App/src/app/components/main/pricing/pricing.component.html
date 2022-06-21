@@ -1,0 +1,116 @@
+<div class='container'>
+  <div class='message'>
+    <div class="alert alert-success" role="alert" *ngIf='successMessage'>
+      {{ successMessage }}
+    </div>
+    <app-devpoint-errors [errors]='errors'></app-devpoint-errors>
+  </div>
+  <div class='entity-name-container'>
+    <a [routerLink]='link' class='entity-name' *ngIf='entity'>{{ entity.name }}</a>
+  </div>
+  <h1 style='text-align: center'>Pricing</h1>
+    <div class='auto-renewal'>
+      <div class='auto-renewal-wrapper'>
+        <div class='label'>Enable auto-renewal</div>
+        <mat-slide-toggle color='primary' [checked]='isAutoRenewable' (change)='onAutoRenewableChange($event)'></mat-slide-toggle>
+      </div>
+    </div>
+    <div class='tariff-layout'>
+      <div class='tariff-container'>
+        <p class='tariff-banner'></p>
+        <div class='tariff-wrapper tariff-body'>
+          <h3 class='tariff-title'>Basic</h3>
+          <div class='tariff-pricing'>
+            <p class='tariff-price'> $9.99/mo</p>
+          </div>
+          <app-devpoint-button fullWidth
+                               devpoint-style='transparent-outline'
+                               size='large'
+                               class='cta'
+                               [disabled]='currentSubscription?.tariff?.subscriptionLevelId === 2'
+                               (click)='onSubscribe(2)'
+          >
+            {{ currentSubscription?.tariff?.subscriptionLevelId === 2 ? 'Current tariff' : (currentSubscription?.tariff?.subscriptionLevelId ?? 2) > 2 ? 'Downgrade' : 'Subscribe' }}
+          </app-devpoint-button>
+          <p class='tariff-description'>Gives access to paid publications.
+          </p>
+        </div>
+        <div class='tariff-wrapper tariff-footer'>
+          <p class='tariff-feature-title'>What's included</p>
+          <ul class='tariff-features'>
+            <li class='tariff-feature'>
+              <span class='tariff-feature-content'>Unlimited access to basic level publications</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!---->
+      <div class='tariff-container'>
+        <p class='tariff-banner'></p>
+        <div class='tariff-wrapper tariff-body'>
+          <h3 class='tariff-title'>Improved</h3>
+          <div class='tariff-pricing'>
+            <p class='tariff-price'> $19.99/mo</p>
+          </div>
+          <app-devpoint-button fullWidth
+                               devpoint-style='transparent-outline'
+                               size='large'
+                               class='cta'
+                               [disabled]='currentSubscription?.tariff?.subscriptionLevelId === 3'
+                               (click)='onSubscribe(3)'
+          >
+            {{ currentSubscription?.tariff?.subscriptionLevelId === 3 ? 'Current tariff' : currentSubscription?.tariff?.subscriptionLevelId === 4 ? 'Downgrade' : currentSubscription?.tariff?.subscriptionLevelId === 2 ? 'Upgrade' : 'Subscribe' }}
+          </app-devpoint-button>
+          <p class='tariff-description'>Gives access to paid publications.
+          </p>
+        </div>
+        <div class='tariff-wrapper tariff-footer'>
+          <p class='tariff-feature-title'>What's included</p>
+          <ul class='tariff-features'>
+            <li class='tariff-feature'>
+              <span class='tariff-feature-content'>Unlimited access to basic level publications</span>
+            </li>
+            <li class='tariff-feature'>
+              <span class='tariff-feature-content'>Unlimited access to improved level publications</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!---->
+      <div class='tariff-container'>
+        <p class='tariff-banner'></p>
+        <div class='tariff-wrapper tariff-body'>
+          <h3 class='tariff-title'>Pro</h3>
+          <div class='tariff-pricing'>
+            <p class='tariff-price'> $39.99/mo</p>
+          </div>
+          <app-devpoint-button fullWidth
+                               devpoint-style='transparent-outline'
+                               size='large'
+                               class='cta'
+                               [disabled]='currentSubscription?.tariff?.subscriptionLevelId === 4'
+                               (click)='onSubscribe(4)'
+          >
+            {{ currentSubscription?.tariff?.subscriptionLevelId === 4 ? 'Current tariff' : (currentSubscription?.tariff?.subscriptionLevelId ?? 4) < 4 ? 'Upgrade' : 'Subscribe' }}
+          </app-devpoint-button>
+          <p class='tariff-description'>Gives access to paid publications.
+          </p>
+        </div>
+        <div class='tariff-wrapper tariff-footer'>
+          <p class='tariff-feature-title'>What's included</p>
+          <ul class='tariff-features'>
+            <li class='tariff-feature'>
+              <span class='tariff-feature-content'>Unlimited access to basic level publications</span>
+            </li>
+            <li class='tariff-feature'>
+              <span class='tariff-feature-content'>Unlimited access to improved level publications</span>
+            </li>
+            <li class='tariff-feature ng-star-inserted'>
+              <span class='tariff-feature-content'>Gives access to super publications</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</div>
+

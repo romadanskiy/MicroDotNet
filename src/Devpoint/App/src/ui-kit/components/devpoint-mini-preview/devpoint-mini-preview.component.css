@@ -1,0 +1,80 @@
+.mini-preview {
+  text-decoration: none;
+  color: black;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: min-content;
+  cursor: pointer;
+}
+
+.loading-preview {
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
+.default-mini-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  width: 150px;
+  border-radius: 20px;
+  background-color: #F3F3F3;
+}
+
+.preview-img {
+  background-color: #F3F3F3;
+  height: 150px!important;
+  width: 150px!important;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.preview-img-after {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgba(255,255,255, 0);
+  transition: background-color 0.16s ease-in-out, backdrop-filter 0.16s ease-in-out;
+  border-radius: 20px;
+}
+
+.mini-preview:hover .preview-img-after {
+  color: #000;
+  text-align: center;
+  font-weight: bold;
+  background: rgba(255,255,255, 0.5);
+  display: block;
+  text-shadow: 1px 1px 1px #fff;
+  backdrop-filter: blur(3px);
+}
+
+.preview-label {
+  position: absolute;
+  mix-blend-mode: difference;
+  color: white;
+  font-weight: bold;
+  user-select: none;
+  font-size: 24px;
+  text-align: center;
+}
+
+.preview-label.cover {
+  mix-blend-mode: overlay;
+  color: white;
+  font-weight: bold;
+  opacity: 0.5;
+  transition: color 0.16s ease-in-out;
+  text-align: center;
+}
+
+.mini-preview:hover .preview-label.cover {
+  color: black;
+}
