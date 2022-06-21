@@ -16,10 +16,11 @@ private class RatingGRPCService : RatingGRPCGrpcKt.RatingGRPCCoroutineImplBase()
 fun main(args: Array<String>): Unit{
     io.ktor.server.netty.EngineMain.main(args)
     val server = ServerBuilder
-        .forPort(8089)
+        .forPort(8980)
         .addService(RatingGRPCService())
         .build()
     server.start()
+    server.awaitTermination()
 }
 
 @Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
