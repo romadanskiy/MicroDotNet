@@ -47,7 +47,7 @@ public class AskQuestionHandler : IAsyncHandler<AskQuestionCommand, Question>
 
     private static async Task<int> GetRatingByGrpcAsync(Guid userId)
     {
-        using var channel = GrpcChannel.ForAddress("https://gqluserservice:8089");
+        using var channel = GrpcChannel.ForAddress("http://gqluserservice:50051");
 
         var raitingClient = new RatingGRPC.RatingGRPCClient(channel);
 
