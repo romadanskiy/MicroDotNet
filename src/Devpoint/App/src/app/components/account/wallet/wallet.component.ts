@@ -18,6 +18,7 @@ export class WalletComponent implements OnInit {
   withdrawals?: PaymentEntry[];
   deposits?: PaymentEntry[];
   bills?: PaymentEntry[];
+  earnings?: PaymentEntry[];
   formattedAmount: number = 0;
   errors: Errors = { errors: {} };
   constructor(private app: AppService) {}
@@ -38,6 +39,10 @@ export class WalletComponent implements OnInit {
 
     this.app.getAllBills().subscribe((entries) => {
       this.bills = entries;
+    });
+
+    this.app.getAllEarnings().subscribe((entries) => {
+      this.earnings = entries;
     });
   }
 

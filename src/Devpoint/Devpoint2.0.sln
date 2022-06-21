@@ -34,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Users", "Domain.User
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Users", "Services.Users\Services.Users.csproj", "{1470C5A8-71E9-4A35-93EC-66B51A2C1A06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway.csproj", "{7E10054D-6245-4433-AB50-C5D63ED7720C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "..\Gateway\Gateway.csproj", "{7E10054D-6245-4433-AB50-C5D63ED7720C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

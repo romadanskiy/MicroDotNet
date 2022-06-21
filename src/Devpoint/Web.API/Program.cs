@@ -11,6 +11,7 @@ using Services.Developers.Developers;
 using Services.Developers.Projects;
 using Services.Developers.Tags;
 using Services.Payments.Bills;
+using Services.Payments.Earnings;
 using Services.Payments.Replenishments;
 using Services.Payments.Wallets;
 using Services.Payments.Withdrawals;
@@ -66,6 +67,7 @@ builder.Services.AddScoped<IBillService, BillService>();
 builder.Services.AddScoped<IReplenishmentService, ReplenishmentService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IWithdrawalService, WithdrawalService>();
+builder.Services.AddScoped<IEarningService, EarningService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

@@ -91,6 +91,12 @@
   font-size: 20px;
 }
 
+.earning {
+  grid-template-columns: 0.5fr 0.2fr 1fr 0.4fr 0.6fr 0.6fr;
+  padding: 16px 32px;
+  font-size: 20px;
+}
+
 .sub-info {
   display: flex;
   justify-content: center;
