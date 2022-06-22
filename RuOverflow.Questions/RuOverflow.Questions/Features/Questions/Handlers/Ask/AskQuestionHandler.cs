@@ -31,30 +31,10 @@ public class AskQuestionHandler : IAsyncHandler<AskQuestionCommand, Question>
         var userId = _accessor.GetUserId();
         var question = new Question(input.Title, input.Body, userId, tags);
         
-        var rating = await GetRatingByGrpcAsync(userId);
-
-        if (rating < -50)
-        {
-            throw new Exception("У вас слишком низкий рейтинг, вам запрещено создавать вопросы");
-        }
-        
         question.Rating = 4;
         
         context.Questions.Add(question);
         await context.SaveChangesAsync();
         return question;
-    }
-
-    private static async Task<int> GetRatingByGrpcAsync(Guid userId)
-    {
-        using var channel = GrpcChannel.ForAddress("http://gqluserservice:50051");
-
-        var raitingClient = new RatingGRPC.RatingGRPCClient(channel);
-
-        var response = await raitingClient.GetRatingByUserIdAsync(new Request() { UserId = userId.ToString() });
-        
-        var isRaitingCorrect = int.TryParse(response.Rating, out var raiting);
-        
-        return isRaitingCorrect ? raiting : throw new ApplicationException();
     }
 }

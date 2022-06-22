@@ -16,7 +16,7 @@ private class RatingGRPCService : RatingGRPCGrpcKt.RatingGRPCCoroutineImplBase()
 
 fun main(args: Array<String>): Unit{
     val server = ServerBuilder
-        .forPort(50051)
+        .forPort(50071)
         .addService(RatingGRPCService())
         .build()
     server.start()
@@ -24,10 +24,10 @@ fun main(args: Array<String>): Unit{
     io.ktor.server.netty.EngineMain.main(args)
 }
 
-@Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
+@Suppress("unused")
 fun Application.module() {
     initDatabase(environment.config)
     val dbfacade = DAOFacadeImpl()
     configureKGrapQL(dbfacade)
-    //configureRouting()
+    configureRouting()
 }

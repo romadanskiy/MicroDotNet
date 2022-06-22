@@ -52,6 +52,9 @@
         <Compile Update="Features\Questions\Models\QuestionSearchDto.cs">
             <DependentUpon>BaseQuestionSearchDto.cs</DependentUpon>
         </Compile>
+        <Compile Update="Features\Questions\Handlers\Ask\AskQuestionDecorator.cs">
+          <DependentUpon>AskQuestionHandler.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>
