@@ -6,11 +6,15 @@ import io.ktor.application.*
 import com.example.plugins.*
 import io.grpc.ServerBuilder
 import ratingReply
+import java.util.*
 
 private class RatingGRPCService : RatingGRPCGrpcKt.RatingGRPCCoroutineImplBase() {
     override suspend fun getRatingByUserId(request: RatingGRPCOuterClass.Request): RatingGRPCOuterClass.RatingReply {
         //ToDo как добавится рейтнг, вставить сюда
-        return ratingReply{ rating = "11" }
+        val dbfacade = DAOFacadeImpl()
+        val rating_Reply = dbfacade.getUserById(UUID.fromString(request.userId))
+
+        return ratingReply{ rating = rating_Reply.toString() }
     }
 }
 
