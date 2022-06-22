@@ -3,7 +3,7 @@ using Timer = System.Timers.Timer;
 
 namespace Background.Jobs;
 
-public abstract class CronJob : IDisposable
+public abstract class CronJob : IHostedService, IDisposable
 {
     private readonly string _expression = Environment.GetEnvironmentVariable("CRON_EXPRESSION")!;
     
@@ -17,47 +17,52 @@ public abstract class CronJob : IDisposable
         _timeZoneInfo = TimeZoneInfo.Local;
     }
 
-    protected async void Start()
+    public virtual async Task StartAsync(CancellationToken cancellationToken)
     {
-        await ScheduleJob();
+        await ScheduleJob(cancellationToken);
     }
 
-    private async Task ScheduleJob()
+    protected virtual async Task ScheduleJob(CancellationToken cancellationToken)
     {
         var next = _cronExpression.GetNextOccurrence(DateTimeOffset.Now, _timeZoneInfo);
-        if (!next.HasValue)
-            return;
-            
-        var delay = next.Value - DateTimeOffset.Now;
-        if (delay.TotalMilliseconds <= 0)   // prevent non-positive values from being passed into Timer
+        if (next.HasValue)
         {
-            await ScheduleJob();
-            return;
-        }
-        _timer = new Timer(delay.TotalMilliseconds);
-        _timer.Elapsed += async (_, _) =>
-        {
-            _timer?.Dispose();  // reset and dispose timer
-            _timer = null;
+            var delay = next.Value - DateTimeOffset.Now;
+            if (delay.TotalMilliseconds <= 0)   // prevent non-positive values from being passed into Timer
+            {
+                await ScheduleJob(cancellationToken);
+            }
+            _timer = new Timer(delay.TotalMilliseconds);
+            _timer.Elapsed += async (_, _) =>
+            {
+                _timer.Dispose();  // reset and dispose timer
+                _timer = null;
 
-            
-            DoWork();
-            await ScheduleJob();
-        };
-        _timer.Start();
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    await DoWork(cancellationToken);
+                }
+
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    await ScheduleJob(cancellationToken);    // reschedule next
+                }
+            };
+            _timer.Start();
+        }
+        await Task.CompletedTask;
     }
 
-    protected virtual void DoWork() {}
+    public virtual async Task DoWork(CancellationToken cancellationToken) {}
 
-    protected async Task StopAsync()
+    public virtual async Task StopAsync(CancellationToken cancellationToken)
     {
         _timer.Stop();
         await Task.CompletedTask;
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         _timer.Dispose();
-        GC.SuppressFinalize(this);
     }
 }

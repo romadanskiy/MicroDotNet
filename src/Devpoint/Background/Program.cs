@@ -5,7 +5,7 @@ Thread.Sleep(30000);
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<PaySubscriptionJob>();
+builder.Services.AddHostedService<PaySubscriptionJob>();
 builder.Services.AddHostedService<RabbitSubscribeConsumer>();
 builder.Services.AddHostedService<RabbitUnsubscribeConsumer>();
 builder.Services.AddSingleton<IRabbitPublisher, RabbitPayPublisher>();

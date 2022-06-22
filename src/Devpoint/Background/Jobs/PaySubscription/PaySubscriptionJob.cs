@@ -14,7 +14,6 @@ public class PaySubscriptionJob : CronJob
         _logger = logger;
         _publisher = publisher;
         _records = new List<SubscriptionRecord>();
-        Start();
     }
 
     public void AddSubscription(SubscriptionRecord record)
@@ -23,13 +22,15 @@ public class PaySubscriptionJob : CronJob
         _logger.LogInformation($"Start subscription: id {record}");
     }
 
-    protected override void DoWork()
+    public override Task DoWork(CancellationToken cancellationToken)
     {
         foreach (var record in _records)
         {
             _publisher.SendMessage(record);
             _logger.LogInformation($"Withdrawal: id {record}");
         }
+        
+        return Task.CompletedTask;
     }
 
     public void RemoveSubscription(SubscriptionRecord record)
