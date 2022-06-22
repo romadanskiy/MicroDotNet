@@ -28,7 +28,7 @@ public class SubscriptionsStorage
             return;
         }
         
-        SubscriptionRecords.Remove(record);
+        SubscriptionRecords.Remove(recordToRemove);
         _logger.LogInformation($"Stop subscription: id {record}");
     }
 }
