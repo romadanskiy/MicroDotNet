@@ -30,9 +30,6 @@ public class AskQuestionHandler : IAsyncHandler<AskQuestionCommand, Question>
         
         var userId = _accessor.GetUserId();
         var question = new Question(input.Title, input.Body, userId, tags);
-        
-        question.Rating = 4;
-        
         context.Questions.Add(question);
         await context.SaveChangesAsync();
         return question;

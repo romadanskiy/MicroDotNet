@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,13 +8,11 @@ using AuthorizationServer.Web.Domain;
 using AuthorizationServer.Web.Dto;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
-using static OpenIddict.Abstractions.OpenIddictConstants.Permissions;
 using static OpenIddict.Server.AspNetCore.OpenIddictServerAspNetCoreConstants;
 
 namespace AuthorizationServer.Web.Controllers
@@ -35,23 +31,7 @@ namespace AuthorizationServer.Web.Controllers
         }
         
         [HttpPost("~/connect/register")]
-        public async Task<IActionResult> Create([FromForm] UserRigisterDto userDto)
-        {
-            Validator.UserRegisterDtoValidator(userDto);
-            User user = new User(userDto.Email!, userDto.FirstName!, userDto.LastName!, userDto.PhoneNumber!);
-            var result = await _userManager.CreateAsync(user, userDto.Password);
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest(result.Errors);
-            }
-        }
-
-        [HttpPost("~/connect/register")]
-        public async Task<IActionResult> Create([FromForm] UserRigisterDto userDto)
+        public async Task<IActionResult> Create(UserRigisterDto userDto)
         {
             Validator.UserRegisterDtoValidator(userDto);
             User user = new User(userDto.Email!, userDto.FirstName!, userDto.LastName!, userDto.PhoneNumber!);
