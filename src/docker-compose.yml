@@ -62,6 +62,7 @@ services:
   devpoint.api:
     container_name: devpoint.api
     image: devpoint.api:latest
+    restart: on-failure
     depends_on:
       - devpoint.db
       - gateway
@@ -98,7 +99,7 @@ services:
       RABBIT_QUEUE_SUBSCRIBE: "devpoint.queue.subscribe"
       RABBIT_QUEUE_UNSUBSCRIBE: "devpoint.queue.unsubscribe"
       RABBIT_QUEUE_PAY: "devpoint.queue.pay"
-      CRON_EXPRESSION: "0/30 * * ? * *"
+      CRON_EXPRESSION: "0 * * * *"
     networks:
       - devpoint.network
     
