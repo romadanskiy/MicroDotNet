@@ -85,7 +85,7 @@ public abstract class BaseConsumerJson<TMessage> : BackgroundService
                         catch (Exception e)
                         {
                             Logger.LogError(
-                                $"Message with offset = {message.Offset} fails. Exception message: {e.Message}");
+                                $"Message with offset = {message?.Offset} fails. Exception message: {e.Message}");
                         }
 
                         if (message is null)
