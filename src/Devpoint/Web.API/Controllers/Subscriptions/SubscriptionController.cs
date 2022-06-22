@@ -251,8 +251,11 @@ public class SubscriptionController : Controller
             await _context.SaveChangesAsync();
         }
 
-        var subscriptionRecord = new SubscriptionRecord {SubscriptionId = subscription.Id};
-        _subscribePublisher.SendMessage(subscriptionRecord);
+        if (subscription.IsAutoRenewal)
+        {
+            var subscriptionRecord = new SubscriptionRecord {SubscriptionId = subscription.Id};
+            _subscribePublisher.SendMessage(subscriptionRecord);
+        }
 
         return Ok(bill);
     }
@@ -297,9 +300,12 @@ public class SubscriptionController : Controller
 
         _context.Remove(subscription);
         await _context.SaveChangesAsync();
-        
-        var subscriptionRecord = new SubscriptionRecord {SubscriptionId = subscription.Id};
-        _unsubscribePublisher.SendMessage(subscriptionRecord);
+
+        if (subscription.IsAutoRenewal)
+        {
+            var subscriptionRecord = new SubscriptionRecord {SubscriptionId = subscription.Id};
+            _unsubscribePublisher.SendMessage(subscriptionRecord);
+        }
 
         return Ok();
     }

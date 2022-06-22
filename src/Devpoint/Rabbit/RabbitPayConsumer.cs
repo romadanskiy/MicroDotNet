@@ -15,7 +15,7 @@ public class RabbitPayConsumer : BackgroundService
 
     private readonly string _host = Environment.GetEnvironmentVariable("RABBIT_HOST")!;
     private readonly int _port = int.Parse(Environment.GetEnvironmentVariable("RABBIT_PORT")!);
-    private readonly string _queue = Environment.GetEnvironmentVariable("RABBIT_QUEUE_SUBSCRIBE")!;
+    private readonly string _queue = Environment.GetEnvironmentVariable("RABBIT_QUEUE_PAY")!;
 
     public RabbitPayConsumer(IBillService billService)
     {
@@ -38,7 +38,6 @@ public class RabbitPayConsumer : BackgroundService
 
             var record = JsonSerializer.Deserialize<SubscriptionRecord>(content)!;
             _billService.CreateBill(record.SubscriptionId);
-            Console.WriteLine($"Consumed: {record.SubscriptionId}");
 
             _channel.BasicAck(ea.DeliveryTag, false);
         };

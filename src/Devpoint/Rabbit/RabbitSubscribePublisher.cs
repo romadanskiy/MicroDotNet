@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 
 namespace Rabbit;
 
-public class RabbitSubscribeSubscribePublisher : IRabbitSubscribePublisher
+public class RabbitSubscribePublisher : IRabbitSubscribePublisher
 {
     private readonly string _host = Environment.GetEnvironmentVariable("RABBIT_HOST")!;
     private readonly int _port = int.Parse(Environment.GetEnvironmentVariable("RABBIT_PORT")!);

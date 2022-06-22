@@ -14,7 +14,7 @@ public abstract class CronJob : IDisposable
     protected CronJob()
     {
         _cronExpression = CronExpression.Parse(_expression);
-        _timeZoneInfo = TimeZoneInfo.Utc;
+        _timeZoneInfo = TimeZoneInfo.Local;
     }
 
     protected async void Start()
@@ -44,7 +44,7 @@ public abstract class CronJob : IDisposable
             DoWork();
             await ScheduleJob();
         };
-        _timer.Start();           
+        _timer.Start();
     }
 
     protected virtual void DoWork() {}

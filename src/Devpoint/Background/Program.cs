@@ -1,6 +1,8 @@
 using Background.Jobs.PaySubscription;
 using Background.Rabbit;
 
+Thread.Sleep(30000);
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<PaySubscriptionJob>();

@@ -23,6 +23,8 @@ using Services.Subscriptions.Tariffs;
 using Services.Users.Users;
 using Web.API;
 
+Thread.Sleep(30000);
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -70,8 +72,8 @@ builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IWithdrawalService, WithdrawalService>();
 builder.Services.AddScoped<IEarningService, EarningService>();
 
-builder.Services.AddScoped<IRabbitSubscribePublisher, RabbitSubscribeSubscribePublisher>();
-builder.Services.AddScoped<IRabbitUnsubscribePublisher, RabbitSubscribeUnsubscribePublisher>();
+builder.Services.AddScoped<IRabbitSubscribePublisher, RabbitSubscribePublisher>();
+builder.Services.AddScoped<IRabbitUnsubscribePublisher, RabbitUnsubscribePublisher>();
 
 builder.Services.AddHostedService<RabbitPayConsumer>();
 
