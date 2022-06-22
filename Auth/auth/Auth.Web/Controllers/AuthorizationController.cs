@@ -33,6 +33,22 @@ namespace AuthorizationServer.Web.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
         }
+        
+        [HttpPost("~/connect/register")]
+        public async Task<IActionResult> Create([FromForm] UserRigisterDto userDto)
+        {
+            Validator.UserRegisterDtoValidator(userDto);
+            User user = new User(userDto.Email!, userDto.FirstName!, userDto.LastName!, userDto.PhoneNumber!);
+            var result = await _userManager.CreateAsync(user, userDto.Password);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
 
         [HttpPost("~/connect/register")]
         public async Task<IActionResult> Create([FromForm] UserRigisterDto userDto)

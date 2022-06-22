@@ -16,14 +16,16 @@ namespace AuthorizationServer.Web.Domain
             // ReSharper disable once VirtualMemberCallInConstructor
             NormalizedUserName = userName.ToUpperInvariant();
             FirstName = firstName;
+            
             LastName = lastName;
+            
             PhoneNumber = phoneNumber;
         }
 
         public string FirstName { get; set; } = null!;
 
         public string LastName { get; set; } = null!;
-
+        
         public DateOnly CreatedAt { get; set; } = Dates.Now();
 
         public DateOnly? DeletionDateTime { get; private set; }
