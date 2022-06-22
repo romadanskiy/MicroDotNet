@@ -1,6 +1,6 @@
 namespace Rabbit;
 
-public interface IRabbitPublisher
+public interface IRabbitSubscribePublisher
 {
     void SendMessage(object obj);
     void SendMessage(string message);

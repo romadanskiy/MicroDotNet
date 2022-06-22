@@ -1,13 +1,17 @@
+using Background.Rabbit;
+
 namespace Background.Jobs.PaySubscription;
 
 public class PaySubscriptionJob : CronJob
 {
     private readonly ILogger<PaySubscriptionJob> _logger;
     private readonly List<PaySubscriptionRecord> _records;
+    private readonly IRabbitPublisher _publisher;
 
-    public PaySubscriptionJob(ILogger<PaySubscriptionJob> logger)
+    public PaySubscriptionJob(ILogger<PaySubscriptionJob> logger, IRabbitPublisher publisher)
     {
         _logger = logger;
+        _publisher = publisher;
         _records = new List<PaySubscriptionRecord>();
         Start();
     }
@@ -20,23 +24,27 @@ public class PaySubscriptionJob : CronJob
         _logger.LogInformation($"Start subscription: {record}");
     }
 
-    protected override Task DoWork()
+    protected override void DoWork()
     {
         foreach (var record in _records)
         {
-            //send message
+            _publisher.SendMessage(record);
             _logger.LogInformation($"Withdrawal: {record}");
         }
-        
-        return Task.CompletedTask;
     }
 
-    public Task RemoveSubscription(PaySubscriptionDto dto)
+    public void RemoveSubscription(PaySubscriptionDto dto)
     {
         var record = _records.SingleOrDefault(record => record.IsEqualTo(dto));
-        _records.Remove(record);
+
+        if (record is null)
+        {
+            record = new PaySubscriptionRecord(dto);
+            _logger.LogError($"There is no subscription with {record}");
+            return;
+        }
         
-        _logger.LogInformation($"Stop subscription: {_records}");
-        return StopAsync();
+        _records.Remove(record);
+        _logger.LogInformation($"Stop subscription: {record}");
     }
 }

@@ -41,26 +41,23 @@ public abstract class CronJob : IDisposable
             _timer = null;
 
             
-            await DoWork();
+            DoWork();
             await ScheduleJob();
         };
         _timer.Start();           
     }
 
-    protected virtual async Task DoWork()
-    {
-        await Task.Delay(10);
-    }
+    protected virtual void DoWork() {}
 
     protected async Task StopAsync()
     {
-        _timer?.Stop();
+        _timer.Stop();
         await Task.CompletedTask;
     }
 
     public void Dispose()
     {
-        _timer?.Dispose();
+        _timer.Dispose();
         GC.SuppressFinalize(this);
     }
 }

@@ -73,6 +73,11 @@ services:
       - "8001:80"
     environment:
       DB_CONNECTION_STRING: "host=devpoint.db;port=5432;database=devpoint_db;username=postgres;password=postgres"
+      RABBIT_HOST: "devpoint.rabbit"
+      RABBIT_PORT: 5672
+      RABBIT_QUEUE_SUBSCRIBE: "devpoint.queue.subscribe"
+      RABBIT_QUEUE_UNSUBSCRIBE: "devpoint.queue.unsubscribe"
+      RABBIT_QUEUE_PAY: "devpoint.queue.pay"
     networks:
       - devpoint.network
   
@@ -87,6 +92,12 @@ services:
       dockerfile: Background/Dockerfile
     ports:
       - "8002:80"
+    environment:
+      RABBIT_HOST: "devpoint.rabbit"
+      RABBIT_PORT: 5672
+      RABBIT_QUEUE_SUBSCRIBE: "devpoint.queue.subscribe"
+      RABBIT_QUEUE_UNSUBSCRIBE: "devpoint.queue.unsubscribe"
+      RABBIT_QUEUE_PAY: "devpoint.queue.pay"
     networks:
       - devpoint.network
     

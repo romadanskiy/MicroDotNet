@@ -70,7 +70,9 @@ builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IWithdrawalService, WithdrawalService>();
 builder.Services.AddScoped<IEarningService, EarningService>();
 
-builder.Services.AddScoped<IRabbitPublisher, RabbitPublisher>();
+builder.Services.AddScoped<IRabbitSubscribePublisher, RabbitSubscribeSubscribePublisher>();
+builder.Services.AddScoped<IRabbitUnsubscribePublisher, RabbitSubscribeUnsubscribePublisher>();
+builder.Services.AddHostedService<RabbitPayConsumer>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

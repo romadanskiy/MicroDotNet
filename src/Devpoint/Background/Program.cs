@@ -4,7 +4,9 @@ using Background.Rabbit;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<PaySubscriptionJob>();
-builder.Services.AddHostedService<RabbitConsumer>();
+builder.Services.AddHostedService<RabbitSubscribeConsumer>();
+builder.Services.AddHostedService<RabbitUnsubscribeConsumer>();
+builder.Services.AddSingleton<IRabbitPublisher, RabbitPayPublisher>();
 
 var app = builder.Build();
 

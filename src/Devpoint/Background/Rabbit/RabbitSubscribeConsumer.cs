@@ -6,22 +6,24 @@ using RabbitMQ.Client.Events;
 
 namespace Background.Rabbit;
 
-public class RabbitConsumer : BackgroundService
+public class RabbitSubscribeConsumer : BackgroundService
 {
     private readonly IConnection _connection;
     private readonly IModel _channel;
     private readonly PaySubscriptionJob _paySubscriptionJob;
 
-    public RabbitConsumer(PaySubscriptionJob paySubscriptionJob)
+    private readonly string _host = Environment.GetEnvironmentVariable("RABBIT_HOST")!;
+    private readonly int _port = int.Parse(Environment.GetEnvironmentVariable("RABBIT_PORT")!);
+    private readonly string _queue = Environment.GetEnvironmentVariable("RABBIT_QUEUE_SUBSCRIBE")!;
+
+    public RabbitSubscribeConsumer(PaySubscriptionJob paySubscriptionJob)
     {
         _paySubscriptionJob = paySubscriptionJob;
 
-        // Не забудьте вынести значения "localhost" и "MyQueue"
-        // в файл конфигурации
-        var factory = new ConnectionFactory { HostName = "devpoint.rabbit", Port = 5672 };
+        var factory = new ConnectionFactory {HostName = _host, Port = _port};
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
-        _channel.QueueDeclare("devpoint.queue", false, false, false, null);
+        _channel.QueueDeclare(_queue, false, false, false, null);
     }
 
     protected override Task ExecuteAsync(CancellationToken cancellationToken)
@@ -39,7 +41,7 @@ public class RabbitConsumer : BackgroundService
             _channel.BasicAck(ea.DeliveryTag, false);
         };
 
-        _channel.BasicConsume("devpoint.queue", false, consumer);
+        _channel.BasicConsume(_queue, false, consumer);
 
         return Task.CompletedTask;
     }

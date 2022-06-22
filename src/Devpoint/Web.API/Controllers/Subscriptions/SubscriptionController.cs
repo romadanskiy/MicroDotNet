@@ -30,7 +30,8 @@ public class SubscriptionController : Controller
     private readonly IProjectService _projectService;
     private readonly IDeveloperService _developerService;
     private readonly ApplicationContext _context;
-    private readonly IRabbitPublisher _publisher;
+    private readonly IRabbitSubscribePublisher _subscribePublisher;
+    private readonly IRabbitUnsubscribePublisher _unsubscribePublisher;
 
     public SubscriptionController(
         ISubscriptionService subscriptionService, 
@@ -38,7 +39,8 @@ public class SubscriptionController : Controller
         ITariffService tariffService, ICompanyService companyService, 
         IProjectService projectService, IDeveloperService developerService, 
         ApplicationContext context, 
-        IRabbitPublisher publisher)
+        IRabbitSubscribePublisher subscribePublisher, 
+        IRabbitUnsubscribePublisher unsubscribePublisher)
     {
         _subscriptionService = subscriptionService;
         _billService = billService;
@@ -48,12 +50,13 @@ public class SubscriptionController : Controller
         _projectService = projectService;
         _developerService = developerService;
         _context = context;
-        _publisher = publisher;
+        _subscribePublisher = subscribePublisher;
+        _unsubscribePublisher = unsubscribePublisher;
     }
 
     [HttpGet]
-    [Route("publish")]
-    public IActionResult Publish()
+    [Route("subscribe")]
+    public IActionResult Subscribe()
     {
         var dto = new PaySubscriptionDto
         {
@@ -61,7 +64,22 @@ public class SubscriptionController : Controller
             SubscriberWalletId = Guid.NewGuid(),
             TargetId = Guid.NewGuid()
         };
-        _publisher.SendMessage(dto);
+        _subscribePublisher.SendMessage(dto);
+
+        return Ok();
+    }
+    
+    [HttpGet]
+    [Route("unsubscribe")]
+    public IActionResult Unsubscribe()
+    {
+        var dto = new PaySubscriptionDto
+        {
+            Amount = 100,
+            SubscriberWalletId = Guid.NewGuid(),
+            TargetId = Guid.NewGuid()
+        };
+        _unsubscribePublisher.SendMessage(dto);
 
         return Ok();
     }
