@@ -55,10 +55,11 @@ public class BillService : IBillService
         return bill.Wallet;
     }
 
-    public async Task<Bill> CreateBill(int walletId, int subscriptionId)
+    public async Task<Bill> CreateBill(int subscriptionId)
     {
-        var wallet = await _walletService.GetWallet(walletId);
         var subscription = await _subscriptionService.GetSubscription(subscriptionId);
+        var wallet = await _walletService.GetDeveloperWallet(subscription.SubscriberId);
+        
         return await CreateBill(wallet, subscription);
     }
 

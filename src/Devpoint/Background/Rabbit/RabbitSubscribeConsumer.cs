@@ -35,8 +35,8 @@ public class RabbitSubscribeConsumer : BackgroundService
         {
             var content = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-            var dto = JsonSerializer.Deserialize<PaySubscriptionDto>(content);
-            AddSubscription(dto!);
+            var record = JsonSerializer.Deserialize<SubscriptionRecord>(content)!;
+            _paySubscriptionJob.AddSubscription(record);
 
             _channel.BasicAck(ea.DeliveryTag, false);
         };
@@ -44,11 +44,6 @@ public class RabbitSubscribeConsumer : BackgroundService
         _channel.BasicConsume(_queue, false, consumer);
 
         return Task.CompletedTask;
-    }
-    
-    private void AddSubscription(PaySubscriptionDto dto)
-    {
-        _paySubscriptionJob.AddSubscription(dto);
     }
     
     public override void Dispose()

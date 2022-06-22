@@ -5,7 +5,7 @@ namespace Background.Jobs;
 
 public abstract class CronJob : IDisposable
 {
-    private const string Expression = @"0/10 * * ? * *";
+    private readonly string _expression = Environment.GetEnvironmentVariable("RABBIT_QUEUE_PAY")!;
     
     private Timer _timer;
     private readonly CronExpression _cronExpression;
@@ -13,7 +13,7 @@ public abstract class CronJob : IDisposable
 
     protected CronJob()
     {
-        _cronExpression = CronExpression.Parse(Expression, CronFormat.IncludeSeconds);
+        _cronExpression = CronExpression.Parse(_expression, CronFormat.IncludeSeconds);
         _timeZoneInfo = TimeZoneInfo.Utc;
     }
 

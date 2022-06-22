@@ -35,8 +35,8 @@ public class RabbitUnsubscribeConsumer : BackgroundService
         {
             var content = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-            var dto = JsonSerializer.Deserialize<PaySubscriptionDto>(content);
-            RemoveSubscription(dto!);
+            var record = JsonSerializer.Deserialize<SubscriptionRecord>(content)!;
+            _paySubscriptionJob.RemoveSubscription(record);
 
             _channel.BasicAck(ea.DeliveryTag, false);
         };
@@ -44,11 +44,6 @@ public class RabbitUnsubscribeConsumer : BackgroundService
         _channel.BasicConsume(_queue, false, consumer);
 
         return Task.CompletedTask;
-    }
-    
-    private void RemoveSubscription(PaySubscriptionDto dto)
-    {
-        _paySubscriptionJob.RemoveSubscription(dto);
     }
     
     public override void Dispose()

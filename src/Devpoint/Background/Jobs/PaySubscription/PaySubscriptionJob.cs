@@ -5,23 +5,21 @@ namespace Background.Jobs.PaySubscription;
 public class PaySubscriptionJob : CronJob
 {
     private readonly ILogger<PaySubscriptionJob> _logger;
-    private readonly List<PaySubscriptionRecord> _records;
+    private readonly List<SubscriptionRecord> _records;
     private readonly IRabbitPublisher _publisher;
 
     public PaySubscriptionJob(ILogger<PaySubscriptionJob> logger, IRabbitPublisher publisher)
     {
         _logger = logger;
         _publisher = publisher;
-        _records = new List<PaySubscriptionRecord>();
+        _records = new List<SubscriptionRecord>();
         Start();
     }
 
-    public void AddSubscription(PaySubscriptionDto dto)
+    public void AddSubscription(SubscriptionRecord record)
     {
-        var record = new PaySubscriptionRecord(dto);
         _records.Add(record);
-        
-        _logger.LogInformation($"Start subscription: {record}");
+        _logger.LogInformation($"Start subscription: id {record}");
     }
 
     protected override void DoWork()
@@ -29,22 +27,21 @@ public class PaySubscriptionJob : CronJob
         foreach (var record in _records)
         {
             _publisher.SendMessage(record);
-            _logger.LogInformation($"Withdrawal: {record}");
+            _logger.LogInformation($"Withdrawal: id {record}");
         }
     }
 
-    public void RemoveSubscription(PaySubscriptionDto dto)
+    public void RemoveSubscription(SubscriptionRecord record)
     {
-        var record = _records.SingleOrDefault(record => record.IsEqualTo(dto));
+        var recordToRemove = _records.SingleOrDefault(r => r.SubscriptionId == record.SubscriptionId);
 
-        if (record is null)
+        if (recordToRemove is null)
         {
-            record = new PaySubscriptionRecord(dto);
-            _logger.LogError($"There is no subscription with {record}");
+            _logger.LogError($"There is no subscription with id {record}");
             return;
         }
         
         _records.Remove(record);
-        _logger.LogInformation($"Stop subscription: {record}");
+        _logger.LogInformation($"Stop subscription: id {record}");
     }
 }

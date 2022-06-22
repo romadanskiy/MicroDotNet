@@ -53,37 +53,7 @@ public class SubscriptionController : Controller
         _subscribePublisher = subscribePublisher;
         _unsubscribePublisher = unsubscribePublisher;
     }
-
-    [HttpGet]
-    [Route("subscribe")]
-    public IActionResult Subscribe()
-    {
-        var dto = new PaySubscriptionDto
-        {
-            Amount = 100,
-            SubscriberWalletId = Guid.NewGuid(),
-            TargetId = Guid.NewGuid()
-        };
-        _subscribePublisher.SendMessage(dto);
-
-        return Ok();
-    }
     
-    [HttpGet]
-    [Route("unsubscribe")]
-    public IActionResult Unsubscribe()
-    {
-        var dto = new PaySubscriptionDto
-        {
-            Amount = 100,
-            SubscriberWalletId = Guid.NewGuid(),
-            TargetId = Guid.NewGuid()
-        };
-        _unsubscribePublisher.SendMessage(dto);
-
-        return Ok();
-    }
-
     [HttpGet]
     [Route("company")]
     public async Task<IActionResult> GetCompanySubscriptions()
@@ -106,7 +76,7 @@ public class SubscriptionController : Controller
 
         var subscriptions = await fullQuery.ToListAsync();
         var result = subscriptions
-            .Select(o => new SubscriptionDto(o.sub)
+            .Select(o => new DTOs.SubscriptionDto(o.sub)
             {
                 Entity = EntityDto.FromCompany(o.company)
             })
@@ -137,7 +107,7 @@ public class SubscriptionController : Controller
 
         var subscriptions = await fullQuery.ToListAsync();
         var result = subscriptions
-            .Select(o => new SubscriptionDto(o.sub)
+            .Select(o => new DTOs.SubscriptionDto(o.sub)
             {
                 Entity = EntityDto.FromProject(o.project)
             })
@@ -168,7 +138,7 @@ public class SubscriptionController : Controller
 
         var subscriptions = await fullQuery.ToListAsync();
         var result = subscriptions
-            .Select(o => new SubscriptionDto(o.sub)
+            .Select(o => new DTOs.SubscriptionDto(o.sub)
             {
                 Entity = EntityDto.FromDeveloper(o.developer)
             })
@@ -182,7 +152,7 @@ public class SubscriptionController : Controller
     public async Task<IActionResult> GetSubscription(int subscriptionId)
     {
         var subscription = await _subscriptionService.GetSubscription(subscriptionId);
-        var result = new SubscriptionDto(subscription);
+        var result = new DTOs.SubscriptionDto(subscription);
 
         return Ok(result);
     }
@@ -219,7 +189,7 @@ public class SubscriptionController : Controller
                 return BadRequest();
         }
 
-        var result = new SubscriptionDto(subscription)
+        var result = new DTOs.SubscriptionDto(subscription)
         {
             Entity = entityDto
         };
@@ -281,6 +251,9 @@ public class SubscriptionController : Controller
             await _context.SaveChangesAsync();
         }
 
+        var subscriptionRecord = new SubscriptionRecord {SubscriptionId = subscription.Id};
+        _subscribePublisher.SendMessage(subscriptionRecord);
+
         return Ok(bill);
     }
 
@@ -324,6 +297,9 @@ public class SubscriptionController : Controller
 
         _context.Remove(subscription);
         await _context.SaveChangesAsync();
+        
+        var subscriptionRecord = new SubscriptionRecord {SubscriptionId = subscription.Id};
+        _unsubscribePublisher.SendMessage(subscriptionRecord);
 
         return Ok();
     }
