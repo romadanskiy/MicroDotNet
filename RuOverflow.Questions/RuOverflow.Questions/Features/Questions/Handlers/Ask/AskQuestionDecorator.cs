@@ -33,12 +33,18 @@ public class AskQuestionDecorator : IAsyncHandler<AskQuestionCommand, Question>
     {
         using var channel = GrpcChannel.ForAddress("http://gqluserservice:50071");
 
-        var raitingClient = new RatingGRPC.RatingGRPCClient(channel);
+        var ratingClient = new RatingGRPC.RatingGRPCClient(channel);
 
-        var response = await raitingClient.GetRatingByUserIdAsync(new Request() { UserId = userId.ToString() });
-        
-        var isRaitingCorrect = int.TryParse(response.Rating, out var raiting);
-        
-        return isRaitingCorrect ? raiting : throw new ApplicationException();
+        try
+        {
+            var response = await ratingClient.GetRatingByUserIdAsync(new Request() {UserId = userId.ToString()});
+            var isRatingCorrect = int.TryParse(response.Rating, out var rating);
+
+            return isRatingCorrect ? rating : throw new ApplicationException();
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
     }
 }

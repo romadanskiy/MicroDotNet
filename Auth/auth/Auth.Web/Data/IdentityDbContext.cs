@@ -16,7 +16,7 @@ public class IdentityDbContext : IdentityDbContext<User, Role, Guid>
         base.OnModelCreating(builder);
         builder.UseOpenIddict();
 
-        var user = new User("Admin", "John1", "Doe2")
+        var user = new User("Admin@mail.ru", "John1", "Doe2", "89274868648")
         {
             Id = new Guid("5f34130c-2ed9-4c83-a600-e474e8f48bac"),
             CreatedAt = Dates.Now(),

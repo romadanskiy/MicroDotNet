@@ -35,6 +35,9 @@
     <Compile Update="StartupExtensions.cs">
       <DependentUpon>Startup.cs</DependentUpon>
     </Compile>
+    <Compile Update="Controllers\Validator.cs">
+      <DependentUpon>AuthorizationController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

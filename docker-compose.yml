@@ -37,7 +37,7 @@ services:
       context: GqlUserService/
       dockerfile: ./Dockerfile
     ports:
-      - "8080:8080"
+      - "50071:50071"
     depends_on:
       - mssql
   redis:

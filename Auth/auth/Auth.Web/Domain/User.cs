@@ -4,26 +4,29 @@ using NodaTime;
 
 namespace AuthorizationServer.Web.Domain
 {
-    public class User : IdentityUser<Guid>, ISoftDeletable
+    public sealed class User : IdentityUser<Guid>, ISoftDeletable
     {
         [Obsolete("EF Only", true)]
         // ReSharper disable once UnusedMember.Global
-        protected User() {}
+        private User() {}
         
-        public User (string userName, string firstName, string lastName)
+        public User (string userName, string firstName, string lastName, string phoneNumber)
         {
             // ReSharper disable once VirtualMemberCallInConstructor
             UserName = userName;
             // ReSharper disable once VirtualMemberCallInConstructor
             NormalizedUserName = userName.ToUpperInvariant();
             FirstName = firstName;
+            
             LastName = lastName;
+            
+            PhoneNumber = phoneNumber;
         }
 
-        public string FirstName { get; protected set; } = null!;
+        public string FirstName { get; set; } = null!;
 
-        public string LastName { get; protected set; } = null!;
-
+        public string LastName { get; set; } = null!;
+        
         public DateOnly CreatedAt { get; set; } = Dates.Now();
 
         public DateOnly? DeletionDateTime { get; private set; }
