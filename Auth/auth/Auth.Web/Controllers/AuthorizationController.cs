@@ -31,7 +31,7 @@ namespace AuthorizationServer.Web.Controllers
         }
         
         [HttpPost("~/connect/register")]
-        public async Task<IActionResult> Create(UserRigisterDto userDto)
+        public async Task<IActionResult> Create([FromForm] UserRigisterDto userDto)
         {
             Validator.UserRegisterDtoValidator(userDto);
             User user = new User(userDto.Email!, userDto.FirstName!, userDto.LastName!, userDto.PhoneNumber!);
