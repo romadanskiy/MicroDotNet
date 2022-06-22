@@ -10,15 +10,15 @@ public class RabbitSubscribeConsumer : BackgroundService
 {
     private readonly IConnection _connection;
     private readonly IModel _channel;
-    private readonly PaySubscriptionJob _paySubscriptionJob;
+    private readonly SubscriptionsStorage _storage;
 
     private readonly string _host = Environment.GetEnvironmentVariable("RABBIT_HOST")!;
     private readonly int _port = int.Parse(Environment.GetEnvironmentVariable("RABBIT_PORT")!);
     private readonly string _queue = Environment.GetEnvironmentVariable("RABBIT_QUEUE_SUBSCRIBE")!;
 
-    public RabbitSubscribeConsumer(PaySubscriptionJob paySubscriptionJob)
+    public RabbitSubscribeConsumer(SubscriptionsStorage storage)
     {
-        _paySubscriptionJob = paySubscriptionJob;
+        _storage = storage;
 
         var factory = new ConnectionFactory {HostName = _host, Port = _port};
         _connection = factory.CreateConnection();
@@ -36,7 +36,7 @@ public class RabbitSubscribeConsumer : BackgroundService
             var content = Encoding.UTF8.GetString(ea.Body.ToArray());
 
             var record = JsonSerializer.Deserialize<SubscriptionRecord>(content)!;
-            _paySubscriptionJob.AddSubscription(record);
+            _storage.AddSubscription(record);
 
             _channel.BasicAck(ea.DeliveryTag, false);
         };

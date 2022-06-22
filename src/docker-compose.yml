@@ -99,7 +99,7 @@ services:
       RABBIT_QUEUE_SUBSCRIBE: "devpoint.queue.subscribe"
       RABBIT_QUEUE_UNSUBSCRIBE: "devpoint.queue.unsubscribe"
       RABBIT_QUEUE_PAY: "devpoint.queue.pay"
-      CRON_EXPRESSION: "0 * * * *"
+      CRON_EXPRESSION: "* * * * *"
     networks:
       - devpoint.network
     
