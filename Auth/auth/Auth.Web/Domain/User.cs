@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
-using NodaTime;
 
 namespace AuthorizationServer.Web.Domain
 {

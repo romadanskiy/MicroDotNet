@@ -1,0 +1,35 @@
+<div class='container'>
+  <div class="alert alert-success" role="alert" *ngIf='successMessage'>
+    {{ successMessage }}
+  </div>
+  <app-devpoint-errors [errors]='errors'></app-devpoint-errors>
+  <div class='controls'>
+    <div class="round col-auto">
+      <input type="checkbox" name="searching" class="checkbox" id="checkbox-1" [checked]="searchingDevelopers" (change)="toggleDevelopersSearch()">
+      <label for="checkbox-1" class="checkbox-label">Developers</label>
+    </div>
+    <div class="round col-auto">
+      <input type="checkbox" name="searching" class="checkbox" id="checkbox-2" [checked]="searchingProjects" (change)="toggleProjectsSearch()">
+      <label for="checkbox-2" class="checkbox-label">Projects</label>
+    </div>
+    <div class="round col-auto">
+      <input type="checkbox" name="searching" class="checkbox" id="checkbox-3" [checked]="searchingCompanies" (change)="toggleCompaniesSearch()">
+      <label for="checkbox-3" class="checkbox-label">Companies</label>
+    </div>
+  </div>
+  <ng-container *ngFor='let subscription of developerSubscriptions'>
+    <app-subscription-partial (cancelError)='onCancelError($event)'
+                              (cancelSuccess)='onCancelSuccess()'
+                              [subscription]='subscription'></app-subscription-partial>
+  </ng-container>
+  <ng-container *ngFor='let subscription of projectSubscriptions'>
+    <app-subscription-partial (cancelError)='onCancelError($event)'
+                              (cancelSuccess)='onCancelSuccess()'
+                              [subscription]='subscription'></app-subscription-partial>
+  </ng-container>
+  <ng-container *ngFor='let subscription of companiesSubscriptions'>
+    <app-subscription-partial (cancelError)='onCancelError($event)'
+                              (cancelSuccess)='onCancelSuccess()'
+                              [subscription]='subscription'></app-subscription-partial>
+  </ng-container>
+</div>

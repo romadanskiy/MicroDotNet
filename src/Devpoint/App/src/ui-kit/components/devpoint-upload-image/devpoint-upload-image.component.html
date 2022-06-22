@@ -1,0 +1,42 @@
+<div class='upload-cover-container'
+     [class.no-margin]='noMargin'
+>
+  <div class='upload-droparea-wrapper'
+       [class.fullwidth]='fullWidth'
+  >
+    <div class='upload-droparea' [class.error]='error' [class.dragover]='dragover' appDnd (fileDropped)="onFileDropped($event)" (dragChange)="dragover = $event"></div>
+  </div>
+  <div class='upload-label-container' appDnd (fileDropped)="onFileDropped($event)" (dragChange)="dragover = $event" *ngIf='!coverUrl && !currentImagePath'>
+    <svg width='21' height='20' viewBox='0 0 21 20' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path [class.dragover]='dragover' [class.error]='error' fill-rule='evenodd' clip-rule='evenodd' d='M11.5 0H9.5V9H0.5V11H9.5V20H11.5V11H20.5V9H11.5V0Z'
+            fill='#929CA5'></path>
+    </svg>
+    <span class='upload-label'>{{ label }}</span>
+    <p class='upload-description'>{{ description }}</p>
+    <p *ngIf='error' class='text-danger error'>{{ error }}</p>
+    <label class='upload-label label-button'>
+      <input type='file'
+             accept='.png, .jpg, .jpeg, .gif'
+             (change)='onFileChanged(fileDropRef)'
+             #fileDropRef
+      >
+      <span>{{ buttonLabel }}</span>
+    </label>
+  </div>
+
+  <div class='upload-result' *ngIf='coverUrl || currentImagePath'>
+    <img *ngIf='coverUrl' [src]="coverUrl" class="post-cover-img"/>
+    <img *ngIf='currentImagePath && !coverUrl' [src]="currentImagePath" class="post-cover-img"/>
+    <div *ngIf='background' [style.background-image]="bgImageUrl" class="post-cover-bg"></div>
+    <div *ngIf='background' class='backdrop'></div>
+  </div>
+
+  <label *ngIf='coverUrl || currentImagePath' class='upload-result-label upload-label label-button'>
+    <input type='file'
+           accept='.png, .jpg, .jpeg, .gif'
+           (change)='onFileChanged(fileDropRef2)'
+           #fileDropRef2
+    >
+    <span>{{ buttonLabel }}</span>
+  </label>
+</div>

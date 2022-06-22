@@ -1,0 +1,23 @@
+<form [formGroup]='form' (ngSubmit)='onSubmit()'>
+  <h1 mat-dialog-title>Add developer</h1>
+  <div mat-dialog-content>
+    <div class='input-label-wrapper'>
+      <label class='input-label' [class.error]='hasErrors("email")'>Email</label>
+      <label class='sym-count' [class.error]='hasErrors("email")'>{{ 64 - form.value.email.length }}</label>
+    </div>
+    <input maxlength='32' formControlName='email' class='input-field' type='text'
+           [class.error]='hasErrors("email")'>
+    <span class='text-danger'
+          *ngIf="hasError('email', 'required')">
+      Email is required
+    </span>
+    <span class='text-danger'
+          *ngIf="hasError('email', 'email')">
+      Enter a valid email address
+    </span>
+  </div>
+  <div class='buttons' mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button color="primary" mat-flat-button type='submit' mat-button [disabled]='!form.valid' [mat-dialog-close]="form.value.email" cdkFocusInitial>Add</button>
+  </div>
+</form>

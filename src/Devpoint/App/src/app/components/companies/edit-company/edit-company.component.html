@@ -1,0 +1,124 @@
+<div class='container'>
+  <app-devpoint-side-nav [pages]='["Company", "Team"]'
+                         [(page)]='page'
+  ></app-devpoint-side-nav>
+  <div class='body'>
+    <div class="alert alert-success" role="alert" *ngIf='successMessage'>
+      {{ successMessage }}
+    </div>
+    <app-devpoint-errors [errors]='errors'></app-devpoint-errors>
+    <div class='page-wrapper' *ngIf='page === 0'>
+      <h1>
+        Company
+      </h1>
+      <mat-divider></mat-divider>
+      <div class='wrapper'>
+        <form id='form' [formGroup]='form' (ngSubmit)='submitForm()'>
+          <h2>General information</h2>
+          <div class='input-wrapper'>
+            <div class='input-label-wrapper'>
+              <label class='input-label' [class.error]='hasErrors("name")'>Name</label>
+              <label class='sym-count' [class.error]='hasErrors("name")'>{{ 32 - form.value.name.length }}</label>
+            </div>
+            <input maxlength='32' formControlName='name' class='input-field' type='text'
+                   [class.error]='hasErrors("name")'>
+            <span class='text-danger'
+                  *ngIf="hasError('name', 'required')">
+              Name is required
+            </span>
+          </div>
+          <div class='input-wrapper'>
+            <div class='input-label-wrapper'>
+              <label class='input-label' [class.error]='hasErrors("description")'>Description</label>
+              <label class='sym-count' [class.error]='hasErrors("description")'>{{ 256 - form.value.description.length }}</label>
+            </div>
+            <div class='input-field input-textarea' [class.error]='hasErrors("description")'>
+              <textarea class='empty-input'
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="3"
+                        maxlength='256' formControlName='description' type='text'
+                        [class.error]='hasErrors("description")'
+              ></textarea>
+            </div>
+            <div class='input-wrapper'>
+              <div class='input-label-wrapper'>
+                <label class='input-label'>Tags</label>
+                <label class='sym-count'>{{ 32 - tags.length }}</label>
+              </div>
+              <div class='input-field input-tags'>
+                <app-tags-input [(tags)]='tags'></app-tags-input>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class='wrapper mt32'>
+        <h2>Image</h2>
+        <app-devpoint-upload-image label='Add image here'
+                                   description='Drop a file with 150×150 size here (jpg, gif, png) or click'
+                                   buttonLabel='Upload image'
+                                   (fileChange)='onFileChanged($event)'
+                                   [background]='false'
+                                   noMargin
+                                   fullWidth
+                                   [currentImagePath]='currentImagePath'
+        ></app-devpoint-upload-image>
+      </div>
+    </div>
+
+    <div class='page-wrapper' *ngIf='page === 1 && company'>
+      <h1>
+        Team
+      </h1>
+      <mat-divider></mat-divider>
+      <div class='wrapper'>
+        <div class='manage-access'>
+          <h2 class='no-margin'>Manage team</h2>
+          <app-devpoint-button size='small'
+                               autoWidth
+                               (buttonClick)='onDeveloperAdd()'
+          >
+            Add developer
+          </app-devpoint-button>
+        </div>
+
+        <div class='input-wrapper mt16'>
+          <div class='input-field developers-container'>
+            <ng-container *ngFor='let entry of developers'>
+              <div class='entry'>
+                <app-developer-entry [developer]='entry.developer'
+                                     [isRemoved]='entry.deleted'
+                                     [isOwner]='entry.developer.id === company.ownerId'
+                                     (remove)='onDeveloperRemove(entry)'
+                                     (undoRemove)='onDeveloperUndoRemove(entry)'
+                ></app-developer-entry>
+              </div>
+              <mat-divider></mat-divider>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class='buttons'>
+      <div class='button'>
+        <app-devpoint-button devpoint-style='transparent-outline'
+                             routerLink='/company/{{company.id}}'
+                             buttonFontColor='gray'
+                             [bold]='false'
+                             *ngIf='company'
+        >
+          Back to company
+        </app-devpoint-button>
+      </div>
+      <div class='button'>
+        <app-devpoint-button [disabled]='!form.valid' (buttonClick)='submitForm()' type='submit' >
+          Save
+        </app-devpoint-button>
+      </div>
+    </div>
+  </div>
+</div>

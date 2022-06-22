@@ -1,0 +1,53 @@
+a.nav-link
+{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+button[mat-menu-item] {
+  display: flex;
+  align-items: center;
+}
+
+button[mat-menu-item] svg {
+  margin-right: 6px;
+}
+
+hr {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.nav-link
+{
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+a.nav-link.main
+{
+    color: black !important;
+}
+
+.nav-link.login
+{
+    color: black !important;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #B5B5B5;
+    margin-right: 17px;
+}
+
+a.nav-link.register
+{
+    color: white !important;
+    background-color: var(--btn-main-color);
+}
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}

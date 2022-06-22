@@ -5,3 +5,7 @@
 - [Требования](https://drive.google.com/drive/folders/11iGnPE_gcpc7U_fMvmnGLyRyoBIo_bOm)  
 - [Тайм-слоты](https://docs.google.com/spreadsheets/d/1nxAzMclyCFXJLzh2nZoDtuS6zaHwGz0QAyqt6EGKvno/edit#gid=0)  
 - [Студенты](https://docs.google.com/spreadsheets/d/1ZQtFfFlS_g933XcbYaQcKGXZbxtKxWERuSzLmq7NzGw/edit#gid=0)  
+  
+<br>  
+
+![Typing SVG](https://readme-typing-svg.herokuapp.com?color=58A6FF&lines=We+Love+.NET)

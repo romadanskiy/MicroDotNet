@@ -50,6 +50,22 @@ namespace AuthorizationServer.Web.Controllers
             }
         }
 
+        [HttpPost("~/connect/register")]
+        public async Task<IActionResult> Create([FromForm] UserRigisterDto userDto)
+        {
+            Validator.UserRegisterDtoValidator(userDto);
+            User user = new User(userDto.Email!, userDto.FirstName!, userDto.LastName!, userDto.PhoneNumber!);
+            var result = await _userManager.CreateAsync(user, userDto.Password);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+
         [HttpPost("~/connect/token"), Produces("application/json")]
         public async Task<IActionResult> Exchange()
         {
@@ -69,6 +85,7 @@ namespace AuthorizationServer.Web.Controllers
 
                     return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
                 }
+
                 // Validate the username/password parameters and ensure the account is not locked out.
                 var result =
                     await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: true);
@@ -101,7 +118,8 @@ namespace AuthorizationServer.Web.Controllers
                     Expires = DateTime.UtcNow.AddDays(1),
                     Issuer = "http://auth:5200/",
                     Audience = "http://auth:5200/",
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                        SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return Ok(tokenHandler.WriteToken(token));
