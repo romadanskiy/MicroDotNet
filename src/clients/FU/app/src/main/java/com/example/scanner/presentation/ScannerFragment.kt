@@ -11,22 +11,25 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.example.scanner.R
 import com.example.scanner.databinding.FragmentScannerBinding
-import com.example.scanner.models.ScanningResultViewModel
+import com.example.scanner.presentation.viewmodels.AddGarbageViewModel
+import com.example.scanner.presentation.viewmodels.GarbageCategoriesViewModel
 import com.example.scanner.presentation.viewmodels.ScannerViewModel
+import com.example.scanner.presentation.viewmodels.ScanningResultViewModel
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.IOException
 
 class ScannerFragment : Fragment() {
 
     private val scannerViewModel by sharedViewModel<ScannerViewModel>()
+    private val scanningResultViewModel by sharedViewModel<ScanningResultViewModel>()
+    private val garbageCategoriesViewModel by sharedViewModel<GarbageCategoriesViewModel>()
+    private val addGarbageViewModel by sharedViewModel<AddGarbageViewModel>()
 
     private val requestCodeCameraPermission = 1001
     private lateinit var cameraSource: CameraSource
@@ -106,6 +109,9 @@ class ScannerFragment : Fragment() {
                 val barcodes = detections.detectedItems
                 if (barcodes.size() == 1) {
                     scannerViewModel.saveBarcode(barcodes.valueAt(0).rawValue);
+                    scanningResultViewModel.clear()
+                    garbageCategoriesViewModel.clear()
+                    addGarbageViewModel.clear()
 
                     //Don't forget to add this line printing value or finishing activity must run on main thread
                     getActivity()?.runOnUiThread {

@@ -12,5 +12,4 @@ class ScannerViewModel: ViewModel() {
     fun saveBarcode(barcodeString: String){
         mutableBarcode.postValue(Barcode(barcodeString))
     }
-
 }

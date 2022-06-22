@@ -1,4 +1,4 @@
 package com.example.scanner.domain.models
 
-class GarbageCategory(name: String) {
+class GarbageCategory(val name: String, val id: Long) {
 }
