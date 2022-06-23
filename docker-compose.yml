@@ -228,6 +228,8 @@ services:
     ports:
       - "5435:5432"
   apollo-gql-express:
+    environment:
+      - node --max-old-space-size=4096 start.js
     build: /apollo-gql-express
     volumes:
       - .:/apollo-gql-express
