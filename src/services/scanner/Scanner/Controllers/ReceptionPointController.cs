@@ -21,7 +21,6 @@ public class ReceptionPointController: Controller
     
     [HttpPost]
     [Route("AddReceptionPoint")]
-    [Authorize(Roles = "AuthorizedUser")]
     public async Task<IActionResult> AddReceptionPointAsync([FromForm] ReceptionPointDto receptionPointDto)
     {
         try
@@ -51,10 +50,9 @@ public class ReceptionPointController: Controller
         }
     }
     
-    [HttpPost]
+    [HttpGet]
     [Route("GetReceptionPoints")]
-    [Authorize(Roles = "AuthorizedUser")]
-    public async Task<IActionResult> GetReceptionPointsAsync([FromForm] IEnumerable<long> garbageTypeIds)
+    public async Task<IActionResult> GetReceptionPointsAsync([FromQuery] IEnumerable<long> garbageTypeIds)
     {
         try
         {

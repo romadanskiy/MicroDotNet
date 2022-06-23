@@ -24,7 +24,7 @@ public class AccountController: Controller
     }
     [HttpPost]
     [Route("Register")]
-    public async Task<IActionResult> RegisterUserAsync([FromForm]RegisterUserDto registerUserDto)
+    public async Task<IActionResult> RegisterUserAsync([FromBody]RegisterUserDto registerUserDto)
     {
         try
         {
@@ -49,7 +49,7 @@ public class AccountController: Controller
     
     [HttpPost]
     [Route("Login")]
-    public async Task<IActionResult> LoginAsync([FromForm]LoginDto loginDto)
+    public async Task<IActionResult> LoginAsync([FromBody]LoginDto loginDto)
     {
         try
         {
