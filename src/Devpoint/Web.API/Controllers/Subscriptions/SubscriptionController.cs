@@ -5,7 +5,6 @@ using Domain.Payments.Entities;
 using Domain.Subscriptions.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Rabbit;
 using Services.Developers.Companies;
 using Services.Developers.Developers;
 using Services.Developers.Projects;

@@ -18,7 +18,7 @@ public class PaySubscriptionJob : CronJob
 
     public override Task DoWork(CancellationToken cancellationToken)
     {
-        foreach (var record in _storage.SubscriptionRecords)
+        foreach (var record in _storage.SubscriptionRecords.ToList())
         {
             _publisher.SendMessage(record);
             _logger.LogInformation($"Withdrawal: id {record}");

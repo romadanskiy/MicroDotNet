@@ -5,6 +5,7 @@ import { AppService } from '../../../services/app.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, firstValueFrom, from, switchMap, tap } from 'rxjs';
 import { Developer } from '../../../models/developer';
+import { MarkdownService } from 'ngx-markdown';
 
 @Component({
   selector: 'app-post',
@@ -17,14 +18,22 @@ export class PostComponent implements OnInit {
   loading: boolean = true;
   imagePath?: string;
   bgImagePath?: string;
+  options?: any;
 
   constructor(
     private app: AppService,
     private router: Router,
     private route: ActivatedRoute,
+    private markdownService: MarkdownService,
   ) {}
 
   ngOnInit(): void {
+    this.options = {
+      lang: 'en_US',
+      mode: 'sv',
+      transform: this.parse.bind(this),
+    };
+
     this.route.params
       .pipe(
         tap((params) => {
@@ -52,5 +61,18 @@ export class PostComponent implements OnInit {
 
   onLoad() {
     this.loading = false;
+  }
+
+  highlight() {
+    setTimeout(() => {
+      this.markdownService.highlight();
+    });
+  }
+
+  parse(inputValue: string) {
+    const markedOutput = this.markdownService.compile(inputValue.trim());
+    this.highlight();
+
+    return markedOutput;
   }
 }

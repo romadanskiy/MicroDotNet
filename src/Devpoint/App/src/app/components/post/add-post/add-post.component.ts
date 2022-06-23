@@ -129,6 +129,11 @@ export class AddPostComponent implements OnInit {
       preview: {
         transform: this.parse.bind(this),
         actions: [],
+        hljs: {
+          enable: false,
+          lineNumber: false,
+          style: 'github',
+        },
       },
     };
 
