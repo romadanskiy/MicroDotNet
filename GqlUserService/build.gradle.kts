@@ -33,6 +33,8 @@ repositories {
         url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
         name = "Ktor EAP"
     }
+    maven { url = uri("https://kotlin.bintray.com/ktor") }
+    jcenter()
 }
 
 sourceSets {
@@ -53,6 +55,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")                 //Exposed
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.koin:koin-ktor:2.2.2")
     implementation("org.flywaydb:flyway-core:$flywayVersion")                                    //FlyWay
     implementation("com.zaxxer:HikariCP:$hikariCPVersion")                                     //HikariCP
     implementation("com.microsoft.sqlserver:mssql-jdbc:$mssqlDriverVersion")                     //MSSQL-Driver
