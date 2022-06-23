@@ -7,7 +7,7 @@ namespace BLL.Models.Helpers;
 public class ImageHelper
 {
     private const string imageFolder = "images";
-    private static string[] imageExtensions = { ".jpeg", ".png", ".jpg" };
+    private static string[] imageExtensions = { ".jpeg", ".png", ".jpg"};
     private IHostingEnvironment _hostingEnvironment;
 
     public ImageHelper(IHostingEnvironment hostingEnvironment)
@@ -23,15 +23,20 @@ public class ImageHelper
         }
         
         var extension = Path.GetExtension(file.FileName);
-        if (!imageExtensions.Contains(extension.ToLower()))
+        if (string.IsNullOrEmpty(extension))
+        {
+            extension = imageExtensions[0];
+        }
+        else if (!imageExtensions.Contains(extension.ToLower()))
         {
             throw new ApplicationException("Изображение имеет недопустимое расширение! Допустимые: \".jpeg\", \".png\", \".jpg\"");
         }
 
         var fileName = GetFileName(extension);
-        var webPath = Path.Combine(  
+        var webPath = Path.Combine( "http://" ,
             serverAddress, imageFolder,   
             fileName); 
+        webPath = webPath.Replace(@"\", "/");
         
         var localPath = Path.Combine(  
             _hostingEnvironment.WebRootPath, imageFolder,   

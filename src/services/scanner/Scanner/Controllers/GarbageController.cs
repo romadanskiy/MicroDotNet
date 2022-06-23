@@ -13,8 +13,6 @@ namespace Scanner.Controllers;
 [Route("[controller]")]
 public class GarbageController : Controller
 {
-    private string serverAddress = "http://192.168.1.67:5000";
-    
     private readonly ImageHelper _ImageHelper;
     private readonly GarbageService _garbageService;
 
@@ -90,6 +88,7 @@ public class GarbageController : Controller
     {
         try
         {
+            var serverAddress = HttpContext.Request.Host.Value; 
             var imagePath = await _ImageHelper.SaveImageToLocalStorageAsync(garbageInfoDto.Image, serverAddress);
             var garbageInfo = new GarbageInformation(imagePath, garbageInfoDto.Name, garbageInfoDto.Description, garbageInfoDto.Barcode, garbageInfoDto.GarbageTypes);
             if (garbageInfo.Validate())
@@ -111,11 +110,41 @@ public class GarbageController : Controller
     }
     
     [HttpPost]
+    [Route("AddGarbageInfoByAuthorizedUser")]
+    [Authorize(Roles = "AuthorizedUser")]
+    public async Task<IActionResult> AddGarbageInfoByAuthorizedUserAsync([FromForm]AddGarbageInfoDto garbageInfoDto)
+    {
+        try
+        {
+            var serverAddress = HttpContext.Request.Host.Value; 
+            var userId = HttpContext.User.GetUserId();
+            var imagePath = await _ImageHelper.SaveImageToLocalStorageAsync(garbageInfoDto.Image, serverAddress);
+            var garbageInfo = new GarbageInformation(imagePath, garbageInfoDto.Name, garbageInfoDto.Description, garbageInfoDto.Barcode, garbageInfoDto.GarbageTypes);
+            if (garbageInfo.Validate())
+            {
+                await _garbageService.AddGarbageInformationAsync(garbageInfo, userId);
+                return new ApiResult();
+            }
+
+            return new ApiResult(garbageInfo.ValidationErrorMessages);
+        }
+        catch (ApplicationException ex)
+        {
+            return new ApiResult(ex);
+        }
+        catch
+        {
+            return new ApiResult(new List<string> { "Не удалось выполнить запрос!" });
+        }
+    }
+    
+    [HttpPost]
     [Route("EditGarbageInfo")]
     public async Task<IActionResult> EditGarbageInfoAsync([FromForm]AddGarbageInfoDto garbageInfoDto)
     {
         try
         {
+            var serverAddress = HttpContext.Request.Host.Value;
             var imagePath = await _ImageHelper.SaveImageToLocalStorageAsync(garbageInfoDto.Image, serverAddress);
             var garbageInfo = new GarbageInformation(imagePath, garbageInfoDto.Name, garbageInfoDto.Description, garbageInfoDto.Barcode, garbageInfoDto.GarbageTypes);
             if (garbageInfo.Validate())

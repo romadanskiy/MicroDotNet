@@ -22,7 +22,7 @@ public class GarbageService
     /// <summary>
     /// Сохранить в бд данные о новом товаре
     /// </summary>
-    public async Task AddGarbageInformationAsync(GarbageInformation info)
+    public async Task AddGarbageInformationAsync(GarbageInformation info, long? userId = null)
     {
         if (!await IsBarcodeAlreadyExistAsync(info.Barcode))
         {
@@ -44,6 +44,24 @@ public class GarbageService
             };
 
             _dbContext.Garbage.Add(newGarbageInfo);
+            
+            if (userId.HasValue)
+            {
+                var user = await _dbContext.User.FirstOrDefaultAsync(x => x.Id == userId);
+            
+                if (user == null)
+                {
+                    throw new ApplicationException("Не найден пользователь, выполнивший запрос!");
+                }
+
+                _dbContext.UserGarbage.Add(new UserGarbage()
+                {
+                    User = user,
+                    Garbage = newGarbageInfo,
+                    ScannedDateTime = DateTime.UtcNow
+                });
+            }
+            
             await _dbContext.SaveChangesAsync();
 
             return;
@@ -188,6 +206,7 @@ public class GarbageService
 
     private async Task<bool> IsBarcodeAlreadyExistAsync(string barcode)
     {
-        return await _dbContext.Garbage.Where(x => x.Barcode == barcode).AnyAsync();
+        var garbage =  await _dbContext.Garbage.Where(x => x.Barcode == barcode).FirstOrDefaultAsync();
+        return garbage != null;
     }
 }
