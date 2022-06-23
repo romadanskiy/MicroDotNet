@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Grpc.Net.Client;
+using Microsoft.EntityFrameworkCore;
+using RatingGrpcService;
 using RuOverflow.Questions.EF;
 using RuOverflow.Questions.Extensions;
 using RuOverflow.Questions.Features.Questions.Models;
@@ -27,7 +29,6 @@ public class AskQuestionHandler : IAsyncHandler<AskQuestionCommand, Question>
             : null;
         
         var userId = _accessor.GetUserId();
-
         var question = new Question(input.Title, input.Body, userId, tags);
         context.Questions.Add(question);
         await context.SaveChangesAsync();

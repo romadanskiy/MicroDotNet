@@ -17,7 +17,7 @@ import java.util.UUID
 fun initDatabase(config: ApplicationConfig) {
     val driverClassName = config.property("storage.driverClassName").getString()
     val jdbcURL = config.property("storage.jdbcURL").getString()
-    val dbUsername = config.property("storage.username").getString()
+    val dbUsername: String = config.property("storage.username").getString()
     val dbPassword = config.property("storage.password").getString()
     val dataSource = createHikariDataSource(
         url = jdbcURL,

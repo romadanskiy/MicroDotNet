@@ -231,12 +231,15 @@ services:
     environment:
       - node --max-old-space-size=4096 start.js
     build: /apollo-gql-express
+    build: 
+      context: ./apollo-gql-express
+      dockerfile: Dockerfile
     volumes:
       - .:/apollo-gql-express
       - /apollo-gql-express/node_modules
     container_name: docker-node-mongo
     ports:
-      - 4000:4000
+      - "4000:4000"
     command: npm start
     external_links:
       - mongo
@@ -244,7 +247,7 @@ services:
     container_name: mongo
     image: mongo
     volumes:
-      - ./data:/data/db
+      - mongo:/var/lib/mongo/data
     ports:
       - "27017:27017"
 

@@ -1,0 +1,16 @@
+.empty-input {
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+.tags-container {
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.tags-input {
+  width: 100%;
+}

@@ -1,0 +1,27 @@
+.side-nav {
+  width: 150px;
+  position: sticky;
+  top: 0;
+  padding-top: 64px;
+  margin-top: -14px;
+}
+
+.side-nav.vertical {
+  display: flex;
+  padding-top: 0;
+  margin-top: 0;
+  width: 100%;
+}
+
+.side-nav.no-stick {
+  position: relative;
+}
+
+.side-nav-button {
+  margin-top: 8px;
+}
+
+.side-nav.vertical .side-nav-button {
+  margin-top: 0;
+  margin-left: 8px;
+}

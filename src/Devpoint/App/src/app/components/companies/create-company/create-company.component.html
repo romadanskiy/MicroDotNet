@@ -1,0 +1,38 @@
+<div class='container'>
+  <div class='cover'>
+    <div class='wrapper'>
+      <form [formGroup]='form' (ngSubmit)='onSubmit()'>
+        <div class='header'>
+          <h1>Create company</h1>
+        </div>
+        <mat-divider></mat-divider>
+        <app-devpoint-errors [errors]='errors'></app-devpoint-errors>
+        <div class='body'>
+          <input maxlength='32' formControlName='title' class='title empty-input' type='text' placeholder='Name'
+                 [class.error]='hasErrors("title")'>
+          <span class='text-danger'
+                *ngIf="hasError('title', 'required')">
+            Name is required
+          </span>
+          <app-tags-input [(tags)]='tags'></app-tags-input>
+          <textarea maxlength='256' cdkTextareaAutosize formControlName='description'
+                    class='description empty-input' type='text' placeholder='Description'
+                    [class.error]='hasErrors("description")'
+          ></textarea>
+          <app-devpoint-upload-image label='Add image here'
+                                     description='Drop a file with 150×150 size here (jpg, gif, png) or click'
+                                     buttonLabel='Upload image'
+                                     (fileChange)='onFileChanged($event)'
+                                     [background]='false'
+          ></app-devpoint-upload-image>
+        </div>
+        <mat-divider></mat-divider>
+        <div class='footer'>
+          <app-devpoint-button type='submit' [disabled]='!form.valid' class='create-button'>
+            Create company
+          </app-devpoint-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

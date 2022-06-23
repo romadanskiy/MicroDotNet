@@ -1,0 +1,8 @@
+<div class="alert alert-danger" role="alert" *ngIf='errorList && errorList.length'>
+  <ng-container *ngFor='let error of errorList; last as last'>
+    <p>
+      {{ error }}
+    </p>
+    <hr *ngIf='!last' />
+  </ng-container>
+</div>
