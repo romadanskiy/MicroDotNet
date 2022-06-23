@@ -10,6 +10,7 @@ using Services.Developers.Companies;
 using Services.Developers.Developers;
 using Services.Developers.Projects;
 using Services.Payments.Bills;
+using Services.Payments.Rabbit;
 using Services.Payments.Wallets;
 using Services.Subscriptions.Subscriptions;
 using Services.Subscriptions.Tariffs;

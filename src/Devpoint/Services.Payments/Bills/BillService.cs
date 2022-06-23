@@ -4,6 +4,7 @@ using Domain.Payments.Entities;
 using Domain.Subscriptions.Entities.Subscriptions;
 using Microsoft.EntityFrameworkCore;
 using Services.Payments.Earnings;
+using Services.Payments.Rabbit;
 using Services.Payments.Wallets;
 using Services.Subscriptions.Subscriptions;
 
