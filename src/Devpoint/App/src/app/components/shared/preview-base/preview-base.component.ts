@@ -51,7 +51,7 @@ export class PreviewBaseComponent implements OnInit {
             this.owner = undefined;
             break;
           case EntityType.Company:
-            this.ownerLink = `/project/${this.ownerEntity.id}`;
+            this.ownerLink = `/company/${this.ownerEntity.id}`;
             break;
         }
       });

@@ -261,14 +261,14 @@ public class ProjectController : Controller
 
         if (updateEntityDto.ImagePath != null)
         {
-            if (!string.IsNullOrWhiteSpace(project.ImagePath))
+            if (!string.IsNullOrWhiteSpace(project.ImageFullPath))
             {
                 var pathToRemove = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
-                var fullPath = Path.Combine(pathToRemove, project.ImagePath);
+                var fullPath = Path.Combine(pathToRemove, project.ImageFullPath);
                 System.IO.File.Delete(fullPath);
             }
 
-            project.ImagePath = updateEntityDto.ImagePath;
+            project.ImageFullPath = updateEntityDto.ImagePath;
         }
 
         if (updateEntityDto.Description != null)

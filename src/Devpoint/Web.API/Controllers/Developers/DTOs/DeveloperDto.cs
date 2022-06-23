@@ -20,9 +20,9 @@ public class DeveloperDto
     public DeveloperDto(Developer developer)
     {
         Id = developer.Id;
-        Name = developer.Name;
+        Name = developer.FullName;
         Description = developer.Description;
-        ImagePath = developer.ImagePath;
+        ImagePath = developer.ImageFullPath;
         SubscriberCount = developer.SubscriberCount;
         if (developer.Tags is not null)
             Tags = developer.Tags.Select(tag => new TagDto(tag)).ToList();

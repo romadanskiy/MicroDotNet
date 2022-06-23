@@ -10,7 +10,9 @@
       <div [style.background-image]="bgImagePath" class="post-cover-bg"></div>
       <div class='backdrop'></div>
     </div>
-    <div markdown class="post-content" ngpreservewhitespaces>{{ post.content }}</div>
+    <div class="post-content" *ngIf="post.content">
+      <app-markdown-preview ngpreservewhitespaces [options]="options" [value]="post.content"></app-markdown-preview>
+    </div>
   </div>
 </div>
 

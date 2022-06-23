@@ -27,6 +27,8 @@ public class ApplicationContext : DbContext
     public DbSet<Comment> Comments { get; set; }
     
     public DbSet<Bill> Bills { get; set; }
+    
+    public DbSet<Earning> Earnings { get; set; }
     public DbSet<Replenishment> Replenishments { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
     public DbSet<Withdrawal> Withdrawals { get; set; }

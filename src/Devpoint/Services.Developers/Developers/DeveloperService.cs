@@ -92,7 +92,7 @@ public class DeveloperService : IDeveloperService
     public async Task UpdateName(Guid developerId, string name)
     {
         var developer = await GetDeveloper(developerId);
-        developer.Name = name;
+        developer.FullName = name;
         await _context.SaveChangesAsync();
     }
 

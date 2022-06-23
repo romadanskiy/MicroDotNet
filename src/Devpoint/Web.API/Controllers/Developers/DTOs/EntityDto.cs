@@ -14,8 +14,8 @@ public class EntityDto
         return new EntityDto()
         {
             Id = developer.Id,
-            Name = developer.Name,
-            ImagePath = developer.ImagePath,
+            Name = developer.FullName,
+            ImagePath = developer.ImageFullPath,
             Description = developer.Description
         };
     }
@@ -26,7 +26,7 @@ public class EntityDto
         {
             Id = project.Id,
             Name = project.Name,
-            ImagePath = project.ImagePath,
+            ImagePath = project.ImageFullPath,
             Description = project.Description
         };
     }
@@ -37,7 +37,7 @@ public class EntityDto
         {
             Id = company.Id,
             Name = company.Name,
-            ImagePath = company.ImagePath,
+            ImagePath = company.ImageFullPath,
             Description = company.Description
         };
     }

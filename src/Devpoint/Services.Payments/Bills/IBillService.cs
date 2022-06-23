@@ -13,6 +13,6 @@ public interface IBillService
 
     public Task<Wallet> GetBillWallet(int billId);
 
-    public Task<Bill> CreateBill(int walletId, int subscriptionId);
+    public Task<Bill> CreateBill(int subscriptionId);
     public Task<Bill> CreateBill(Wallet wallet, Subscription subscription);
 }

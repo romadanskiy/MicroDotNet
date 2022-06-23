@@ -33,7 +33,7 @@
         </div>
     </div>
 
-  <ng-container *ngIf='withdrawals?.length || deposits?.length'>
+  <ng-container *ngIf='withdrawals?.length || deposits?.length || bills?.length || earnings?.length'>
     <div class='history-container'>
       <div class='history-label'>
         <h2 class='no-margin'>History</h2>
@@ -41,13 +41,18 @@
                                borderStyle='round'
                                no-stick
                                [(page)]='page'
-                               [pages]="['Withdrawals', 'Deposits', 'Bills']"></app-devpoint-side-nav>
+                               [pages]="['Withdrawals', 'Deposits', 'Bills', 'Earnings']"></app-devpoint-side-nav>
       </div>
     </div>
 
     <div class='input-wrapper mt16'>
       <div class='input-field developers-container'>
         <ng-container *ngIf='page === 0 && withdrawals'>
+          <div class='entry'>
+            <div>Amount</div>
+            <div>Id</div>
+            <div>Date</div>
+          </div>
           <ng-container *ngFor='let entry of withdrawals'>
             <div class='entry'>
               <div>{{ entry.amount }}$</div>
@@ -58,6 +63,11 @@
           </ng-container>
         </ng-container>
         <ng-container *ngIf='page === 1 && deposits'>
+          <div class='entry'>
+            <div>Amount</div>
+            <div>Id</div>
+            <div>Date</div>
+          </div>
           <ng-container *ngFor='let entry of deposits'>
             <div class='entry'>
               <div>{{ entry.amount }}$</div>
@@ -69,6 +79,13 @@
         </ng-container>
 
         <ng-container *ngIf='page === 2 && bills'>
+          <div class='bill entry'>
+            <div>Amount</div>
+            <div>Id</div>
+            <div>Date</div>
+            <div>Type</div>
+            <div>Status</div>
+          </div>
           <ng-container *ngFor='let entry of bills'>
             <div class='entry bill'>
               <div>{{ entry.amount }}$</div>
@@ -80,6 +97,32 @@
               <div [class.failed]='entry.status === 1'
                    [class.success]='entry.status === 0'
               >{{ entry.status === 0 ? 'Success' : 'Failed' }}</div>
+            </div>
+            <mat-divider></mat-divider>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf='page === 3 && earnings'>
+          <div class='entry earning'>
+            <div>Amount</div>
+            <div>Id</div>
+            <div>Date</div>
+            <div>Type</div>
+            <div>Status</div>
+            <div>From</div>
+          </div>
+          <ng-container *ngFor='let entry of earnings'>
+            <div class='entry earning'>
+              <div>{{ entry.amount }}$</div>
+              <div>{{ entry.id }}</div>
+              <div>{{ entry.dateTime | date: 'dd.MM.YYYY HH:mm' }}</div>
+              <div class='sub-info'>
+                <div><b>{{ entry.subscriptionType }}</b></div>
+              </div>
+              <div [class.failed]='entry.status === 1'
+                   [class.success]='entry.status === 0'
+              >{{ entry.status === 0 ? 'Success' : 'Failed' }}</div>
+              <a *ngIf="entry.from" routerLink="/developer/{{entry.from.id}}">{{ entry.from.name }}</a>
             </div>
             <mat-divider></mat-divider>
           </ng-container>

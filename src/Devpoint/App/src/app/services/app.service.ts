@@ -406,6 +406,22 @@ export class AppService {
     );
   }
 
+  getAllEarnings(): Observable<PaymentEntry[]> {
+    return this.apiService.get('/earnings').pipe(
+      map((earnings) =>
+        earnings.map((earning: any) => ({
+          id: earning.id,
+          amount: earning.amount,
+          dateTime: earning.dateTime,
+          status: earning.status,
+          subscriptionType:
+            this._subscriptionLevels[earning.tariff.subscriptionLevelId],
+          from: this.mapDeveloper(earning.developer),
+        })),
+      ),
+    );
+  }
+
   public getPost(id: string) {
     return this.apiService.get(`/posts/${id}`).pipe(map(this.mapPost));
   }

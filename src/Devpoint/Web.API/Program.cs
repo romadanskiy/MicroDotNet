@@ -11,6 +11,8 @@ using Services.Developers.Developers;
 using Services.Developers.Projects;
 using Services.Developers.Tags;
 using Services.Payments.Bills;
+using Services.Payments.Earnings;
+using Services.Payments.Rabbit;
 using Services.Payments.Replenishments;
 using Services.Payments.Wallets;
 using Services.Payments.Withdrawals;
@@ -20,6 +22,8 @@ using Services.Subscriptions.Subscriptions;
 using Services.Subscriptions.Tariffs;
 using Services.Users.Users;
 using Web.API;
+
+Thread.Sleep(30000);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +70,12 @@ builder.Services.AddScoped<IBillService, BillService>();
 builder.Services.AddScoped<IReplenishmentService, ReplenishmentService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IWithdrawalService, WithdrawalService>();
+builder.Services.AddScoped<IEarningService, EarningService>();
+
+builder.Services.AddScoped<IRabbitSubscribePublisher, RabbitSubscribePublisher>();
+builder.Services.AddScoped<IRabbitUnsubscribePublisher, RabbitUnsubscribePublisher>();
+
+builder.Services.AddHostedService<RabbitPayConsumer>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

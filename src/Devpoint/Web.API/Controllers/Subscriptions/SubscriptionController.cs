@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Data.Core;
 using Domain.Developers.Entities;
 using Domain.Payments.Entities;
@@ -8,6 +9,7 @@ using Services.Developers.Companies;
 using Services.Developers.Developers;
 using Services.Developers.Projects;
 using Services.Payments.Bills;
+using Services.Payments.Rabbit;
 using Services.Payments.Wallets;
 using Services.Subscriptions.Subscriptions;
 using Services.Subscriptions.Tariffs;
@@ -28,13 +30,17 @@ public class SubscriptionController : Controller
     private readonly IProjectService _projectService;
     private readonly IDeveloperService _developerService;
     private readonly ApplicationContext _context;
+    private readonly IRabbitSubscribePublisher _subscribePublisher;
+    private readonly IRabbitUnsubscribePublisher _unsubscribePublisher;
 
     public SubscriptionController(
         ISubscriptionService subscriptionService, 
         IBillService billService, IWalletService walletService, 
         ITariffService tariffService, ICompanyService companyService, 
         IProjectService projectService, IDeveloperService developerService, 
-        ApplicationContext context)
+        ApplicationContext context, 
+        IRabbitSubscribePublisher subscribePublisher, 
+        IRabbitUnsubscribePublisher unsubscribePublisher)
     {
         _subscriptionService = subscriptionService;
         _billService = billService;
@@ -44,8 +50,10 @@ public class SubscriptionController : Controller
         _projectService = projectService;
         _developerService = developerService;
         _context = context;
+        _subscribePublisher = subscribePublisher;
+        _unsubscribePublisher = unsubscribePublisher;
     }
-
+    
     [HttpGet]
     [Route("company")]
     public async Task<IActionResult> GetCompanySubscriptions()
@@ -68,7 +76,7 @@ public class SubscriptionController : Controller
 
         var subscriptions = await fullQuery.ToListAsync();
         var result = subscriptions
-            .Select(o => new SubscriptionDto(o.sub)
+            .Select(o => new DTOs.SubscriptionDto(o.sub)
             {
                 Entity = EntityDto.FromCompany(o.company)
             })
@@ -99,7 +107,7 @@ public class SubscriptionController : Controller
 
         var subscriptions = await fullQuery.ToListAsync();
         var result = subscriptions
-            .Select(o => new SubscriptionDto(o.sub)
+            .Select(o => new DTOs.SubscriptionDto(o.sub)
             {
                 Entity = EntityDto.FromProject(o.project)
             })
@@ -130,7 +138,7 @@ public class SubscriptionController : Controller
 
         var subscriptions = await fullQuery.ToListAsync();
         var result = subscriptions
-            .Select(o => new SubscriptionDto(o.sub)
+            .Select(o => new DTOs.SubscriptionDto(o.sub)
             {
                 Entity = EntityDto.FromDeveloper(o.developer)
             })
@@ -144,7 +152,7 @@ public class SubscriptionController : Controller
     public async Task<IActionResult> GetSubscription(int subscriptionId)
     {
         var subscription = await _subscriptionService.GetSubscription(subscriptionId);
-        var result = new SubscriptionDto(subscription);
+        var result = new DTOs.SubscriptionDto(subscription);
 
         return Ok(result);
     }
@@ -181,7 +189,7 @@ public class SubscriptionController : Controller
                 return BadRequest();
         }
 
-        var result = new SubscriptionDto(subscription)
+        var result = new DTOs.SubscriptionDto(subscription)
         {
             Entity = entityDto
         };
@@ -241,6 +249,18 @@ public class SubscriptionController : Controller
         {
             _context.Remove(existingSubscription);
             await _context.SaveChangesAsync();
+
+            if (existingSubscription.IsAutoRenewal)
+            {
+                var subscriptionRecord = new SubscriptionRecord {SubscriptionId = existingSubscription.Id};
+                _unsubscribePublisher.SendMessage(subscriptionRecord);
+            }
+        }
+
+        if (subscription.IsAutoRenewal)
+        {
+            var subscriptionRecord = new SubscriptionRecord {SubscriptionId = subscription.Id};
+            _subscribePublisher.SendMessage(subscriptionRecord);
         }
 
         return Ok(bill);
@@ -286,6 +306,12 @@ public class SubscriptionController : Controller
 
         _context.Remove(subscription);
         await _context.SaveChangesAsync();
+
+        if (subscription.IsAutoRenewal)
+        {
+            var subscriptionRecord = new SubscriptionRecord {SubscriptionId = subscription.Id};
+            _unsubscribePublisher.SendMessage(subscriptionRecord);
+        }
 
         return Ok();
     }

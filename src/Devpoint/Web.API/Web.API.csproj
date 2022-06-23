@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
       <UserSecretsId>8c7c6e47-950f-4f6e-9d4b-dc10659ccb5a</UserSecretsId>
-      <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+      <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
     <ItemGroup>
@@ -23,6 +23,11 @@
       <ProjectReference Include="..\Services.Developers\Services.Developers.csproj" />
       <ProjectReference Include="..\Services.Payments\Services.Payments.csproj" />
       <ProjectReference Include="..\Services.Users\Services.Users.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources" />
+      <Folder Include="wwwroot" />
     </ItemGroup>
 
 </Project>

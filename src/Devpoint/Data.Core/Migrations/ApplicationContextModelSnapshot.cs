@@ -301,6 +301,43 @@ namespace Data.Core.Migrations
                     b.ToTable("Bills");
                 });
 
+            modelBuilder.Entity("Domain.Payments.Entities.Earning", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TariffId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WalletFromId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WalletToId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TariffId");
+
+                    b.HasIndex("WalletFromId");
+
+                    b.HasIndex("WalletToId");
+
+                    b.ToTable("Earnings");
+                });
+
             modelBuilder.Entity("Domain.Payments.Entities.Replenishment", b =>
                 {
                     b.Property<int>("Id")
@@ -812,6 +849,33 @@ namespace Data.Core.Migrations
                     b.Navigation("Tariff");
 
                     b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("Domain.Payments.Entities.Earning", b =>
+                {
+                    b.HasOne("Domain.Subscriptions.Entities.Tariff", "Tariff")
+                        .WithMany()
+                        .HasForeignKey("TariffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Payments.Entities.Wallet", "WalletFrom")
+                        .WithMany()
+                        .HasForeignKey("WalletFromId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Payments.Entities.Wallet", "WalletTo")
+                        .WithMany()
+                        .HasForeignKey("WalletToId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tariff");
+
+                    b.Navigation("WalletFrom");
+
+                    b.Navigation("WalletTo");
                 });
 
             modelBuilder.Entity("Domain.Payments.Entities.Replenishment", b =>

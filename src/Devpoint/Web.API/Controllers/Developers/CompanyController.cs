@@ -260,14 +260,14 @@ public class CompanyController : Controller
         
         if (updateEntityDto.ImagePath != null)
         {
-            if (!string.IsNullOrWhiteSpace(company.ImagePath))
+            if (!string.IsNullOrWhiteSpace(company.ImageFullPath))
             {
                 var pathToRemove = Path.Combine(Directory.GetCurrentDirectory(), "Resourcess");
-                var fullPath = Path.Combine(pathToRemove, company.ImagePath);
+                var fullPath = Path.Combine(pathToRemove, company.ImageFullPath);
                 System.IO.File.Delete(fullPath);
             }
 
-            company.ImagePath = updateEntityDto.ImagePath;
+            company.ImageFullPath = updateEntityDto.ImagePath;
         }
 
         if (updateEntityDto.Description != null)

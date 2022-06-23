@@ -26,7 +26,7 @@ public class ProjectDto
         Id = project.Id;
         Name = project.Name;
         Description = project.Description;
-        ImagePath = project.ImagePath;
+        ImagePath = project.ImageFullPath;
         SubscriberCount = project.SubscriberCount;
         OwnerId = project.OwnerId;
         CompanyId = project.CompanyId;
