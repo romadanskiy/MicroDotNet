@@ -102,7 +102,7 @@ services:
       CRON_EXPRESSION: "* * * * *"
     networks:
       - devpoint.network
-    
+
 volumes:
   db_volume:
   rabbit_data:
