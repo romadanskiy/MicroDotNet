@@ -31,7 +31,7 @@ services:
       DB_CONNECTION_STRING: "host=devpoint.db;port=5432;database=devpoint_db;username=postgres;password=postgres"
     networks:
       - devpoint.network
-  
+
   devpoint.db:
     container_name: devpoint.db
     image: postgres:latest
@@ -57,6 +57,6 @@ services:
       - "8000:80"
     networks:
       - devpoint.network
-    
+
 volumes:
   db_volume:
