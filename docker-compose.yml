@@ -231,7 +231,6 @@ services:
     environment:
       - node --max-old-space-size=4096 start.js
     build: /apollo-gql-express
-    build: 
       context: ./apollo-gql-express
       dockerfile: Dockerfile
     volumes:
