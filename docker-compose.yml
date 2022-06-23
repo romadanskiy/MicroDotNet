@@ -25,13 +25,13 @@ services:
     environment:
       - RuOverFlow_Question_ConnectionString=Host=postgres;Database=ruflow;User Id=postgres;Password=postgres;Port=5432;
     depends_on:
-        - postgres
-        - zoo1
-        - kafka1
-        - kafka2
-        - kafka3
-        - debezium
-        - dotnet.questions
+      - postgres
+      - zoo1
+      - kafka1
+      - kafka2
+      - kafka3
+      - debezium
+      - dotnet.questions
   gqluserservice:
     build:
       context: GqlUserService/
@@ -228,9 +228,21 @@ services:
       - auth-db:/var/lib/postgresql/data:rw
     ports:
       - "5435:5432"
-
-volumes:
-  mssql-server-linux-data:
-  postgres:
-  es01:
-  auth-db:
+  apollo-gql-express:
+    build: /apollo-gql-express
+    volumes:
+      - .:/apollo-gql-express
+      - /apollo-gql-express/node_modules
+    container_name: docker-node-mongo
+    ports:
+      - 4000:4000
+    command: npm start
+    external_links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
