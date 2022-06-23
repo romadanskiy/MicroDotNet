@@ -31,6 +31,14 @@
         app:layout_constraintTop_toBottomOf="@id/progressBar_points"
         android:scrollbars="vertical"/>
 
+    <TextView
+        android:id="@+id/notFoundPoint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Не удалось найти пункты приема мусора, удовлетворяющие вашему запросу."
+        android:textSize="32dp"
+        android:textAlignment="center"/>
+
     <Button
         android:id="@+id/goToAddPoints"
         android:layout_width="match_parent"

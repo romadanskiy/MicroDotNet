@@ -39,7 +39,7 @@ class ReceptionPointsFragment: Fragment() {
             Observer<Boolean> { loading ->
                 if (loading) {
                     binding.pointsList.visibility = View.GONE
-                    binding.goToAddPoints.visibility = View.GONE
+                    binding.goToAddPoints.visibility = View.INVISIBLE
                     binding.progressBarPoints.visibility = View.VISIBLE
                 } else {
                     binding.pointsList.visibility = View.VISIBLE
@@ -54,6 +54,14 @@ class ReceptionPointsFragment: Fragment() {
                     val adapter = ReceptionPointsAdapter(requireContext(), result.data!!)
 
                     binding.pointsList.adapter = adapter
+                    if(result.data == null || result.data!!.size == 0){
+                        binding.pointsList.visibility = View.GONE
+                        binding.notFoundPoint.visibility = View.VISIBLE
+                    }
+                    else{
+                        binding.pointsList.visibility = View.VISIBLE
+                        binding.notFoundPoint.visibility = View.GONE
+                    }
 
                 } else if (result != null) {
                     errorViewModel.handleRequestError(

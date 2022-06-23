@@ -72,7 +72,7 @@ class AddReceptionPointsFragment: Fragment() {
                         var supportFragmentManager = activity?.supportFragmentManager;
                         supportFragmentManager?.beginTransaction()
                             ?.replace(R.id.fragment_container, ReceptionPointsFragment())?.commit();
-                        addReceptionPointViewModel.setLoading(false)
+                        addReceptionPointViewModel.clear()
                     } else {
 
                         errorViewModel.handleRequestError(
