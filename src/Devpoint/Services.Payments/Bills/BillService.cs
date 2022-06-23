@@ -15,15 +15,17 @@ public class BillService : IBillService
     private readonly IWalletService _walletService;
     private readonly ISubscriptionService _subscriptionService;
     private readonly IEarningService _earningService;
+    private readonly IRabbitUnsubscribePublisher _unsubscribePublisher;
 
     public BillService(
         ApplicationContext context, IWalletService walletService, 
-        ISubscriptionService subscriptionService, IEarningService earningService)
+        ISubscriptionService subscriptionService, IEarningService earningService, IRabbitUnsubscribePublisher unsubscribePublisher)
     {
         _context = context;
         _walletService = walletService;
         _subscriptionService = subscriptionService;
         _earningService = earningService;
+        _unsubscribePublisher = unsubscribePublisher;
     }
 
     public IQueryable<Bill> GetAllBills()
@@ -76,6 +78,12 @@ public class BillService : IBillService
             bill = new Bill(amount, wallet, subscription.Tariff, PaymentStatus.Failed);
             _context.Bills.Add(bill);
             _context.Remove(subscription);
+
+            if (subscription.IsAutoRenewal)
+            {
+                var subscriptionRecord = new SubscriptionRecord {SubscriptionId = subscription.Id};
+                _unsubscribePublisher.SendMessage(subscriptionRecord);
+            }
         }
         else
         {

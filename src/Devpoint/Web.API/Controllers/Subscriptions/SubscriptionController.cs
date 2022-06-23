@@ -249,6 +249,12 @@ public class SubscriptionController : Controller
         {
             _context.Remove(existingSubscription);
             await _context.SaveChangesAsync();
+
+            if (existingSubscription.IsAutoRenewal)
+            {
+                var subscriptionRecord = new SubscriptionRecord {SubscriptionId = existingSubscription.Id};
+                _unsubscribePublisher.SendMessage(subscriptionRecord);
+            }
         }
 
         if (subscription.IsAutoRenewal)
