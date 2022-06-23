@@ -22,7 +22,7 @@ namespace AuthorizationServer.Web.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Auth.Web.Domain.Role", b =>
+            modelBuilder.Entity("AuthorizationServer.Web.Domain.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace AuthorizationServer.Web.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Auth.Web.Domain.User", b =>
+            modelBuilder.Entity("AuthorizationServer.Web.Domain.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -139,17 +139,18 @@ namespace AuthorizationServer.Web.Migrations
                             Id = new Guid("5f34130c-2ed9-4c83-a600-e474e8f48bac"),
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "37285e0f-b3c2-4a75-85f6-73a3c4c6da29",
-                            CreatedAt = new DateOnly(2022, 4, 3),
+                            CreatedAt = new DateOnly(2022, 6, 22),
                             EmailConfirmed = false,
-                            FirstName = "John",
-                            LastName = "Doe",
+                            FirstName = "John1",
+                            LastName = "Doe2",
                             LockoutEnabled = false,
-                            NormalizedUserName = "ADMIN",
+                            NormalizedUserName = "ADMIN@MAIL.RU",
                             PasswordHash = "AQAAAAEAACcQAAAAEED86xKz3bHadNf8B1Hg8t5qNefw4Bq1Kr2q6Jx9Ss/DcRIcUpLiFkDgQZTqUgJThA==",
+                            PhoneNumber = "89274868648",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "DKBWMTFC7TZQZ6UFNZ5BN5XQNDYUBJYQ,09bd35b0-9c9f-4772-8789-e6d4b9fbe9c4",
                             TwoFactorEnabled = false,
-                            UserName = "Admin"
+                            UserName = "Admin@mail.ru"
                         });
                 });
 
@@ -456,7 +457,7 @@ namespace AuthorizationServer.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Auth.Web.Domain.Role", null)
+                    b.HasOne("AuthorizationServer.Web.Domain.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -465,7 +466,7 @@ namespace AuthorizationServer.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Auth.Web.Domain.User", null)
+                    b.HasOne("AuthorizationServer.Web.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -474,7 +475,7 @@ namespace AuthorizationServer.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Auth.Web.Domain.User", null)
+                    b.HasOne("AuthorizationServer.Web.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -483,13 +484,13 @@ namespace AuthorizationServer.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Auth.Web.Domain.Role", null)
+                    b.HasOne("AuthorizationServer.Web.Domain.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Auth.Web.Domain.User", null)
+                    b.HasOne("AuthorizationServer.Web.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -498,7 +499,7 @@ namespace AuthorizationServer.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Auth.Web.Domain.User", null)
+                    b.HasOne("AuthorizationServer.Web.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
