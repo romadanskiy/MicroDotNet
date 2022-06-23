@@ -1,0 +1,22 @@
+<button
+  class='btn'
+  [style.maxWidth.px]='maxWidth'
+  [style.color]='buttonFontColor'
+  [class.auto-width]='autoWidth'
+  [class.full-width]='fullWidth'
+  [class.no-border-left]='noBorderLeft'
+  [class.no-border-right]='noBorderRight'
+  [class]='classMap'
+  [disabled]='disabled'
+  [class.disabled]='disabled'
+  type='{{type}}'
+  (click)='onClick($event)'
+  [formTarget]='formTarget'
+>
+  <div class="content-wrapper"
+       [class.bold]='bold'
+       [style.padding]='padding'
+  >
+    <ng-content></ng-content>
+  </div>
+</button>

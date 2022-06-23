@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Data.Core\Data.Core.csproj" />
+      <ProjectReference Include="..\Domain.Content\Domain.Content.csproj" />
+      <ProjectReference Include="..\Services.Developers\Services.Developers.csproj" />
+      <ProjectReference Include="..\Services.Subscriptions\Services.Subscriptions.csproj" />
+    </ItemGroup>
+
+</Project>

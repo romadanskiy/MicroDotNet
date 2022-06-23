@@ -1,0 +1,117 @@
+.form {
+    margin-top: 40px;
+    position: relative;
+}
+
+.form > input {
+    margin-bottom: 10px;
+}
+
+.funds-label {
+    text-align: center;
+    font-weight: bold;
+    color: var(--btn-main-color);
+    font-size: 1.25rem;
+}
+
+.funds {
+    margin-top: 16px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 4rem;
+    line-height: 4rem;
+}
+
+.error {
+  border-color: #cf222e!important;
+  color: #cf222e!important;
+}
+
+.error::placeholder {
+  color: #cf222e!important;
+}
+
+.text-danger {
+  bottom: 90px;
+  margin-left: 3px;
+  position: absolute;
+}
+
+.history-label {
+  width: 100%;
+  max-width: 710px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.history-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.input-field {
+  width: 100%;
+  max-width: 710px;
+  background: transparent;
+  border: 1px solid #DBDBDB;
+  padding: 0 14px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-family: "-apple-system",BlinkMacSystemFont,Arial,sans-serif;
+  color: #333;
+  transition: border linear .2s, box-shadow linear .2s;
+  border-radius: 6px;
+  min-height: 200px;
+  max-height: 380px;
+  overflow: auto;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 0.5fr 0.2fr 1fr;
+  width: 100%;
+  font-size: 24px;
+  padding: 16px 64px;
+}
+
+.entry div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bill {
+  grid-template-columns: 0.5fr 0.2fr 1fr 0.4fr 0.6fr;
+  padding: 16px 32px;
+  font-size: 20px;
+}
+
+.sub-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.failed {
+  color: #cf222e;
+  font-weight: bold;
+}
+
+.success {
+  color: #33cf22;
+}
+
+.input-wrapper {
+  width: 100%;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

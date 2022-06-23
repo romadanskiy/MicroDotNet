@@ -1,0 +1,154 @@
+.entity-name {
+  text-align: center;
+  font: 400 24px/32px Roboto, "Helvetica Neue", sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  letter-spacing: normal;
+  color: black;
+  margin: 0 0 16px;
+}
+
+.entity-name-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert {
+  text-align: center;
+}
+
+.container {
+  margin-top: 2rem;
+}
+
+.tariff-layout {
+  display: grid;
+  grid-gap: 1.25rem;
+  width: 100%;
+  grid-auto-rows: minmax(100px,1fr);
+  grid-row-gap: 0;
+  align-items: flex-end;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-rows: 550px;
+}
+
+.tariff-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-shadow: 0 1px 4px #0000001f, 0 2px 8px #00000014, 0 4px 6px #00000014;
+  font-size: 1rem;
+  transition: all .2s ease;
+}
+
+.auto-renewal {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-bottom: 32px;
+}
+
+.auto-renewal-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fafafa;
+  padding: 8px 24px;
+  border-radius: 32px;
+  box-shadow: 0 6px 6px #00000014, 0 4px 16px #0000001a, 0 8px 12px #00000014;
+}
+
+.auto-renewal mat-slide-toggle {
+  margin-left: 16px;
+}
+
+.tariff-container:hover {
+  box-shadow: 0 6px 6px #00000014, 0 4px 16px #0000001a, 0 8px 12px #00000014;
+  transform: translateY(-2px);
+}
+
+.tariff-banner {
+  margin: 0;
+  height: 8px;
+  background: var(--btn-main-color-hover);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.tariff-wrapper {
+  padding: 2rem;
+  font-size: 1rem;
+}
+
+.tariff-body {
+  padding-bottom: 0;
+  margin-bottom: 1.25rem;
+}
+
+.tariff-title {
+  font-size: 1.25rem;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -.015em;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.tariff-pricing {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 1.25rem;
+}
+
+.tariff-price {
+  font-size: 2.25rem;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -.015em;
+  margin-top: 0;
+  margin-bottom: 0;
+  flex: 1;
+  white-space: nowrap;
+}
+
+.tariff-description {
+  margin-top: 1.25rem;
+}
+
+.tariff-footer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0;
+}
+
+.tariff-feature-title {
+  font-size: 1rem;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -.015em;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #5f6065;
+}
+
+.tariff-features {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #5f6065;
+  list-style: disc;
+}
+
+.tariff-feature {
+  margin: 0;
+}

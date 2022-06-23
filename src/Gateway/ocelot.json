@@ -1,0 +1,19 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "devpoint.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/devpoint/{url}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:8000"  
+  }
+}

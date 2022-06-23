@@ -1,0 +1,10 @@
+<div class='side-nav' [class.vertical]='vertical' [class.no-stick]='noStick'>
+  <div class='side-nav-button' *ngFor='let pageName of pages; index as i'>
+    <app-devpoint-button [devpoint-border-style]='borderStyle'
+                         fullWidth
+                         padding='0 16px'
+                         [devpoint-style]='page === i ? "main" : "transparent-black"'
+                         (buttonClick)='onClick(i)'
+    >{{ pageName }}</app-devpoint-button>
+  </div>
+</div>

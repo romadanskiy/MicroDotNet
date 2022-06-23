@@ -1,52 +1,62 @@
 version: '3.7'
 
+networks:
+  devpoint.network:
+    driver: bridge
+
 services:
-  auth:
-    environment:
-      - ASPNETCORE_URLS=http://+:5000
-      - ASPNETCORE_ENVIRONMENT=Development
-    env_file:
-      - ./services/auth/Auth.Web/postgres.env
+  devpoint.frontend:
+    container_name: devpoint.frontend
+    image: devpoint.frontend:latest
     depends_on:
-      - auth-db
+      - "devpoint.api"
     build:
-      context: ./services/auth/Auth.Web
-      dockerfile: ./Dockerfile      
+      context: ./Devpoint/App
+      dockerfile: Dockerfile
     ports:
-      - "5000:5000"
-  
-  auth-db:
-    image: postgres:14    
-    env_file:
-      - ./services/auth/Auth.Web/postgres.env
-    volumes:
-      - auth-db:/var/lib/postgresql/data:rw
-    ports:
-      - "5432:5432"
-        
-  scanner:
-    environment:
-      - ASPNETCORE_URLS=http://0.0.0.0:5000
-      - ASPNETCORE_ENVIRONMENT=Development
-    env_file:
-      - ./services/scanner/Scanner/postgres.env
+      - "4200:4200"
+
+  devpoint.api:
+    container_name: devpoint.api
+    image: devpoint.api:latest
     depends_on:
-      - scanner-db
+      - "devpoint.db"
+      - "gateway"
     build:
-      context: ./services/scanner/Scanner
-      dockerfile: ./Dockerfile
+      context: ./Devpoint
+      dockerfile: Web.API/Dockerfile
     ports:
-      - "5074:5000"
-        
-  scanner-db:
-    image: postgres:14
-    env_file:
-      - ./services/scanner/Scanner/postgres.env
+      - "8001:80"
+    environment:
+      DB_CONNECTION_STRING: "host=devpoint.db;port=5432;database=devpoint_db;username=postgres;password=postgres"
+    networks:
+      - devpoint.network
+
+  devpoint.db:
+    container_name: devpoint.db
+    image: postgres:latest
+    ports:
+      - "5432"
+    restart: always
     volumes:
-      - scanner-db:/var/lib/postgresql/data:rw
+      - db_volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "devpoint_db"
+    networks:
+      - devpoint.network
+
+  gateway:
+    container_name: gateway
+    image: gateway:latest
+    build:
+      context: .
+      dockerfile: Gateway/Dockerfile
     ports:
-      - "5433:5432"
-      
+      - "8000:80"
+    networks:
+      - devpoint.network
+
 volumes:
-  auth-db:
-  scanner-db:
+  db_volume:
