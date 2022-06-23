@@ -26,12 +26,10 @@ class AddGarbageViewModel(
 ) : LoadedViewModel() {
     private val mutableGarbageInfo: MutableLiveData<GarbageInfo> = MutableLiveData()
     private val mutableImage: MutableLiveData<File> = MutableLiveData()
-    private val mutableCategories: MutableLiveData<List<GarbageCategory>> = MutableLiveData()
     private val mutableImagePath: MutableLiveData<String> = MutableLiveData()
     private val mutableResult: MutableLiveData<ApiRequestResult<String>> = MutableLiveData()
     val garbageInfo: LiveData<GarbageInfo> = mutableGarbageInfo
     val image: LiveData<File> = mutableImage
-    val categories: LiveData<List<GarbageCategory>> = mutableCategories
     val imagePath: LiveData<String> = mutableImagePath
     val result: LiveData<ApiRequestResult<String>> = mutableResult
 
@@ -76,10 +74,6 @@ class AddGarbageViewModel(
         }
     }
 
-    fun categories(categories: List<GarbageCategory>) {
-        mutableCategories.postValue(categories)
-    }
-
     fun setResult(result: ApiRequestResult<String>?){
         mutableResult.postValue(result)
     }
@@ -87,7 +81,6 @@ class AddGarbageViewModel(
     override fun clear() {
         super.clear()
         loadingMutable.postValue(false)
-        mutableCategories.postValue(null);
         mutableImage.postValue(null);
         mutableGarbageInfo.postValue(null);
         mutableImagePath.postValue(null)

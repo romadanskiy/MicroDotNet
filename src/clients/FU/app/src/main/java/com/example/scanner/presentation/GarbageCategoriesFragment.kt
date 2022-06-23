@@ -21,7 +21,7 @@ import com.example.scanner.presentation.viewmodels.GarbageCategoriesViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
-class GarbageCategoriesFragment : Fragment() {
+class GarbageCategoriesFragment(val isPoint: Boolean = false) : Fragment() {
 
     private val garbageCategoriesViewModel by sharedViewModel<GarbageCategoriesViewModel>()
     private val errorViewModel by sharedViewModel<ErrorViewModel>()
@@ -51,6 +51,12 @@ class GarbageCategoriesFragment : Fragment() {
             }
 
         })
+
+        binding.returnToPoint.setOnClickListener {
+            var supportFragmentManager = activity?.supportFragmentManager;
+            supportFragmentManager?.beginTransaction()
+                ?.replace(com.example.scanner.R.id.fragment_container, AddReceptionPointsFragment())?.commit();
+        }
 
         val loading =
             Observer<Boolean> { loading ->
@@ -98,7 +104,9 @@ class GarbageCategoriesFragment : Fragment() {
                 if (category != null) {
                     for (i in 0 until category.size!!) {
                         val currentCategory = category.get(i)
-                        val ids = garbageCategoriesViewModel.categoryIds.value!!
+                        if(garbageCategoriesViewModel.categoryIds.value == null){
+                            garbageCategoriesViewModel.setCategoryIds()
+                        }
                         val selected =
                             garbageCategoriesViewModel.categoryIds.value!!.contains(currentCategory.id)
                         currentCategory.setSelected(selected)
@@ -115,6 +123,14 @@ class GarbageCategoriesFragment : Fragment() {
             garbageCategoriesViewModel.getCategories()
         }
 
+        if(isPoint){
+            binding.returnToPoint.visibility = View.VISIBLE
+            binding.goToAddGarbage.visibility = View.GONE
+        }
+        else{
+            binding.returnToPoint.visibility = View.GONE
+            binding.goToAddGarbage.visibility = View.VISIBLE
+        }
         return binding.root;
     }
 }

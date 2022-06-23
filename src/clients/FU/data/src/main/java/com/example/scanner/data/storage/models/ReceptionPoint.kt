@@ -1,6 +1,7 @@
 package com.example.scanner.data.storage.models
 
 import com.example.scanner.domain.models.GarbageCategory
+import com.google.gson.annotations.SerializedName
 
 class GetReceptionPoint(
     val id: Long,

@@ -16,6 +16,7 @@ import com.example.scanner.databinding.FragmentScanningResultBinding
 import com.example.scanner.domain.models.GarbageInfo
 import com.example.scanner.domain.models.GetGarbageInfo
 import com.example.scanner.presentation.viewmodels.ErrorViewModel
+import com.example.scanner.presentation.viewmodels.ReceptionPointsViewModel
 import com.example.scanner.presentation.viewmodels.ScannerViewModel
 import com.example.scanner.presentation.viewmodels.ScanningResultViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -25,6 +26,7 @@ class ScanningResultFragment : Fragment() {
 
     private val scannerViewModel by sharedViewModel<ScannerViewModel>()
     private val scanningResultViewModel by sharedViewModel<ScanningResultViewModel>()
+    private val receptionPointsViewModel by sharedViewModel<ReceptionPointsViewModel>()
     private val errorViewModel by sharedViewModel<ErrorViewModel>()
     private lateinit var binding: FragmentScanningResultBinding
 
@@ -43,6 +45,21 @@ class ScanningResultFragment : Fragment() {
             var supportFragmentManager = activity?.supportFragmentManager;
             supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.fragment_container, AddGarbageFragment())?.commit();
+        }
+
+        binding.goToUtilization.setOnClickListener {
+            val idsRaw = scanningResultViewModel.garbageInfo.value?.data?.garbageCategories
+            var ids: List<Long> = emptyList()
+            if(idsRaw != null && idsRaw.isNotEmpty()){
+                ids = List(idsRaw.size){
+                    idsRaw[it].id
+                }
+            }
+            receptionPointsViewModel.setIds(ids)
+
+            var supportFragmentManager = activity?.supportFragmentManager;
+            supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.fragment_container, ReceptionPointsFragment())?.commit();
         }
 
         val scanningResult =

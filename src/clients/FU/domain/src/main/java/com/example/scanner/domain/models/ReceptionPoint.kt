@@ -10,7 +10,6 @@ class GetReceptionPoint(
 }
 
 class ReceptionPoint(
-    val id: Long,
     val name: String,
     val description: String?,
     val address: String,

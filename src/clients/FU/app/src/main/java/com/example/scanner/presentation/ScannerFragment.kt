@@ -13,10 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.scanner.R
 import com.example.scanner.databinding.FragmentScannerBinding
-import com.example.scanner.presentation.viewmodels.AddGarbageViewModel
-import com.example.scanner.presentation.viewmodels.GarbageCategoriesViewModel
-import com.example.scanner.presentation.viewmodels.ScannerViewModel
-import com.example.scanner.presentation.viewmodels.ScanningResultViewModel
+import com.example.scanner.presentation.viewmodels.*
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
@@ -30,6 +27,7 @@ class ScannerFragment : Fragment() {
     private val scanningResultViewModel by sharedViewModel<ScanningResultViewModel>()
     private val garbageCategoriesViewModel by sharedViewModel<GarbageCategoriesViewModel>()
     private val addGarbageViewModel by sharedViewModel<AddGarbageViewModel>()
+    private val receptionPointsViewModel by sharedViewModel<ReceptionPointsViewModel>()
 
     private val requestCodeCameraPermission = 1001
     private lateinit var cameraSource: CameraSource
@@ -112,6 +110,7 @@ class ScannerFragment : Fragment() {
                     scanningResultViewModel.clear()
                     garbageCategoriesViewModel.clear()
                     addGarbageViewModel.clear()
+                    receptionPointsViewModel.clear()
 
                     //Don't forget to add this line printing value or finishing activity must run on main thread
                     getActivity()?.runOnUiThread {

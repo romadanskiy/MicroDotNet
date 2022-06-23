@@ -20,4 +20,12 @@ val appModule = module{
     viewModel(){
         GarbageCategoriesViewModel(getGarbageCategoriesUseCase = get())
     }
+
+    viewModel(){
+        ReceptionPointsViewModel(getReceptionPointsUseCase = get())
+    }
+
+    viewModel(){
+        AddReceptionPointViewModel(addReceptionPointUseCase = get())
+    }
 }

@@ -27,7 +27,7 @@ class ReceptionPointRepositoryImpl(val receptionPointStorage: ReceptionPointStor
         var data = emptyList<GetReceptionPoint>()
         if (apiResult.data != null){
             data = List(apiResult.data.size){
-                GetReceptionPoint(apiResult.data[it].id,apiResult.data[it].name, apiResult.data[it].description, Address(apiResult.data[it].address.FullAddress), apiResult.data[it].garbageTypes)
+                GetReceptionPoint(apiResult.data[it].id,apiResult.data[it].name, apiResult.data[it].description, Address(apiResult.data[it].address.fullAddress), apiResult.data[it].garbageTypes)
             }
         }
         val requestResult = RequestResult<GetReceptionPoint>(apiResult.success, messages, data, data.size, apiResult.responseCode)

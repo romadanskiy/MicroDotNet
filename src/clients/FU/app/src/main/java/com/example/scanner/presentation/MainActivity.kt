@@ -12,6 +12,7 @@ import com.example.scanner.domain.models.GarbageCategory
 import com.example.scanner.domain.models.GarbageInfo
 import com.example.scanner.presentation.viewmodels.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     private val errorViewModel by viewModel<ErrorViewModel>()
     private val addGarbageViewModel by viewModel<AddGarbageViewModel>()
     private val GarbageCategoriesViewModel by viewModel<GarbageCategoriesViewModel>()
+    private val receptionPointsViewModel by viewModel<ReceptionPointsViewModel>()
+    private val addReceptionPointViewModel by viewModel<AddReceptionPointViewModel>()
 
     private val selectImageCode = 100000001
 
@@ -42,7 +45,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_utilization -> {
                     if(currentFragmentId != R.id.nav_utilization){
-                        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, UtilizationFragment()).commit();
+                        receptionPointsViewModel.clear()
+                        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, ReceptionPointsFragment()).commit();
                         currentFragmentId = R.id.nav_utilization;
                     }
                 }

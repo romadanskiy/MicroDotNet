@@ -1,9 +1,6 @@
 package com.example.scanner.di
 
-import com.example.scanner.domain.usecase.AddGarbageInfoUseCase
-import com.example.scanner.domain.usecase.GetGarbageCategoriesUseCase
-import com.example.scanner.domain.usecase.GetGarbageInfoUseCase
-import com.example.scanner.domain.usecase.LoadImageUseCase
+import com.example.scanner.domain.usecase.*
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -22,5 +19,13 @@ val domainModule = module {
 
     factory {
         GetGarbageCategoriesUseCase(garbageRepository = get())
+    }
+
+    factory {
+        GetReceptionPointsUseCase(receptionPointRepository = get())
+    }
+
+    factory {
+        AddReceptionPointUseCase(receptionPointRepository = get())
     }
 }

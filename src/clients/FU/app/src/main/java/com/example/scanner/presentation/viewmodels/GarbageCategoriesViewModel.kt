@@ -39,6 +39,12 @@ class GarbageCategoriesViewModel(val getGarbageCategoriesUseCase: GetGarbageCate
         }
     }
 
+    fun setCategoryIds() {
+        if(categoryIdsMutable.value == null){
+            categoryIdsMutable.value  = mutableListOf()
+        }
+    }
+
     fun removeSelectedCategory(categoryId: Long){
         categoryIdsMutable.value?.remove(categoryId)
     }
