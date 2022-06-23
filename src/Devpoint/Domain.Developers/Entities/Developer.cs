@@ -3,9 +3,9 @@
     public class Developer
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = "";
+        public string FullName { get; set; } = "";
 
-        public string ImagePath { get; set; } = "";
+        public string ImageFullPath { get; set; } = "";
 
         public string Description { get; set; } = "";
 
@@ -17,9 +17,9 @@
         public List<Company> Companies { get; set; }
         public List<Tag>? Tags { get; set; }
         
-        public Developer(string name)
+        public Developer(string fullName)
         {
-            Name = name;
+            FullName = fullName;
         }
         
         private Developer() {}

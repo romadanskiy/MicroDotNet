@@ -27,7 +27,7 @@ public class CompanyDto
         Latitude = company.Latitude;
         Longitude = company.Longitude;
         Description = company.Description;
-        ImagePath = company.ImagePath;
+        ImagePath = company.ImageFullPath;
         SubscriberCount = company.SubscriberCount;
         OwnerId = company.OwnerId;
         if (company.Tags is not null)

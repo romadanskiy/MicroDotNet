@@ -43,7 +43,7 @@ public class DeveloperController : Controller
         var query = _developerService.GetAllDevelopers();
         
         if (!string.IsNullOrEmpty(search))
-            query = query.Where(entity => entity.Name.ToLower().Contains(search.ToLower()));
+            query = query.Where(entity => entity.FullName.ToLower().Contains(search.ToLower()));
 
         var totalCount = 0;
         query = query.Include(e => e.Tags);
@@ -103,7 +103,7 @@ public class DeveloperController : Controller
     public async Task<IActionResult> GetDeveloperNames()
     {
         var names = await _developerService.GetAllDevelopers()
-            .Select(e => e.Name)
+            .Select(e => e.FullName)
             .ToListAsync();
 
         return Json(names);
@@ -254,18 +254,18 @@ public class DeveloperController : Controller
             return StatusCode(403, "Forbidden! Only owner can modify project information");
         
         if (updateEntityDto.Name != null)
-            developer.Name = updateEntityDto.Name;
+            developer.FullName = updateEntityDto.Name;
         
         if (updateEntityDto.ImagePath != null)
         {
-            if (!string.IsNullOrWhiteSpace(developer.ImagePath))
+            if (!string.IsNullOrWhiteSpace(developer.ImageFullPath))
             {
                 var pathToRemove = Path.Combine(Directory.GetCurrentDirectory(), "Resources");
-                var fullPath = Path.Combine(pathToRemove, developer.ImagePath);
+                var fullPath = Path.Combine(pathToRemove, developer.ImageFullPath);
                 System.IO.File.Delete(fullPath);
             }
 
-            developer.ImagePath = updateEntityDto.ImagePath;
+            developer.ImageFullPath = updateEntityDto.ImagePath;
         }
 
         if (updateEntityDto.Description != null)
